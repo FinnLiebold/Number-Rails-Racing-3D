@@ -4,6 +4,10 @@ A 3D racing game that makes learning French vocabulary, numbers, and multiplicat
 
 **[Play Now](https://finnliebold.github.io/Number-Rails-Racing-3D/)**
 
+If you enjoy the game, you can support Finn's journey and help him save for a 3D printer for his next projects:
+
+[☕ Buy Finn a Hot Chocolate](https://paypal.me/JSchmiedbauer)
+
 ---
 
 ## What is this?

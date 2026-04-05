@@ -7485,13 +7485,13 @@
     <!-- Profile Selector -->
     <div id="profile-overlay">
         <div class="profile-title">Number Rails Racing</div>
-        <div class="profile-subtitle" id="profile-subtitle">Profil wählen</div>
+        <div class="profile-subtitle" id="profile-subtitle">Select Profile</div>
         <div class="profile-list" id="profile-list"></div>
         <div class="profile-create-box" id="profile-create-box">
-            <input type="text" id="profile-name-input" placeholder="Name eingeben..." maxlength="16" autocomplete="off">
+            <input type="text" id="profile-name-input" placeholder="Enter name..." maxlength="16" autocomplete="off">
             <div style="display:flex;gap:10px;">
-                <button class="start-btn" style="padding:10px 25px;font-size:16px;" onclick="createProfile()">Erstellen</button>
-                <button class="back-btn" style="padding:10px 25px;font-size:16px;" onclick="cancelCreateProfile()">Abbrechen</button>
+                <button class="start-btn" style="padding:10px 25px;font-size:16px;" onclick="createProfile()">Create</button>
+                <button class="back-btn" style="padding:10px 25px;font-size:16px;" onclick="cancelCreateProfile()">Cancel</button>
             </div>
         </div>
     </div>
@@ -7500,24 +7500,24 @@
     <button id="settings-btn" onclick="toggleSettings()">⚙</button>
     <div id="settings-backdrop" onclick="toggleSettings()"></div>
     <div id="settings-panel">
-        <div class="settings-title" data-i18n="settings">Einstellungen</div>
+        <div class="settings-title" data-i18n="settings">Settings</div>
 
         <div class="settings-section">
             <div class="settings-section-title" data-i18n="audio">Audio</div>
             <div class="settings-row">
-                <span class="settings-label" data-i18n="music">Musik</span>
+                <span class="settings-label" data-i18n="music">Music</span>
                 <input type="range" class="settings-slider" id="settings-music" min="0" max="100" value="40" oninput="onMusicVolume(this.value)">
                 <span class="settings-slider-value" id="settings-music-val">40%</span>
             </div>
             <div class="settings-row">
-                <span class="settings-label" data-i18n="sfx">Effekte</span>
+                <span class="settings-label" data-i18n="sfx">Effects</span>
                 <input type="range" class="settings-slider" id="settings-sfx" min="0" max="100" value="70" oninput="onSfxVolume(this.value)">
                 <span class="settings-slider-value" id="settings-sfx-val">70%</span>
             </div>
         </div>
 
         <div class="settings-section">
-            <div class="settings-section-title" data-i18n="language">Sprache</div>
+            <div class="settings-section-title" data-i18n="language">Language</div>
             <div class="lang-selector">
                 <button class="lang-btn" data-lang="de" onclick="setLanguage('de')">🇩🇪 Deutsch</button>
                 <button class="lang-btn selected" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</button>
@@ -7670,7 +7670,7 @@
         </div>
 
         <!-- Back to menu button -->
-        <button id="back-to-menu-btn" onclick="backToMenu()" title="Zurück zum Menü">✕</button>
+        <button id="back-to-menu-btn" onclick="backToMenu()" title="Back to Menu">✕</button>
 
         <!-- HUD -->
         <div id="hud">
@@ -7685,12 +7685,12 @@
         <!-- Multiplayer HUD -->
         <div id="mp-hud">
             <div class="mp-player-hud p1">
-                <div class="mp-player-name" id="mp-p1-name">S1 — TASTATUR</div>
+                <div class="mp-player-name" id="mp-p1-name">P1 — KEYBOARD</div>
                 <div class="mp-player-score" id="mp-p1-score">0</div>
             </div>
             <div id="mp-timer" style="font-family: Orbitron, sans-serif; font-size: 20px; font-weight: 700; background: rgba(10,10,30,0.7); padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); align-self: center; backdrop-filter: blur(10px);">5.0s</div>
             <div class="mp-player-hud p2">
-                <div class="mp-player-name" id="mp-p2-name">S2 — MAUS</div>
+                <div class="mp-player-name" id="mp-p2-name">P2 — MOUSE</div>
                 <div class="mp-player-score" id="mp-p2-score">0</div>
             </div>
         </div>
@@ -7718,35 +7718,35 @@
 
         <!-- Multiplayer Skin Selection -->
         <div class="overlay hidden" id="mp-skin-select" style="z-index: 200;">
-            <h1 style="font-size: 36px;" id="mp-select-title">2 SPIELER</h1>
-            <p style="margin-bottom: 15px; opacity: 0.6;" id="mp-select-sub">Wählt eure Autos!</p>
+            <h1 style="font-size: 36px;" id="mp-select-title">2 PLAYER</h1>
+            <p style="margin-bottom: 15px; opacity: 0.6;" id="mp-select-sub">Choose your cars!</p>
             <div style="display: flex; gap: 30px; width: 100%; max-width: 800px; justify-content: center;">
                 <div style="flex:1; text-align:center;">
-                    <div style="font-family: Orbitron, sans-serif; font-size: 14px; color: #e74c3c; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px;" id="mp-select-p1-label">SPIELER 1 — TASTATUR</div>
+                    <div style="font-family: Orbitron, sans-serif; font-size: 14px; color: #e74c3c; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px;" id="mp-select-p1-label">PLAYER 1 — KEYBOARD</div>
                     <div id="mp-p1-skins" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; padding: 5px;"></div>
                 </div>
                 <div style="width: 2px; background: rgba(255,255,255,0.1);"></div>
                 <div style="flex:1; text-align:center;">
-                    <div style="font-family: Orbitron, sans-serif; font-size: 14px; color: #3498db; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px;" id="mp-select-p2-label">SPIELER 2 — MAUS</div>
+                    <div style="font-family: Orbitron, sans-serif; font-size: 14px; color: #3498db; font-weight: 700; margin-bottom: 10px; letter-spacing: 1px;" id="mp-select-p2-label">PLAYER 2 — MOUSE</div>
                     <div id="mp-p2-skins" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; padding: 5px;"></div>
                 </div>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button class="start-btn" onclick="mpStartGame()" id="mp-start-race-btn">RENNEN STARTEN</button>
-                <button class="back-btn" onclick="exitMultiplayer()" id="mp-back-btn">Zurück</button>
+                <button class="start-btn" onclick="mpStartGame()" id="mp-start-race-btn">START RACE</button>
+                <button class="back-btn" onclick="exitMultiplayer()" id="mp-back-btn">Back</button>
             </div>
         </div>
 
         <!-- Multiplayer Game Over -->
         <div id="mp-gameover">
-            <div id="mp-winner">SPIELER 1 GEWINNT!</div>
+            <div id="mp-winner">PLAYER 1 WINS!</div>
             <div class="mp-final-scores">
-                <div class="mp-final-score"><div class="label" id="mp-final-p1-label">SPIELER 1</div><div class="score" id="mp-final-p1">0</div></div>
-                <div class="mp-final-score"><div class="label" id="mp-final-p2-label">SPIELER 2</div><div class="score" id="mp-final-p2">0</div></div>
+                <div class="mp-final-score"><div class="label" id="mp-final-p1-label">PLAYER 1</div><div class="score" id="mp-final-p1">0</div></div>
+                <div class="mp-final-score"><div class="label" id="mp-final-p2-label">PLAYER 2</div><div class="score" id="mp-final-p2">0</div></div>
             </div>
             <p id="mp-gameover-reason" style="color: rgba(255,255,255,0.6); margin-bottom: 10px;"></p>
-            <button class="start-btn" onclick="startMultiplayer()" id="mp-rematch-btn">Nochmal</button>
-            <button class="shop-btn" onclick="exitMultiplayer()" id="mp-backmenu-btn">Zurück zum Menü</button>
+            <button class="start-btn" onclick="startMultiplayer()" id="mp-rematch-btn">Rematch</button>
+            <button class="shop-btn" onclick="exitMultiplayer()" id="mp-backmenu-btn">Back to Menu</button>
         </div>
 
         <!-- Player 2 car -->
@@ -7812,45 +7812,45 @@
             </div>
 
             <h1 id="start-title">Number Rails Racing 3D</h1>
-            <p id="start-subtitle">Finde die richtige Übersetzung!</p>
-            <p id="start-earncoins">Verdiene Münzen für jede richtige Antwort!</p>
+            <p id="start-subtitle">Match the word to its translation!</p>
+            <p id="start-earncoins">Earn coins for each correct answer!</p>
 
             <div class="mode-selector" id="mode-selector">
                 <button type="button" class="mode-btn menu-selectable selected" data-mode="de-fr">
-                    <div class="mode-title">Zahlen DE>FR</div>
-                    <div class="mode-desc">Deutsche Zahlen auf Französisch</div>
+                    <div class="mode-title">Numbers DE>FR</div>
+                    <div class="mode-desc">German numbers to French</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable" data-mode="fr-de">
-                    <div class="mode-title">Zahlen FR>DE</div>
-                    <div class="mode-desc">Französische Zahlen auf Deutsch</div>
+                    <div class="mode-title">Numbers FR>DE</div>
+                    <div class="mode-desc">French numbers to German</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable" data-mode="vocab-de-fr">
-                    <div class="mode-title">Vokabeln DE>FR</div>
-                    <div class="mode-desc">Deutsch-Vokabeln auf Französisch</div>
+                    <div class="mode-title">Vocab DE>FR</div>
+                    <div class="mode-desc">German vocab to French</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable" data-mode="vocab-fr-de">
-                    <div class="mode-title">Vokabeln FR>DE</div>
-                    <div class="mode-desc">Französisch-Vokabeln auf Deutsch</div>
+                    <div class="mode-title">Vocab FR>DE</div>
+                    <div class="mode-desc">French vocab to German</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable" data-mode="1x1-easy">
-                    <div class="mode-title">1x1 Leicht</div>
-                    <div class="mode-desc">Einmaleins 1-5</div>
+                    <div class="mode-title">1x1 Easy</div>
+                    <div class="mode-desc">Times tables 1-5</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable" data-mode="1x1-medium">
-                    <div class="mode-title">1x1 Mittel</div>
-                    <div class="mode-desc">Einmaleins 1-10</div>
+                    <div class="mode-title">1x1 Medium</div>
+                    <div class="mode-desc">Times tables 1-10</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable" data-mode="1x1-hard">
-                    <div class="mode-title">1x1 Schwer</div>
-                    <div class="mode-desc">Einmaleins 1-20</div>
+                    <div class="mode-title">1x1 Hard</div>
+                    <div class="mode-desc">Times tables 1-20</div>
                 </button>
                 <button type="button" class="mode-btn menu-selectable mode-btn-mix" data-mode="mixmode">
                     <div class="mode-title">MIXMODE</div>
-                    <div class="mode-desc">Alle Modi gemischt!</div>
+                    <div class="mode-desc">All modes combined!</div>
                 </button>
             </div>
 
-            <p id="biome-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Biom wählen</p>
+            <p id="biome-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Choose biome</p>
             <div class="biome-selector">
                 <div class="biome-btn biome-btn-day menu-selectable selected" data-biome="day" onclick="selectBiome('day')">
                     <span class="biome-icon">☀️</span>
@@ -7878,9 +7878,9 @@
                 </div>
             </div>
 
-            <p id="duration-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Spieldauer</p>
+            <p id="duration-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Game duration</p>
             <div class="time-selector" id="time-selector">
-                <button type="button" class="time-btn menu-selectable selected" data-time="0">Endlos</button>
+                <button type="button" class="time-btn menu-selectable selected" data-time="0">Endless</button>
                 <button type="button" class="time-btn menu-selectable" data-time="30">30 sec</button>
                 <button type="button" class="time-btn menu-selectable" data-time="60">1 min</button>
                 <button type="button" class="time-btn menu-selectable" data-time="120">2 min</button>
@@ -7888,64 +7888,64 @@
                 <button type="button" class="time-btn menu-selectable" data-time="300">5 min</button>
             </div>
 
-            <p id="weather-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Wetter</p>
+            <p id="weather-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Weather</p>
             <div class="weather-selector" id="weather-selector">
-                <button type="button" class="weather-btn selected" data-weather="clear" onclick="selectWeather('clear')"><div>☀️</div><div style="font-size:10px;">Klar</div></button>
-                <button type="button" class="weather-btn" data-weather="rain" onclick="selectWeather('rain')"><div>🌧️</div><div style="font-size:10px;">Regen</div></button>
-                <button type="button" class="weather-btn" data-weather="storm" onclick="selectWeather('storm')"><div>⛈️</div><div style="font-size:10px;">Sturm</div></button>
-                <button type="button" class="weather-btn" data-weather="fog" onclick="selectWeather('fog')"><div>🌫️</div><div style="font-size:10px;">Nebel</div></button>
+                <button type="button" class="weather-btn selected" data-weather="clear" onclick="selectWeather('clear')"><div>☀️</div><div style="font-size:10px;">Clear</div></button>
+                <button type="button" class="weather-btn" data-weather="rain" onclick="selectWeather('rain')"><div>🌧️</div><div style="font-size:10px;">Rain</div></button>
+                <button type="button" class="weather-btn" data-weather="storm" onclick="selectWeather('storm')"><div>⛈️</div><div style="font-size:10px;">Storm</div></button>
+                <button type="button" class="weather-btn" data-weather="fog" onclick="selectWeather('fog')"><div>🌫️</div><div style="font-size:10px;">Fog</div></button>
             </div>
 
-            <p id="difficulty-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Schwierigkeit</p>
+            <p id="difficulty-label" style="margin-top: 14px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.5; font-family: 'Orbitron', sans-serif;">Difficulty</p>
             <div class="weather-selector" id="difficulty-selector">
                 <button type="button" class="weather-btn selected" data-diff="off" onclick="selectDifficulty('off')"><div>➡️</div><div style="font-size:10px;">Normal</div></button>
-                <button type="button" class="weather-btn" data-diff="on" onclick="selectDifficulty('on')"><div>📈</div><div style="font-size:10px;">Ansteigend</div></button>
+                <button type="button" class="weather-btn" data-diff="on" onclick="selectDifficulty('on')"><div>📈</div><div style="font-size:10px;">Increasing</div></button>
             </div>
 
             <div class="controls" id="keyboard-controls">
-                <span class="key">←</span> Linke Spur
-                <span class="key">↑</span> Mittlere Spur
-                <span class="key">→</span> Rechte Spur
+                <span class="key">←</span> Left Lane
+                <span class="key">↑</span> Middle Lane
+                <span class="key">→</span> Right Lane
             </div>
             <div class="controller-hints" id="controller-controls">
                 <span><span class="btn-icon btn-x">X</span> Left Lane</span>
                 <span><span class="btn-icon btn-a">A</span> Middle Lane</span>
                 <span><span class="btn-icon btn-b">B</span> Right Lane</span>
             </div>
-            <p id="start-coins" style="color: #FFD700;">Deine Münzen: 0</p>
+            <p id="start-coins" style="color: #FFD700;">Your Coins: 0</p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <button class="start-btn menu-selectable" onclick="startGame()" id="start-btn-main">LEERTASTE zum Starten</button>
-                <button class="mp-btn menu-selectable" onclick="startMultiplayer()" id="mp-main-btn">2 SPIELER</button>
+                <button class="start-btn menu-selectable" onclick="startGame()" id="start-btn-main">Press SPACE to Start</button>
+                <button class="mp-btn menu-selectable" onclick="startMultiplayer()" id="mp-main-btn">2 PLAYER</button>
             </div>
-            <button class="shop-btn menu-selectable" onclick="openShop()" id="start-shop-btn">Auto-Shop</button>
-            <button class="badges-btn menu-selectable" onclick="openBadges()" id="start-badges-btn">Abzeichen</button>
-            <button class="garage-btn menu-selectable" onclick="openGarage()" id="start-garage-btn">Garage</button>
+            <button class="shop-btn menu-selectable" onclick="openShop()" id="start-shop-btn">Car Shop</button>
+            <button class="badges-btn menu-selectable" onclick="openBadges()" id="start-badges-btn">Badges</button>
+            <button class="garage-btn menu-selectable" onclick="openGarage()" id="start-garage-btn">Car Garage</button>
         </div>
 
         <!-- Game over overlay -->
         <div class="overlay hidden" id="game-over-overlay">
-            <h1 id="gameover-title">Spiel vorbei!</h1>
-            <p id="game-over-reason">Falsche Antwort!</p>
+            <h1 id="gameover-title">Game Over!</h1>
+            <p id="game-over-reason">Wrong answer!</p>
             <p id="correct-answer"></p>
             <div id="final-score">Endergebnis: 0</div>
-            <div id="coins-earned">Münzen verdient: +0</div>
-            <p id="total-coins" style="color: #FFD700;">Münzen gesamt: 0</p>
-            <button class="start-btn" onclick="startGame()" id="go-restart-btn">LEERTASTE zum Neustart</button>
-            <button class="back-btn" onclick="backToMenu()" id="go-menu-btn">Hauptmenü</button>
-            <button class="shop-btn" onclick="openShop()" id="go-shop-btn">Auto-Shop</button>
-            <button class="badges-btn" onclick="openBadges()" id="go-badges-btn">Abzeichen</button>
-            <button class="garage-btn" onclick="openGarage()" id="go-garage-btn">Garage</button>
+            <div id="coins-earned">Coins Earned: +0</div>
+            <p id="total-coins" style="color: #FFD700;">Total Coins: 0</p>
+            <button class="start-btn" onclick="startGame()" id="go-restart-btn">Press SPACE to Restart</button>
+            <button class="back-btn" onclick="backToMenu()" id="go-menu-btn">Main Menu</button>
+            <button class="shop-btn" onclick="openShop()" id="go-shop-btn">Car Shop</button>
+            <button class="badges-btn" onclick="openBadges()" id="go-badges-btn">Badges</button>
+            <button class="garage-btn" onclick="openGarage()" id="go-garage-btn">Car Garage</button>
         </div>
 
         <!-- Victory overlay -->
         <div class="overlay hidden" id="victory-overlay">
-            <h1 id="victory-title">SIEG!</h1>
-            <p id="victory-sub">Du hast die Verfolgung überlebt!</p>
+            <h1 id="victory-title">VICTORY!</h1>
+            <p id="victory-sub">You survived the chase!</p>
             <div id="victory-score">Punkte: 0</div>
-            <div id="victory-coins">Münzen verdient: +0</div>
-            <p id="victory-total" style="color: #FFD700;">Münzen gesamt: 0</p>
-            <button class="start-btn" onclick="startGame()" id="victory-play-btn">Nochmal spielen</button>
-            <button class="shop-btn" onclick="openShop()" id="victory-shop-btn">Auto-Shop</button>
+            <div id="victory-coins">Coins Earned: +0</div>
+            <p id="victory-total" style="color: #FFD700;">Total Coins: 0</p>
+            <button class="start-btn" onclick="startGame()" id="victory-play-btn">Play Again</button>
+            <button class="shop-btn" onclick="openShop()" id="victory-shop-btn">Car Shop</button>
         </div>
 
         <!-- Victory cutscene container -->
@@ -7995,7 +7995,7 @@
 
         <!-- Shop overlay -->
         <div class="overlay hidden" id="shop-overlay">
-            <h1 id="shop-title">Auto-Shop</h1>
+            <h1 id="shop-title">Car Shop</h1>
             <p class="shop-coins">Your Coins: <span id="shop-coins-amount">0</span></p>
             <div class="shop-grid" id="shop-grid"></div>
             <button class="back-btn" onclick="closeShop()">Back</button>
@@ -8003,7 +8003,7 @@
 
         <!-- Badges overlay -->
         <div class="overlay hidden" id="badges-overlay">
-            <h1 id="badges-title">Abzeichen</h1>
+            <h1 id="badges-title">Badges</h1>
             <p class="badges-stats">Unlocked: <span id="badges-unlocked">0</span> / <span id="badges-total">0</span></p>
             <div class="badges-grid" id="badges-grid"></div>
             <button class="back-btn" onclick="closeBadges()">Back</button>
@@ -8011,7 +8011,7 @@
 
         <!-- Car Garage overlay -->
         <div class="overlay hidden" id="garage-overlay">
-            <h1 id="garage-title">Garage</h1>
+            <h1 id="garage-title">Car Garage</h1>
             <p class="garage-coins">Your Coins: <span id="garage-coins-amount">0</span></p>
 
             <!-- Garage Interior -->
