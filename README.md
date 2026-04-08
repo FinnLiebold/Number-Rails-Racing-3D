@@ -8,7 +8,6 @@ If you enjoy the game, you can support Finn's journey and help him save for a 3D
 
 [☕ Buy Finn a Hot Chocolate](https://paypal.me/JSchmiedbauer)
 
-( if you paly until the 7th of april you get a free easter car.)
 ---
 
 ## What is this?
