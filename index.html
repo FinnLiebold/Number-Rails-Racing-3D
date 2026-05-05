@@ -4276,6 +4276,88 @@
             transform: scale(1.05);
         }
 
+        /* Admin tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+        }
+        .admin-tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: transparent;
+            color: rgba(74, 222, 128, 0.6);
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .admin-tab-btn:hover { color: rgba(74, 222, 128, 0.9); }
+        .admin-tab-btn.active {
+            color: #4ade80;
+            border-bottom-color: #4ade80;
+        }
+        .admin-tab-content { display: none; }
+        .admin-tab-content.active { display: block; }
+
+        /* Admin events grid */
+        .admin-events-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .admin-event-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(74, 222, 128, 0.25);
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .admin-event-card.active {
+            border-color: #4ade80;
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.3);
+        }
+        .admin-event-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fbbf24;
+            letter-spacing: 0.5px;
+        }
+        .admin-event-status {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            font-variant-numeric: tabular-nums;
+            min-height: 14px;
+        }
+        .admin-event-status.active { color: #4ade80; font-weight: 600; }
+        .admin-event-btn {
+            padding: 6px 10px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .admin-event-btn:hover { transform: scale(1.04); box-shadow: 0 4px 10px rgba(74, 222, 128, 0.4); }
+        .admin-event-btn.stop {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
         /* Shop */
         #shop-overlay h1 { color: #9b59b6; }
         .shop-coins { font-size: 24px; color: #FFD700; margin-bottom: 12px; }
@@ -4536,6 +4618,69 @@
             background: linear-gradient(135deg, #f39c12, #e67e22);
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(230, 126, 34, 0.5);
+        }
+
+        /* Stats Box (under Garage on start menu) */
+        .stats-box {
+            margin: 14px auto 0;
+            padding: 14px 18px;
+            max-width: 360px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+        .stats-box-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #FFD700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .stats-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .stat-bar-row {
+            display: grid;
+            grid-template-columns: 90px 1fr 56px;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        .stat-label {
+            color: #ddd;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .stat-bar-track {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            height: 10px;
+            overflow: hidden;
+        }
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+        .stat-bar-fill.games { background: linear-gradient(to right, #3498db, #5dade2); }
+        .stat-bar-fill.highscore { background: linear-gradient(to right, #8e44ad, #bb8fce); }
+        .stat-bar-fill.correct { background: linear-gradient(to right, #27ae60, #2ecc71); }
+        .stat-bar-fill.wrong { background: linear-gradient(to right, #c0392b, #e74c3c); }
+        .stat-bar-fill.accuracy { background: linear-gradient(to right, #d4af37, #f1c40f); }
+        .stat-value {
+            color: #fff;
+            text-align: right;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
         }
 
         /* ========== CLASSIC CAR GARAGE ========== */
@@ -7920,6 +8065,37 @@
             <button class="shop-btn menu-selectable" onclick="openShop()" id="start-shop-btn">Car Shop</button>
             <button class="badges-btn menu-selectable" onclick="openBadges()" id="start-badges-btn">Badges</button>
             <button class="garage-btn menu-selectable" onclick="openGarage()" id="start-garage-btn">Car Garage</button>
+
+            <div class="stats-box" id="start-stats-box">
+                <div class="stats-box-title" id="stats-box-title">Statistics</div>
+                <div class="stats-bars">
+                    <div class="stat-bar-row">
+                        <span class="stat-label" id="stat-label-games">Games</span>
+                        <div class="stat-bar-track"><div class="stat-bar-fill games" id="stat-bar-games"></div></div>
+                        <span class="stat-value" id="stat-value-games">0</span>
+                    </div>
+                    <div class="stat-bar-row">
+                        <span class="stat-label" id="stat-label-highscore">High Score</span>
+                        <div class="stat-bar-track"><div class="stat-bar-fill highscore" id="stat-bar-highscore"></div></div>
+                        <span class="stat-value" id="stat-value-highscore">0</span>
+                    </div>
+                    <div class="stat-bar-row">
+                        <span class="stat-label" id="stat-label-correct">Correct</span>
+                        <div class="stat-bar-track"><div class="stat-bar-fill correct" id="stat-bar-correct"></div></div>
+                        <span class="stat-value" id="stat-value-correct">0</span>
+                    </div>
+                    <div class="stat-bar-row">
+                        <span class="stat-label" id="stat-label-mistakes">Mistakes</span>
+                        <div class="stat-bar-track"><div class="stat-bar-fill wrong" id="stat-bar-mistakes"></div></div>
+                        <span class="stat-value" id="stat-value-mistakes">0</span>
+                    </div>
+                    <div class="stat-bar-row">
+                        <span class="stat-label" id="stat-label-accuracy">Accuracy</span>
+                        <div class="stat-bar-track"><div class="stat-bar-fill accuracy" id="stat-bar-accuracy"></div></div>
+                        <span class="stat-value" id="stat-value-accuracy">0%</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Game over overlay -->
@@ -8092,13 +8268,29 @@
 
             <!-- Phase 2: Admin Panel (hidden until auth) -->
             <div id="admin-panel-phase">
-                <div class="admin-panel-box">
-                    <div class="admin-panel-label">GRANT COINS</div>
-                    <div class="admin-coin-row">
-                        <input type="number" id="admin-coin-input" placeholder="Amount" min="0">
-                        <button class="admin-grant-btn" onclick="adminGrantCoins()">GRANT</button>
+                <div class="admin-tabs">
+                    <button class="admin-tab-btn active" data-tab="coins" onclick="switchAdminTab('coins')">GRANT COINS</button>
+                    <button class="admin-tab-btn" data-tab="events" onclick="switchAdminTab('events')">RUN EVENTS</button>
+                </div>
+
+                <div class="admin-tab-content active" id="admin-tab-coins">
+                    <div class="admin-panel-box">
+                        <div class="admin-panel-label">GRANT COINS</div>
+                        <div class="admin-coin-row">
+                            <input type="number" id="admin-coin-input" placeholder="Amount" min="0">
+                            <button class="admin-grant-btn" onclick="adminGrantCoins()">GRANT</button>
+                        </div>
+                        <div class="admin-current-coins">Current: <span id="admin-current-coins-val">0</span></div>
                     </div>
-                    <div class="admin-current-coins">Current: <span id="admin-current-coins-val">0</span></div>
+                </div>
+
+                <div class="admin-tab-content" id="admin-tab-events">
+                    <div class="admin-panel-box">
+                        <div class="admin-panel-label">RUN EVENTS (1 HOUR)</div>
+                        <div class="admin-events-grid" id="admin-events-grid">
+                            <!-- populated by renderAdminEvents() -->
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -8523,6 +8715,8 @@
                 mpStartRace: 'RENNEN STARTEN', mpRematch: 'Nochmal', mpBackMenu: 'Zurück zum Menü',
                 mpP1wins: 'SPIELER 1 GEWINNT!', mpP2wins: 'SPIELER 2 GEWINNT!', mpDraw: 'UNENTSCHIEDEN!',
                 mpBothFailed: 'Beide Spieler!', mpPlayer1: 'SPIELER 1', mpPlayer2: 'SPIELER 2',
+                statsTitle: 'Statistik', statGames: 'Spiele', statHighScore: 'Bestleistung',
+                statCorrect: 'Richtig', statMistakes: 'Fehler', statAccuracy: 'Genauigkeit',
             },
             en: {
                 settings: 'Settings', audio: 'Audio', music: 'Music', sfx: 'Effects',
@@ -8566,6 +8760,8 @@
                 mpStartRace: 'START RACE', mpRematch: 'Rematch', mpBackMenu: 'Back to Menu',
                 mpP1wins: 'PLAYER 1 WINS!', mpP2wins: 'PLAYER 2 WINS!', mpDraw: 'DRAW!',
                 mpBothFailed: 'Both players!', mpPlayer1: 'PLAYER 1', mpPlayer2: 'PLAYER 2',
+                statsTitle: 'Statistics', statGames: 'Games', statHighScore: 'High Score',
+                statCorrect: 'Correct', statMistakes: 'Mistakes', statAccuracy: 'Accuracy',
             },
             es: {
                 settings: 'Ajustes', audio: 'Audio', music: 'Música', sfx: 'Efectos',
@@ -8609,6 +8805,8 @@
                 mpStartRace: 'INICIAR CARRERA', mpRematch: 'Revancha', mpBackMenu: 'Volver al menú',
                 mpP1wins: '¡JUGADOR 1 GANA!', mpP2wins: '¡JUGADOR 2 GANA!', mpDraw: '¡EMPATE!',
                 mpBothFailed: '¡Ambos jugadores!', mpPlayer1: 'JUGADOR 1', mpPlayer2: 'JUGADOR 2',
+                statsTitle: 'Estadísticas', statGames: 'Partidas', statHighScore: 'Mejor',
+                statCorrect: 'Correctas', statMistakes: 'Errores', statAccuracy: 'Precisión',
             }
         };
 
@@ -8624,10 +8822,12 @@
                 highScore: 0,
                 totalCoinsEarned: 0,
                 totalCorrect: 0,
+                totalWrong: 0,
                 maxSpeed: 1.0,
                 longestDrive: 0
             },
-            unlockedBadges: []
+            unlockedBadges: [],
+            activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0 }
         };
 
         // ========== PROFILE SYSTEM ==========
@@ -8726,7 +8926,8 @@
                     selectedSkin: saved.selectedSkin || 'default',
                     stats: { ...playerData.stats, ...(saved.stats || {}) },
                     unlockedBadges: saved.unlockedBadges || [],
-                    carUpgrades: saved.carUpgrades || {}
+                    carUpgrades: saved.carUpgrades || {},
+                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0, ...(saved.activeEvents || {}) }
                 };
             } else {
                 // Fresh profile
@@ -8734,9 +8935,10 @@
                     coins: 0,
                     ownedSkins: ['default', 'easter'],
                     selectedSkin: 'default',
-                    stats: { gamesPlayed: 0, highScore: 0, totalCoinsEarned: 0, carsOwned: 2, totalCorrect: 0, maxSpeed: 1.0, longestDrive: 0 },
+                    stats: { gamesPlayed: 0, highScore: 0, totalCoinsEarned: 0, carsOwned: 2, totalCorrect: 0, totalWrong: 0, maxSpeed: 1.0, longestDrive: 0 },
                     unlockedBadges: [],
-                    carUpgrades: {}
+                    carUpgrades: {},
+                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0 }
                 };
             }
 
@@ -8844,7 +9046,8 @@
                     ...playerData,
                     ...loaded,
                     stats: { ...playerData.stats, ...(loaded.stats || {}) },
-                    unlockedBadges: loaded.unlockedBadges || []
+                    unlockedBadges: loaded.unlockedBadges || [],
+                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0, ...(loaded.activeEvents || {}) }
                 };
                 // Ensure free cars are always owned
                 let addedFree = false;
@@ -9278,6 +9481,9 @@
 
             // HUD labels update
             updateHUDLabels();
+
+            // Stats box on start menu
+            renderStatsBox();
             } catch(e) { console.warn('applyLanguage error:', e); }
         }
 
@@ -9780,11 +9986,13 @@
             }
 
             if (now - gameState.lastSpeedIncrease >= gameState.speedIncreaseInterval) {
-                gameState.speed += 0.1;
+                if (!eventActive('slowMode')) {
+                    gameState.speed += 0.1;
+                    updateSpeed();
+                    updateRoadSpeed();
+                    updateSpeedLines();
+                }
                 gameState.lastSpeedIncrease = now;
-                updateSpeed();
-                updateRoadSpeed();
-                updateSpeedLines();
             }
 
             gameLoop = requestAnimationFrame(update);
@@ -9929,14 +10137,15 @@
 
             if (lane === gameState.correctLane) {
                 if (srKey) srRecordAnswer(srKey, true);
-                gameState.score++;
+                gameState.score += eventActive('doubleScore') ? 2 : 1;
                 updateStreak(true);
                 showScreenFlash('correct');
                 playSFX('correct');
                 // Base coin + upgrade bonus for current car
                 const baseCoins = 1;
                 const bonus = getCarBonus(playerData.selectedSkin);
-                const totalCoins = baseCoins + bonus;
+                const coinMult = eventActive('doubleCoins') ? 2 : 1;
+                const totalCoins = (baseCoins + bonus) * coinMult;
                 gameState.coinsEarned += totalCoins;
                 playerData.coins += totalCoins;
                 savePlayerData();
@@ -9950,22 +10159,28 @@
                 showScreenFlash('wrong');
                 triggerScreenShake();
                 playSFX('wrong');
-                // For MIXMODE, use currentSubMode to determine the correct answer type
-                const modeToCheck = gameState.mode === 'mixmode' ? gameState.currentSubMode : gameState.mode;
-                const is1x1Mode = modeToCheck.startsWith('1x1-');
-                const isVocabMode = modeToCheck.startsWith('vocab-');
-                if (is1x1Mode) {
-                    gameOver(`${t('wrong')} ${gameState.currentQuestion} = ${gameState.currentAnswer}`);
+                playerData.stats.totalWrong = (playerData.stats.totalWrong || 0) + 1;
+                if (eventActive('forgiveness')) {
+                    savePlayerData();
+                    generateNewRound();
                 } else {
-                    let local, french;
-                    if (isVocabMode) {
-                        local = getLocalVocab(vocabulary[gameState.currentNumber]);
-                        french = vocabulary[gameState.currentNumber].french;
+                    // For MIXMODE, use currentSubMode to determine the correct answer type
+                    const modeToCheck = gameState.mode === 'mixmode' ? gameState.currentSubMode : gameState.mode;
+                    const is1x1Mode = modeToCheck.startsWith('1x1-');
+                    const isVocabMode = modeToCheck.startsWith('vocab-');
+                    if (is1x1Mode) {
+                        gameOver(`${t('wrong')} ${gameState.currentQuestion} = ${gameState.currentAnswer}`);
                     } else {
-                        local = getLocalNumbers()[gameState.currentNumber];
-                        french = frenchNumbers[gameState.currentNumber];
+                        let local, french;
+                        if (isVocabMode) {
+                            local = getLocalVocab(vocabulary[gameState.currentNumber]);
+                            french = vocabulary[gameState.currentNumber].french;
+                        } else {
+                            local = getLocalNumbers()[gameState.currentNumber];
+                            french = frenchNumbers[gameState.currentNumber];
+                        }
+                        gameOver(`${t('wrong')} "${local}" = "${french}"`);
                     }
-                    gameOver(`${t('wrong')} "${local}" = "${french}"`);
                 }
             }
         }
@@ -10172,6 +10387,44 @@
 
             savePlayerData();
             checkBadges();
+            renderStatsBox();
+        }
+
+        function renderStatsBox() {
+            const box = document.getElementById('start-stats-box');
+            if (!box) return;
+            const s = playerData.stats || {};
+            const games = s.gamesPlayed || 0;
+            const high = s.highScore || 0;
+            const correct = s.totalCorrect || 0;
+            const wrong = s.totalWrong || 0;
+            const totalAns = correct + wrong;
+            const accuracy = totalAns > 0 ? Math.round((correct / totalAns) * 100) : 0;
+            const maxCount = Math.max(1, games, high, correct, wrong);
+            const setBar = (id, v, max) => {
+                const el = document.getElementById(id);
+                if (el) el.style.width = Math.min(100, (v / max) * 100) + '%';
+            };
+            const setText = (id, v) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = v;
+            };
+            setBar('stat-bar-games', games, maxCount);
+            setBar('stat-bar-highscore', high, maxCount);
+            setBar('stat-bar-correct', correct, maxCount);
+            setBar('stat-bar-mistakes', wrong, maxCount);
+            setBar('stat-bar-accuracy', accuracy, 100);
+            setText('stat-value-games', games);
+            setText('stat-value-highscore', high);
+            setText('stat-value-correct', correct);
+            setText('stat-value-mistakes', wrong);
+            setText('stat-value-accuracy', accuracy + '%');
+            setText('stats-box-title', t('statsTitle'));
+            setText('stat-label-games', t('statGames'));
+            setText('stat-label-highscore', t('statHighScore'));
+            setText('stat-label-correct', t('statCorrect'));
+            setText('stat-label-mistakes', t('statMistakes'));
+            setText('stat-label-accuracy', t('statAccuracy'));
         }
 
         // Garage system
@@ -10484,7 +10737,7 @@
 
         // Cheat code system
         let cheatCode = '';
-        const ADMIN_CODE_HASH = '2ef63b5aa94953f2e8e8188b636ad7b54895c23d07a4e1de9fa14df9f20918a8';
+        const ADMIN_CODE_HASH = '8141e32199962d665fe673b7cd090382165dcec03ec145ba54cc9c4e43df8875';
         let adminAuthed = false;
 
         async function hashCode(str) {
@@ -10500,7 +10753,7 @@
             document.getElementById('cheat-message').className = '';
             document.getElementById('admin-code-phase').style.display = adminAuthed ? 'none' : 'flex';
             const panel = document.getElementById('admin-panel-phase');
-            if (adminAuthed) { panel.classList.add('active'); }
+            if (adminAuthed) { panel.classList.add('active'); renderAdminEvents(); if (!adminEventTimer) adminEventTimer = setInterval(renderAdminEvents, 1000); }
             else { panel.classList.remove('active'); }
             document.getElementById('admin-current-coins-val').textContent = playerData.coins;
             document.getElementById('cheat-modal').classList.remove('hidden');
@@ -10508,6 +10761,7 @@
 
         function closeCheatModal() {
             document.getElementById('cheat-modal').classList.add('hidden');
+            if (adminEventTimer) { clearInterval(adminEventTimer); adminEventTimer = null; }
         }
 
         function updateAdminCounter() {
@@ -10532,6 +10786,8 @@
                 document.getElementById('admin-code-phase').style.display = 'none';
                 document.getElementById('admin-panel-phase').classList.add('active');
                 document.getElementById('admin-current-coins-val').textContent = playerData.coins;
+                renderAdminEvents();
+                if (!adminEventTimer) adminEventTimer = setInterval(renderAdminEvents, 1000);
                 messageEl.textContent = 'ACCESS GRANTED';
                 messageEl.className = 'success';
             } else {
@@ -10540,6 +10796,82 @@
                 input.value = '';
                 document.getElementById('admin-code-count').textContent = '0';
             }
+        }
+
+        // ========== ADMIN EVENT SYSTEM ==========
+        const ADMIN_EVENTS = [
+            { id: 'doubleCoins',  label: '2× COINS' },
+            { id: 'doubleScore',  label: '2× SCORE' },
+            { id: 'forgiveness',  label: 'FORGIVENESS' },
+            { id: 'slowMode',     label: 'SLOW MODE' }
+        ];
+        const EVENT_DURATION_MS = 60 * 60 * 1000;
+        let adminEventTimer = null;
+
+        function eventActive(name) {
+            const until = playerData.activeEvents && playerData.activeEvents[name];
+            return until ? Date.now() < until : false;
+        }
+
+        function adminStartEvent(name) {
+            if (!playerData.activeEvents) playerData.activeEvents = {};
+            playerData.activeEvents[name] = Date.now() + EVENT_DURATION_MS;
+            savePlayerData();
+            renderAdminEvents();
+        }
+
+        function adminStopEvent(name) {
+            if (!playerData.activeEvents) return;
+            playerData.activeEvents[name] = 0;
+            savePlayerData();
+            renderAdminEvents();
+        }
+
+        function formatRemaining(ms) {
+            if (ms <= 0) return '';
+            const totalSec = Math.floor(ms / 1000);
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = totalSec % 60;
+            return (h > 0 ? h + 'h ' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+        }
+
+        function renderAdminEvents() {
+            const grid = document.getElementById('admin-events-grid');
+            if (!grid) return;
+            const now = Date.now();
+            grid.innerHTML = '';
+            ADMIN_EVENTS.forEach(evt => {
+                const until = (playerData.activeEvents && playerData.activeEvents[evt.id]) || 0;
+                const remaining = until - now;
+                const isActive = remaining > 0;
+                const card = document.createElement('div');
+                card.className = 'admin-event-card' + (isActive ? ' active' : '');
+                const name = document.createElement('div');
+                name.className = 'admin-event-name';
+                name.textContent = evt.label;
+                const status = document.createElement('div');
+                status.className = 'admin-event-status' + (isActive ? ' active' : '');
+                status.textContent = isActive ? ('Active · ' + formatRemaining(remaining)) : 'Inactive';
+                const btn = document.createElement('button');
+                btn.className = 'admin-event-btn' + (isActive ? ' stop' : '');
+                btn.textContent = isActive ? 'STOP' : 'START 1H';
+                btn.onclick = () => isActive ? adminStopEvent(evt.id) : adminStartEvent(evt.id);
+                card.appendChild(name);
+                card.appendChild(status);
+                card.appendChild(btn);
+                grid.appendChild(card);
+            });
+        }
+
+        function switchAdminTab(tab) {
+            document.querySelectorAll('.admin-tab-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.tab === tab);
+            });
+            document.querySelectorAll('.admin-tab-content').forEach(c => {
+                c.classList.toggle('active', c.id === 'admin-tab-' + tab);
+            });
+            if (tab === 'events') renderAdminEvents();
         }
 
         function adminGrantCoins() {
