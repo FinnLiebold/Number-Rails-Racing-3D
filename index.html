@@ -2406,6 +2406,106 @@
             100% { transform: translateX(-50%) scale(1.1); }
         }
 
+        /* In-run Power-up Bar */
+        #powerup-bar {
+            position: fixed;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 160;
+        }
+        #powerup-bar.hidden { display: none; }
+        .powerup-btn {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.78);
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .powerup-btn .powerup-icon {
+            font-size: 18px;
+            line-height: 1;
+            filter: grayscale(0.6) brightness(0.7);
+            transition: filter 0.2s;
+        }
+        .powerup-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+        }
+        .powerup-btn.has-charges {
+            border-color: #fbbf24;
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+            animation: powerupGlow 1.6s ease-in-out infinite;
+        }
+        .powerup-btn.has-charges .powerup-icon { filter: none; }
+        .powerup-btn.has-charges:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 0 22px rgba(251, 191, 36, 0.75);
+        }
+        .powerup-btn.active-effect {
+            border-color: #34d399;
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.7);
+        }
+        @keyframes powerupGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(251, 191, 36, 0.45); }
+            50% { box-shadow: 0 0 22px rgba(251, 191, 36, 0.8); }
+        }
+        .powerup-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            min-width: 16px;
+            height: 16px;
+            padding: 0 4px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+            box-sizing: border-box;
+        }
+        .powerup-badge.zero { display: none; }
+        .powerup-key { display: none; }
+        .powerup-toast {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 22px;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.95), rgba(245, 158, 11, 0.95));
+            color: #1a1a1a;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.5);
+            z-index: 500;
+            pointer-events: none;
+            animation: powerupToast 1.6s ease-out forwards;
+        }
+        @keyframes powerupToast {
+            0% { opacity: 0; transform: translate(-50%, 12px) scale(0.85); }
+            15% { opacity: 1; transform: translate(-50%, 0) scale(1.05); }
+            85% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -16px) scale(0.95); }
+        }
+
         /* ========== OVERLAYS ========== */
         .overlay {
             position: absolute;
@@ -4100,6 +4200,118 @@
             border-color: #555;
         }
 
+        /* Gift Button (top-right, left of ADMIN) */
+        #gift-btn {
+            position: absolute;
+            top: 12px;
+            right: 115px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ec4899, #d946ef);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 210;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(217, 70, 239, 0.4);
+            animation: gift-pulse 2.4s ease-in-out infinite;
+        }
+        #gift-btn:hover {
+            transform: scale(1.1) rotate(-8deg);
+            box-shadow: 0 6px 20px rgba(217, 70, 239, 0.6);
+        }
+        @keyframes gift-pulse {
+            0%, 100% { box-shadow: 0 4px 14px rgba(217, 70, 239, 0.4); }
+            50% { box-shadow: 0 4px 22px rgba(217, 70, 239, 0.7); }
+        }
+
+        /* Gift Modal */
+        #gift-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(30, 10, 40, 0.98), rgba(50, 15, 60, 0.98));
+            border: 2px solid #ec4899;
+            border-radius: 16px;
+            padding: 30px 40px;
+            box-shadow: 0 0 60px rgba(236, 72, 153, 0.4);
+            z-index: 1000;
+            min-width: 340px;
+            max-width: 90vw;
+            text-align: center;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        #gift-modal.hidden { display: none; }
+        #gift-modal h2 {
+            color: #f9a8d4;
+            margin: 0 0 4px;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        .gift-subtitle {
+            color: rgba(249, 168, 212, 0.7);
+            font-size: 12px;
+            margin: 0 0 18px;
+            letter-spacing: 0.5px;
+        }
+        #gift-code-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            border-radius: 8px;
+            color: #f9a8d4;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-align: center;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        #gift-code-input:focus { border-color: #ec4899; box-shadow: 0 0 12px rgba(236, 72, 153, 0.3); }
+        #gift-code-input::placeholder { color: rgba(249, 168, 212, 0.3); letter-spacing: 2px; }
+        .gift-redeem-btn {
+            margin-top: 12px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ec4899, #d946ef);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .gift-redeem-btn:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5); }
+        .gift-progress {
+            margin-top: 14px;
+            font-size: 12px;
+            color: rgba(249, 168, 212, 0.8);
+            letter-spacing: 1px;
+        }
+        #gift-message {
+            font-size: 14px;
+            margin-top: 10px;
+            min-height: 22px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        #gift-message.success { color: #34d399; }
+        #gift-message.error { color: #f87171; }
+        #gift-message.info { color: #fbbf24; }
+
         /* Admin Panel Modal */
         #cheat-modal {
             position: fixed;
@@ -4618,6 +4830,300 @@
             background: linear-gradient(135deg, #f39c12, #e67e22);
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(230, 126, 34, 0.5);
+        }
+
+        /* Tutorial Tour */
+        #tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            pointer-events: none;
+        }
+        #tutorial-overlay.hidden { display: none; }
+        #tutorial-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            pointer-events: auto;
+        }
+        .tutorial-spotlight {
+            position: relative;
+            z-index: 9100 !important;
+            box-shadow: 0 0 0 4px #fbbf24, 0 0 0 9999px rgba(0, 0, 0, 0.55);
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease;
+        }
+        #tutorial-tooltip {
+            position: fixed;
+            z-index: 9200;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
+            border: 2px solid #fbbf24;
+            border-radius: 14px;
+            padding: 20px 24px;
+            width: 320px;
+            max-width: calc(100vw - 32px);
+            color: #fff;
+            font-family: 'Inter', 'Orbitron', sans-serif;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(251, 191, 36, 0.2);
+            pointer-events: auto;
+            transition: top 0.3s ease, left 0.3s ease, transform 0.3s ease;
+        }
+        #tutorial-step-indicator {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #fbbf24;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        #tutorial-tooltip h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            margin: 0 0 8px;
+            color: #fde68a;
+        }
+        #tutorial-tooltip p {
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0 0 14px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .tutorial-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .tutorial-skip, .tutorial-next {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+        .tutorial-skip {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .tutorial-skip:hover { color: rgba(255, 255, 255, 0.85); border-color: rgba(255, 255, 255, 0.4); }
+        .tutorial-next {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a1a;
+            margin-left: auto;
+        }
+        .tutorial-next:hover { transform: scale(1.04); box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4); }
+        .tutorial-replay-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(251, 191, 36, 0.12);
+            color: #fde68a;
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tutorial-replay-btn:hover {
+            background: rgba(251, 191, 36, 0.22);
+            border-color: #fbbf24;
+        }
+
+        /* Mystery Box Button (start menu) */
+        .mystery-btn {
+            margin-top: 8px;
+            margin-left: 10px;
+            padding: 12px 25px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: white;
+            border: 3px solid #5b21b6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .mystery-btn:hover {
+            background: linear-gradient(135deg, #8b5cf6, #c084fc);
+            transform: scale(1.05);
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+        }
+
+        /* Mystery Box Modal */
+        #mystery-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(24, 12, 42, 0.98), rgba(45, 20, 68, 0.98));
+            border: 2px solid #a855f7;
+            border-radius: 16px;
+            padding: 26px 32px;
+            box-shadow: 0 0 60px rgba(168, 85, 247, 0.4);
+            z-index: 1000;
+            min-width: 360px;
+            max-width: 90vw;
+            text-align: center;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        #mystery-modal.hidden { display: none; }
+        #mystery-modal h2 {
+            color: #d8b4fe;
+            margin: 0 0 4px;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        .mystery-subtitle {
+            color: rgba(216, 180, 254, 0.7);
+            font-size: 12px;
+            margin: 0 0 16px;
+            letter-spacing: 0.5px;
+        }
+        .mystery-stage {
+            position: relative;
+            height: 140px;
+            margin: 10px auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mystery-box-visual {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            transition: opacity 0.3s ease;
+        }
+        .mystery-box-body {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #6d28d9, #a855f7);
+            border: 3px solid #fbbf24;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #fbbf24;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+        }
+        .mystery-box-lid {
+            position: absolute;
+            top: -10px;
+            left: -4px;
+            right: -4px;
+            height: 18px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border: 3px solid #d97706;
+            border-radius: 6px;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+            transform-origin: bottom left;
+            transition: transform 0.4s ease;
+        }
+        .mystery-box-visual.shaking { animation: mysteryShake 0.5s ease-in-out 3; }
+        .mystery-box-visual.opening .mystery-box-lid { transform: rotate(-110deg) translate(-4px, -2px); }
+        .mystery-box-visual.opening .mystery-box-body { animation: mysteryFlash 0.5s ease-out forwards; }
+        @keyframes mysteryShake {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            25% { transform: translate(-4px, 2px) rotate(-3deg); }
+            75% { transform: translate(4px, -2px) rotate(3deg); }
+        }
+        @keyframes mysteryFlash {
+            0% { box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5); }
+            50% { box-shadow: 0 0 80px rgba(255, 255, 255, 1), 0 0 40px #fbbf24; }
+            100% { opacity: 0; transform: scale(1.4); }
+        }
+
+        .mystery-reveal {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            animation: mysteryRevealIn 0.5s ease-out;
+        }
+        .mystery-reveal.hidden { display: none; }
+        @keyframes mysteryRevealIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            60% { transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .mystery-reveal-icon { font-size: 56px; }
+        .mystery-reveal-rarity {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+        .mystery-reveal-rarity.small { background: rgba(148, 163, 184, 0.25); color: #cbd5e1; }
+        .mystery-reveal-rarity.medium { background: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+        .mystery-reveal-rarity.legendary {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a0a30;
+            animation: mysteryLegendaryPulse 1s ease-in-out infinite;
+        }
+        @keyframes mysteryLegendaryPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(251, 191, 36, 0.5); }
+            50% { box-shadow: 0 0 22px rgba(251, 191, 36, 1); }
+        }
+        .mystery-reveal-text { font-size: 16px; font-weight: 700; color: #fde68a; }
+
+        .mystery-odds {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 6px 0 14px;
+            flex-wrap: wrap;
+        }
+        .odds-tag {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+        }
+        .odds-tag.small { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+        .odds-tag.medium { background: rgba(59, 130, 246, 0.25); color: #93c5fd; }
+        .odds-tag.legendary { background: rgba(251, 191, 36, 0.25); color: #fde68a; }
+
+        .mystery-open-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #a855f7, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .mystery-open-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.55);
+        }
+        .mystery-open-btn:disabled {
+            background: rgba(80, 60, 100, 0.5);
+            color: rgba(255, 255, 255, 0.4);
+            cursor: not-allowed;
+        }
+        .mystery-stats {
+            margin-top: 12px;
+            font-size: 11px;
+            color: rgba(216, 180, 254, 0.7);
+            letter-spacing: 0.5px;
         }
 
         /* Stats Box (under Garage on start menu) */
@@ -7669,6 +8175,11 @@
                 <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">🇪🇸 Español</button>
             </div>
         </div>
+
+        <div class="settings-section">
+            <div class="settings-section-title">Tutorial</div>
+            <button class="tutorial-replay-btn" onclick="replayTutorial()">▶ Replay Tutorial</button>
+        </div>
     </div>
 
     <!-- Music controls -->
@@ -7817,6 +8328,25 @@
         <!-- Back to menu button -->
         <button id="back-to-menu-btn" onclick="backToMenu()" title="Back to Menu">✕</button>
 
+        <!-- Power-up bar (in-game) -->
+        <div id="powerup-bar" class="hidden">
+            <button class="powerup-btn" id="powerup-skip-btn" onclick="usePowerup('skip')" title="Skip Question (1)">
+                <span class="powerup-icon">⏭️</span>
+                <span class="powerup-badge zero" id="powerup-skip-count">0</span>
+                <span class="powerup-key">1</span>
+            </button>
+            <button class="powerup-btn" id="powerup-slow-btn" onclick="usePowerup('slow')" title="Slow Time 5s (2)">
+                <span class="powerup-icon">⏰</span>
+                <span class="powerup-badge zero" id="powerup-slow-count">0</span>
+                <span class="powerup-key">2</span>
+            </button>
+            <button class="powerup-btn" id="powerup-coin-btn" onclick="usePowerup('coin')" title="+2 Coins on Next Correct (3)">
+                <span class="powerup-icon">💎</span>
+                <span class="powerup-badge zero" id="powerup-coin-count">0</span>
+                <span class="powerup-key">3</span>
+            </button>
+        </div>
+
         <!-- HUD -->
         <div id="hud">
             <div class="hud-item" id="score-display">Score: 0</div>
@@ -7939,6 +8469,7 @@
         <!-- Start overlay -->
         <div class="overlay" id="start-overlay">
             <button id="cheat-btn" onclick="openCheatModal()">ADMIN</button>
+            <button id="gift-btn" onclick="openGiftModal()" title="Redeem gift code">🎁</button>
 
             <div id="info-panel">
                 <h3>ABOUT THIS GAME</h3>
@@ -8065,6 +8596,7 @@
             <button class="shop-btn menu-selectable" onclick="openShop()" id="start-shop-btn">Car Shop</button>
             <button class="badges-btn menu-selectable" onclick="openBadges()" id="start-badges-btn">Badges</button>
             <button class="garage-btn menu-selectable" onclick="openGarage()" id="start-garage-btn">Car Garage</button>
+            <button class="mystery-btn menu-selectable" onclick="openMysteryModal()" id="start-mystery-btn">❓ Mystery Box</button>
 
             <div class="stats-box" id="start-stats-box">
                 <div class="stats-box-title" id="stats-box-title">Statistics</div>
@@ -8296,6 +8828,59 @@
 
             <div id="cheat-message"></div>
             <button class="back-btn" style="margin-top: 15px;" onclick="closeCheatModal()">Close</button>
+        </div>
+
+        <!-- Gift Code Modal -->
+        <div id="gift-modal" class="hidden">
+            <h2>🎁 GIFT CODES</h2>
+            <p class="gift-subtitle">Enter a gift code to claim 5,000 coins</p>
+            <input type="text" id="gift-code-input" placeholder="XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" maxlength="20" onkeydown="if(event.key==='Enter'){event.preventDefault();redeemGiftCode();}">
+            <button class="gift-redeem-btn" onclick="redeemGiftCode()">REDEEM</button>
+            <div class="gift-progress">Redeemed: <span id="gift-redeemed-count">0</span> / 5</div>
+            <div id="gift-message"></div>
+            <button class="back-btn" style="margin-top: 15px;" onclick="closeGiftModal()">Close</button>
+        </div>
+
+        <!-- Mystery Box Modal -->
+        <div id="mystery-modal" class="hidden">
+            <h2>❓ MYSTERY BOX</h2>
+            <p class="mystery-subtitle">Open the box to win coins or a legendary skin!</p>
+
+            <div class="mystery-stage">
+                <div class="mystery-box-visual" id="mystery-box-visual">
+                    <div class="mystery-box-lid"></div>
+                    <div class="mystery-box-body">?</div>
+                </div>
+                <div class="mystery-reveal hidden" id="mystery-reveal">
+                    <div class="mystery-reveal-icon" id="mystery-reveal-icon">🪙</div>
+                    <div class="mystery-reveal-rarity" id="mystery-reveal-rarity">SMALL</div>
+                    <div class="mystery-reveal-text" id="mystery-reveal-text">+100 coins</div>
+                </div>
+            </div>
+
+            <div class="mystery-odds">
+                <span class="odds-tag small">80% Small</span>
+                <span class="odds-tag medium">19% Medium</span>
+                <span class="odds-tag legendary">1% Legendary</span>
+            </div>
+
+            <button class="mystery-open-btn" id="mystery-open-btn" onclick="rollMysteryBox()">OPEN BOX · 200 🪙</button>
+            <div class="mystery-stats">Boxes opened: <span id="mystery-opens-count">0</span> · Coins: <span id="mystery-coins-val">0</span></div>
+            <button class="back-btn" style="margin-top: 15px;" onclick="closeMysteryModal()">Close</button>
+        </div>
+
+        <!-- Tutorial Tour -->
+        <div id="tutorial-overlay" class="hidden">
+            <div id="tutorial-backdrop"></div>
+            <div id="tutorial-tooltip">
+                <div id="tutorial-step-indicator">1 / 4</div>
+                <h3 id="tutorial-title">Welcome!</h3>
+                <p id="tutorial-body"></p>
+                <div class="tutorial-buttons">
+                    <button class="tutorial-skip" onclick="skipTutorial()">Skip</button>
+                    <button class="tutorial-next" id="tutorial-next-btn" onclick="advanceTutorial()">Next ▶</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -8605,13 +9190,13 @@
             { id: 'mclaren', name: 'McLaren P1', price: 180, class: 'skin-mclaren', owned: false, cat: 'catSport' },
             { id: 'f1', name: 'Formula 1', price: 200, class: 'skin-f1', owned: false, cat: 'catSport' },
             // LUXURY
-            { id: 'tesla', name: 'Tesla Model S', price: 150, class: 'skin-tesla', owned: false, cat: 'catLuxury' },
-            { id: 'lambo', name: 'Lamborghini', price: 175, class: 'skin-lambo', owned: false, cat: 'catLuxury' },
-            { id: 'bugatti', name: 'Bugatti Chiron', price: 200, class: 'skin-bugatti', owned: false, cat: 'catLuxury' },
-            { id: 'limo', name: 'Limousine', price: 225, class: 'skin-limo', owned: false, cat: 'catLuxury' },
-            { id: 'golden', name: 'Golden Luxury', price: 250, class: 'skin-golden', owned: false, cat: 'catLuxury' },
+            { id: 'tesla', name: 'Tesla Model S', price: 1000, class: 'skin-tesla', owned: false, cat: 'catLuxury' },
+            { id: 'lambo', name: 'Lamborghini', price: 1200, class: 'skin-lambo', owned: false, cat: 'catLuxury' },
+            { id: 'bugatti', name: 'Bugatti Chiron', price: 1500, class: 'skin-bugatti', owned: false, cat: 'catLuxury' },
+            { id: 'limo', name: 'Limousine', price: 1800, class: 'skin-limo', owned: false, cat: 'catLuxury' },
+            { id: 'golden', name: 'Golden Luxury', price: 2200, class: 'skin-golden', owned: false, cat: 'catLuxury' },
             { id: 'royal', name: 'Royal', price: 100000, class: 'skin-royal', owned: false, cat: 'catLuxury' },
-            { id: 'diamond', name: 'Diamond Elite', price: 500, class: 'skin-diamond', owned: false, cat: 'catLuxury' },
+            { id: 'diamond', name: 'Diamond Elite', price: 2500, class: 'skin-diamond', owned: false, cat: 'catLuxury' },
             // SPECIAL
             { id: 'police', name: 'Police Car', price: 60, class: 'skin-police', owned: false, cat: 'catSpecial' },
             { id: 'ambulance', name: 'Ambulance', price: 80, class: 'skin-ambulance', owned: false, cat: 'catSpecial' },
@@ -8621,15 +9206,15 @@
             { id: 'monster', name: 'Monster Truck', price: 150, class: 'skin-monster', owned: false, cat: 'catSpecial' },
             { id: 'icecream', name: 'Ice Cream Truck', price: 110, class: 'skin-icecream', owned: false, cat: 'catSpecial' },
             // LEGENDARY
-            { id: 'neon', name: 'Neon Rider', price: 200, class: 'skin-neon', owned: false, cat: 'catLegendary' },
-            { id: 'flame', name: 'Flame Runner', price: 250, class: 'skin-flame', owned: false, cat: 'catLegendary' },
-            { id: 'stealth', name: 'Stealth', price: 300, class: 'skin-stealth', owned: false, cat: 'catLegendary' },
-            { id: 'ice', name: 'Ice Racer', price: 350, class: 'skin-ice', owned: false, cat: 'catLegendary' },
-            { id: 'galaxy', name: 'Galaxy Cruiser', price: 400, class: 'skin-galaxy', owned: false, cat: 'catLegendary' },
-            { id: 'cyber', name: 'Cybertruck', price: 420, class: 'skin-cyber', owned: false, cat: 'catLegendary' },
-            { id: 'rainbow', name: 'Rainbow Racer', price: 450, class: 'skin-rainbow', owned: false, cat: 'catLegendary' },
-            { id: 'batmobile', name: 'Dark Knight', price: 475, class: 'skin-batmobile', owned: false, cat: 'catLegendary' },
-            { id: 'ufo', name: 'UFO Cruiser', price: 500, class: 'skin-ufo', owned: false, cat: 'catLegendary' },
+            { id: 'neon', name: 'Neon Rider', price: 3000, class: 'skin-neon', owned: false, cat: 'catLegendary' },
+            { id: 'flame', name: 'Flame Runner', price: 3300, class: 'skin-flame', owned: false, cat: 'catLegendary' },
+            { id: 'stealth', name: 'Stealth', price: 3500, class: 'skin-stealth', owned: false, cat: 'catLegendary' },
+            { id: 'ice', name: 'Ice Racer', price: 3700, class: 'skin-ice', owned: false, cat: 'catLegendary' },
+            { id: 'galaxy', name: 'Galaxy Cruiser', price: 4000, class: 'skin-galaxy', owned: false, cat: 'catLegendary' },
+            { id: 'cyber', name: 'Cybertruck', price: 4200, class: 'skin-cyber', owned: false, cat: 'catLegendary' },
+            { id: 'rainbow', name: 'Rainbow Racer', price: 4500, class: 'skin-rainbow', owned: false, cat: 'catLegendary' },
+            { id: 'batmobile', name: 'Dark Knight', price: 4800, class: 'skin-batmobile', owned: false, cat: 'catLegendary' },
+            { id: 'ufo', name: 'UFO Cruiser', price: 5000, class: 'skin-ufo', owned: false, cat: 'catLegendary' },
             // SEASONAL
             { id: 'easter', name: 'Easter Bunny', price: 0, class: 'skin-easter', owned: true, cat: 'catSpecial' },
         ];
@@ -8827,7 +9412,10 @@
                 longestDrive: 0
             },
             unlockedBadges: [],
-            activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0 }
+            activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0 },
+            redeemedGifts: [],
+            mysteryBoxOpens: 0,
+            tutorialDone: false
         };
 
         // ========== PROFILE SYSTEM ==========
@@ -8927,7 +9515,10 @@
                     stats: { ...playerData.stats, ...(saved.stats || {}) },
                     unlockedBadges: saved.unlockedBadges || [],
                     carUpgrades: saved.carUpgrades || {},
-                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0, ...(saved.activeEvents || {}) }
+                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0, ...(saved.activeEvents || {}) },
+                    redeemedGifts: saved.redeemedGifts || [],
+                    mysteryBoxOpens: saved.mysteryBoxOpens || 0,
+                    tutorialDone: saved.tutorialDone === true
                 };
             } else {
                 // Fresh profile
@@ -8938,7 +9529,10 @@
                     stats: { gamesPlayed: 0, highScore: 0, totalCoinsEarned: 0, carsOwned: 2, totalCorrect: 0, totalWrong: 0, maxSpeed: 1.0, longestDrive: 0 },
                     unlockedBadges: [],
                     carUpgrades: {},
-                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0 }
+                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0 },
+                    redeemedGifts: [],
+                    mysteryBoxOpens: 0,
+                    tutorialDone: false
                 };
             }
 
@@ -8957,6 +9551,7 @@
 
             document.getElementById('profile-overlay').classList.add('hidden');
             elements.startOverlay.classList.remove('hidden');
+            maybeStartTutorial();
         }
 
         // ========== SPACED REPETITION (SM-2 based) ==========
@@ -9047,7 +9642,10 @@
                     ...loaded,
                     stats: { ...playerData.stats, ...(loaded.stats || {}) },
                     unlockedBadges: loaded.unlockedBadges || [],
-                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0, ...(loaded.activeEvents || {}) }
+                    activeEvents: { doubleCoins: 0, doubleScore: 0, forgiveness: 0, slowMode: 0, ...(loaded.activeEvents || {}) },
+                    redeemedGifts: loaded.redeemedGifts || [],
+                    mysteryBoxOpens: loaded.mysteryBoxOpens || 0,
+                    tutorialDone: loaded.tutorialDone === true
                 };
                 // Ensure free cars are always owned
                 let addedFree = false;
@@ -9727,7 +10325,11 @@
                 driveTime: 0,
                 driveStartTime: Date.now(),
                 timeLimit: selectedTimeLimit,
-                timeRemaining: selectedTimeLimit
+                timeRemaining: selectedTimeLimit,
+                powerups: { skip: 0, slow: 0, coin: 0 },
+                coinBoostActive: false,
+                slowEndTime: 0,
+                preSlowSpeed: null
             };
 
             const modeLabels = {
@@ -9744,6 +10346,7 @@
             elements.startOverlay.classList.add('hidden');
             elements.gameOverOverlay.classList.add('hidden');
             elements.shopOverlay.classList.add('hidden');
+            showPowerupBar();
             document.getElementById('victory-overlay').classList.add('hidden');
 
             // Time limit HUD
@@ -9985,8 +10588,20 @@
                 return;
             }
 
+            // Power-up: slow time expiry
+            if (gameState.slowEndTime > 0 && now >= gameState.slowEndTime) {
+                gameState.speed = gameState.speed * 2;
+                gameState.slowEndTime = 0;
+                gameState.preSlowSpeed = null;
+                updateSpeed();
+                updateRoadSpeed();
+                updateSpeedLines();
+                updatePowerupUI();
+            }
+
+            const powerupSlowActive = gameState.slowEndTime > 0 && now < gameState.slowEndTime;
             if (now - gameState.lastSpeedIncrease >= gameState.speedIncreaseInterval) {
-                if (!eventActive('slowMode')) {
+                if (!eventActive('slowMode') && !powerupSlowActive) {
                     gameState.speed += 0.1;
                     updateSpeed();
                     updateRoadSpeed();
@@ -10074,6 +10689,9 @@
                     if (currentStreak >= 7) streakEl.classList.add('fire');
                     else streakEl.classList.remove('fire');
                 }
+                if (currentStreak > 0 && currentStreak % POWERUP_STREAK_INTERVAL === 0) {
+                    awardPowerup();
+                }
             } else {
                 currentStreak = 0;
                 streakEl.classList.remove('visible', 'fire');
@@ -10113,6 +10731,7 @@
                 document.getElementById('game-time-remaining').classList.remove('active');
                 stopWeather();
             }
+            hidePowerupBar();
             // Also exit multiplayer if active
             document.getElementById('game-container').classList.remove('mp-active');
             document.getElementById('mp-gameover').classList.remove('active');
@@ -10144,8 +10763,13 @@
                 // Base coin + upgrade bonus for current car
                 const baseCoins = 1;
                 const bonus = getCarBonus(playerData.selectedSkin);
+                const coinBoost = gameState.coinBoostActive ? POWERUP_COIN_BONUS : 0;
                 const coinMult = eventActive('doubleCoins') ? 2 : 1;
-                const totalCoins = (baseCoins + bonus) * coinMult;
+                const totalCoins = (baseCoins + bonus + coinBoost) * coinMult;
+                if (gameState.coinBoostActive) {
+                    gameState.coinBoostActive = false;
+                    updatePowerupUI();
+                }
                 gameState.coinsEarned += totalCoins;
                 playerData.coins += totalCoins;
                 savePlayerData();
@@ -10194,6 +10818,7 @@
             document.getElementById('speed-lines').innerHTML = '';
             document.getElementById('game-time-remaining').classList.remove('active');
             stopWeather();
+            hidePowerupBar();
 
             // Update longest drive stat for achievements
             if (gameState.driveTime > playerData.stats.longestDrive) {
@@ -10798,6 +11423,364 @@
             }
         }
 
+        // ========== GIFT CODE SYSTEM ==========
+        const GIFT_CODES = [
+            { id: 'gift1', hash: '6e535686efae7685f8593a7e029a162a248f2c3be3a92cfedf48c76aede55e6f' },
+            { id: 'gift2', hash: 'c329093a1db17cfd43f82f53a48b34d362232061f912abd43209f80aa371b2c3' },
+            { id: 'gift3', hash: 'ea125eceb0843a69907e0f9cf3a9f7148b2946df8e09eb944924574535ffd50f' },
+            { id: 'gift4', hash: 'b355479567b0dbf6cb81896e7bc9a2def9c97f13cec1801f29df7bf56e71ab42' },
+            { id: 'gift5', hash: '3cdd55f3b14ba3dacbabf91f49168dd77aefd96910574cb297c61f7905380bd1' }
+        ];
+        const GIFT_REWARD = 5000;
+
+        function openGiftModal() {
+            document.getElementById('gift-code-input').value = '';
+            const msg = document.getElementById('gift-message');
+            msg.textContent = '';
+            msg.className = '';
+            updateGiftProgress();
+            document.getElementById('gift-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('gift-code-input').focus(), 50);
+        }
+
+        function closeGiftModal() {
+            document.getElementById('gift-modal').classList.add('hidden');
+        }
+
+        function updateGiftProgress() {
+            const used = (playerData.redeemedGifts || []).length;
+            document.getElementById('gift-redeemed-count').textContent = used;
+        }
+
+        async function redeemGiftCode() {
+            const input = document.getElementById('gift-code-input');
+            const msg = document.getElementById('gift-message');
+            const raw = input.value.trim().toUpperCase().replace(/\s+/g, '');
+
+            if (!raw) {
+                msg.textContent = 'Enter a code first';
+                msg.className = 'error';
+                return;
+            }
+
+            const codeHash = await hashCode(raw);
+            const match = GIFT_CODES.find(g => g.hash === codeHash);
+
+            if (!match) {
+                msg.textContent = 'INVALID CODE';
+                msg.className = 'error';
+                return;
+            }
+
+            if (!playerData.redeemedGifts) playerData.redeemedGifts = [];
+            if (playerData.redeemedGifts.includes(match.id)) {
+                msg.textContent = 'Already redeemed';
+                msg.className = 'info';
+                return;
+            }
+
+            playerData.redeemedGifts.push(match.id);
+            playerData.coins += GIFT_REWARD;
+            savePlayerData();
+            updateAllCoinsDisplays();
+            updateGiftProgress();
+            input.value = '';
+            msg.textContent = '+' + GIFT_REWARD.toLocaleString() + ' COINS!';
+            msg.className = 'success';
+        }
+
+        // ========== IN-RUN POWER-UPS ==========
+        const POWERUP_TYPES = ['skip', 'slow', 'coin'];
+        const POWERUP_LABELS = { skip: '⏭️ +1 Skip', slow: '⏰ +1 Slow Time', coin: '💎 +1 Coin Boost' };
+        const POWERUP_SLOW_DURATION_MS = 5000;
+        const POWERUP_COIN_BONUS = 2;
+        const POWERUP_STREAK_INTERVAL = 10;
+
+        function showPowerupBar() {
+            document.getElementById('powerup-bar').classList.remove('hidden');
+            updatePowerupUI();
+        }
+
+        function hidePowerupBar() {
+            document.getElementById('powerup-bar').classList.add('hidden');
+        }
+
+        function updatePowerupUI() {
+            if (!gameState || !gameState.powerups) return;
+            POWERUP_TYPES.forEach(type => {
+                const count = gameState.powerups[type] || 0;
+                const btn = document.getElementById('powerup-' + type + '-btn');
+                const badge = document.getElementById('powerup-' + type + '-count');
+                if (!btn || !badge) return;
+                badge.textContent = count;
+                badge.classList.toggle('zero', count === 0);
+                btn.disabled = count === 0;
+                btn.classList.toggle('has-charges', count > 0);
+            });
+            // Slow active visual on slow button
+            const slowBtn = document.getElementById('powerup-slow-btn');
+            if (slowBtn) slowBtn.classList.toggle('active-effect',
+                gameState.slowEndTime > 0 && Date.now() < gameState.slowEndTime);
+            // Coin boost visual on coin button
+            const coinBtn = document.getElementById('powerup-coin-btn');
+            if (coinBtn) coinBtn.classList.toggle('active-effect', !!gameState.coinBoostActive);
+        }
+
+        function awardPowerup() {
+            if (!gameState || !gameState.running || !gameState.powerups) return;
+            const type = POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
+            gameState.powerups[type]++;
+            showPowerupToast(POWERUP_LABELS[type]);
+            updatePowerupUI();
+        }
+
+        function showPowerupToast(text) {
+            const t = document.createElement('div');
+            t.className = 'powerup-toast';
+            t.textContent = text;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 1700);
+        }
+
+        function usePowerup(type) {
+            if (!gameState || !gameState.running) return;
+            if (!gameState.powerups || !gameState.powerups[type]) return;
+            gameState.powerups[type]--;
+            if (type === 'skip') {
+                generateNewRound();
+            } else if (type === 'slow') {
+                if (gameState.slowEndTime === 0) {
+                    gameState.preSlowSpeed = gameState.speed;
+                    gameState.speed = gameState.speed * 0.5;
+                    if (typeof updateSpeed === 'function') updateSpeed();
+                    if (typeof updateRoadSpeed === 'function') updateRoadSpeed();
+                    if (typeof updateSpeedLines === 'function') updateSpeedLines();
+                }
+                gameState.slowEndTime = Date.now() + POWERUP_SLOW_DURATION_MS;
+            } else if (type === 'coin') {
+                gameState.coinBoostActive = true;
+            }
+            updatePowerupUI();
+        }
+
+        // ========== TUTORIAL TOUR ==========
+        const TUTORIAL_STEPS = [
+            { target: '#mode-selector',     title: 'Welcome!',          body: 'Pick a game mode here. Each mode practices something different — vocabulary, multiplication, or numbers between languages.' },
+            { target: '#start-btn-main',    title: 'Start a Game',      body: 'Press SPACE on the keyboard, or click here to start. During a game, use ◀ ▲ ▶ to switch lanes and pick the correct answer.' },
+            { target: '#start-garage-btn',  title: 'Customize Your Car', body: 'Earn coins from every correct answer. Spend them in the Car Garage to unlock and upgrade cars.' },
+            { target: '#start-mystery-btn', title: 'Mystery Boxes',     body: 'Try your luck for a chance at a legendary skin — 200 coins per roll.' },
+            { target: '#start-stats-box',   title: 'Track Your Progress', body: 'Your stats appear here: games played, accuracy, mistakes, and high score. Good luck!' }
+        ];
+        let tutorialStep = 0;
+
+        function maybeStartTutorial() {
+            if (!playerData.tutorialDone) {
+                setTimeout(startTutorial, 500);
+            }
+        }
+
+        function startTutorial() {
+            tutorialStep = 0;
+            const overlay = document.getElementById('tutorial-overlay');
+            if (!overlay) return;
+            overlay.classList.remove('hidden');
+            showTutorialStep();
+            window.addEventListener('resize', positionTutorialTooltip);
+        }
+
+        function clearTutorialHighlights() {
+            document.querySelectorAll('.tutorial-spotlight').forEach(el => el.classList.remove('tutorial-spotlight'));
+        }
+
+        function showTutorialStep() {
+            clearTutorialHighlights();
+            const step = TUTORIAL_STEPS[tutorialStep];
+            const target = document.querySelector(step.target);
+            if (target) {
+                target.classList.add('tutorial-spotlight');
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            document.getElementById('tutorial-title').textContent = step.title;
+            document.getElementById('tutorial-body').textContent = step.body;
+            document.getElementById('tutorial-step-indicator').textContent = (tutorialStep + 1) + ' / ' + TUTORIAL_STEPS.length;
+            document.getElementById('tutorial-next-btn').textContent =
+                (tutorialStep === TUTORIAL_STEPS.length - 1) ? '✓ Finish' : 'Next ▶';
+            // wait one frame for scroll, then position
+            requestAnimationFrame(() => requestAnimationFrame(positionTutorialTooltip));
+        }
+
+        function positionTutorialTooltip() {
+            const step = TUTORIAL_STEPS[tutorialStep];
+            const target = document.querySelector(step.target);
+            const tooltip = document.getElementById('tutorial-tooltip');
+            if (!tooltip) return;
+            if (!target) {
+                tooltip.style.top = '50%';
+                tooltip.style.left = '50%';
+                tooltip.style.transform = 'translate(-50%, -50%)';
+                return;
+            }
+            const rect = target.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const margin = 16;
+            let top, left;
+
+            // Prefer below the target; if no room, put above
+            if (rect.bottom + tooltipRect.height + margin < window.innerHeight) {
+                top = rect.bottom + margin;
+            } else if (rect.top - tooltipRect.height - margin > 0) {
+                top = rect.top - tooltipRect.height - margin;
+            } else {
+                top = Math.max(margin, (window.innerHeight - tooltipRect.height) / 2);
+            }
+            left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+            left = Math.max(margin, Math.min(window.innerWidth - tooltipRect.width - margin, left));
+
+            tooltip.style.top = top + 'px';
+            tooltip.style.left = left + 'px';
+            tooltip.style.transform = 'none';
+        }
+
+        function advanceTutorial() {
+            tutorialStep++;
+            if (tutorialStep >= TUTORIAL_STEPS.length) {
+                endTutorial(true);
+            } else {
+                showTutorialStep();
+            }
+        }
+
+        function skipTutorial() {
+            endTutorial(false);
+        }
+
+        function endTutorial(completed) {
+            clearTutorialHighlights();
+            document.getElementById('tutorial-overlay').classList.add('hidden');
+            window.removeEventListener('resize', positionTutorialTooltip);
+            playerData.tutorialDone = true;
+            savePlayerData();
+        }
+
+        function replayTutorial() {
+            // Make sure the start menu is visible
+            if (typeof showMainMenu === 'function') showMainMenu();
+            startTutorial();
+        }
+
+        // ========== MYSTERY BOX SYSTEM ==========
+        const MYSTERY_BOX_COST = 200;
+        const MYSTERY_REWARD_SMALL = 100;
+        const MYSTERY_REWARD_MEDIUM = 800;
+        let mysteryRolling = false;
+
+        function openMysteryModal() {
+            const modal = document.getElementById('mystery-modal');
+            resetMysteryStage();
+            updateMysteryStats();
+            updateMysteryButton();
+            modal.classList.remove('hidden');
+        }
+
+        function closeMysteryModal() {
+            document.getElementById('mystery-modal').classList.add('hidden');
+        }
+
+        function resetMysteryStage() {
+            const box = document.getElementById('mystery-box-visual');
+            const reveal = document.getElementById('mystery-reveal');
+            box.classList.remove('shaking', 'opening');
+            box.style.opacity = '1';
+            reveal.classList.add('hidden');
+        }
+
+        function updateMysteryStats() {
+            document.getElementById('mystery-opens-count').textContent = playerData.mysteryBoxOpens || 0;
+            document.getElementById('mystery-coins-val').textContent = playerData.coins;
+        }
+
+        function updateMysteryButton() {
+            const btn = document.getElementById('mystery-open-btn');
+            if (mysteryRolling) { btn.disabled = true; btn.textContent = 'OPENING...'; return; }
+            const canAfford = playerData.coins >= MYSTERY_BOX_COST;
+            btn.disabled = !canAfford;
+            btn.textContent = canAfford ? ('OPEN BOX · ' + MYSTERY_BOX_COST + ' 🪙') : 'NOT ENOUGH COINS';
+        }
+
+        function rollRarity() {
+            const r = Math.random();
+            if (r < 0.01) return 'legendary';
+            if (r < 0.20) return 'medium';
+            return 'small';
+        }
+
+        function pickRandomLegendary() {
+            const candidates = skins.filter(s => s.cat === 'catLegendary');
+            if (candidates.length === 0) return null;
+            return candidates[Math.floor(Math.random() * candidates.length)];
+        }
+
+        async function rollMysteryBox() {
+            if (mysteryRolling) return;
+            if (playerData.coins < MYSTERY_BOX_COST) return;
+
+            mysteryRolling = true;
+            resetMysteryStage();
+            playerData.coins -= MYSTERY_BOX_COST;
+            playerData.mysteryBoxOpens = (playerData.mysteryBoxOpens || 0) + 1;
+            updateMysteryButton();
+            updateMysteryStats();
+            updateAllCoinsDisplays();
+
+            // Resolve reward (rarity is rolled once; legendary may downgrade if all owned)
+            const rarity = rollRarity();
+            let result;
+            if (rarity === 'legendary') {
+                const skin = pickRandomLegendary();
+                if (skin) {
+                    if (playerData.ownedSkins.includes(skin.id)) {
+                        // Duplicate — refund the car's worth in coins
+                        playerData.coins += skin.price;
+                        result = { rarity: 'legendary', icon: '💎', text: skin.name + ' (duplicate) · +' + skin.price.toLocaleString() + ' coins', label: 'LEGENDARY' };
+                    } else {
+                        playerData.ownedSkins.push(skin.id);
+                        playerData.stats.carsOwned = playerData.ownedSkins.length;
+                        result = { rarity: 'legendary', icon: '🏆', text: skin.name, label: 'LEGENDARY' };
+                    }
+                }
+            } else if (rarity === 'medium') {
+                playerData.coins += MYSTERY_REWARD_MEDIUM;
+                result = { rarity: 'medium', icon: '💰', text: '+' + MYSTERY_REWARD_MEDIUM + ' coins', label: 'MEDIUM' };
+            } else {
+                playerData.coins += MYSTERY_REWARD_SMALL;
+                result = { rarity: 'small', icon: '🪙', text: '+' + MYSTERY_REWARD_SMALL + ' coins', label: 'SMALL' };
+            }
+
+            // Animation: shake → open → reveal
+            const box = document.getElementById('mystery-box-visual');
+            box.classList.add('shaking');
+            await new Promise(r => setTimeout(r, 1500));
+            box.classList.remove('shaking');
+            box.classList.add('opening');
+            await new Promise(r => setTimeout(r, 500));
+
+            // Show reveal
+            const reveal = document.getElementById('mystery-reveal');
+            const rarityEl = document.getElementById('mystery-reveal-rarity');
+            document.getElementById('mystery-reveal-icon').textContent = result.icon;
+            rarityEl.textContent = result.label;
+            rarityEl.className = 'mystery-reveal-rarity ' + result.rarity;
+            document.getElementById('mystery-reveal-text').textContent = result.text;
+            reveal.classList.remove('hidden');
+            box.style.opacity = '0';
+
+            savePlayerData();
+            updateAllCoinsDisplays();
+            updateMysteryStats();
+            mysteryRolling = false;
+            updateMysteryButton();
+        }
+
         // ========== ADMIN EVENT SYSTEM ==========
         const ADMIN_EVENTS = [
             { id: 'doubleCoins',  label: '2× COINS' },
@@ -11098,6 +12081,9 @@
                     case 'ArrowLeft': chooseLane(0); break;
                     case 'ArrowUp': chooseLane(1); break;
                     case 'ArrowRight': chooseLane(2); break;
+                    case 'Digit1': case 'Numpad1': usePowerup('skip'); break;
+                    case 'Digit2': case 'Numpad2': usePowerup('slow'); break;
+                    case 'Digit3': case 'Numpad3': usePowerup('coin'); break;
                 }
             }
         });
