@@ -1,0 +1,125 @@
+HOW TO ADD SPELLING-BEE AUDIO MANUALLY
+=======================================
+1. In ElevenLabs, generate each FRENCH word below with the "Paul K" voice.
+2. Download the MP3.
+3. Rename it EXACTLY to the filename shown (right column).
+4. Put all the files in a folder called "audio" next to index.html:
+   NumberRailGame\audio\le_chien.mp3  (etc.)
+The Spelling Bee uses them automatically. Any word you skip just uses the
+browser voice instead - so you can do as many or as few as you like.
+
+FRENCH WORD            ->  FILENAME
+--------------------------------------
+le chien               ->  le_chien.mp3
+le chat                ->  le_chat.mp3
+la maison              ->  la_maison.mp3
+l'école                ->  l_ecole.mp3
+le livre               ->  le_livre.mp3
+la table               ->  la_table.mp3
+la chaise              ->  la_chaise.mp3
+la porte               ->  la_porte.mp3
+la fenêtre             ->  la_fenetre.mp3
+l'eau                  ->  l_eau.mp3
+le pain                ->  le_pain.mp3
+le lait                ->  le_lait.mp3
+la pomme               ->  la_pomme.mp3
+la voiture             ->  la_voiture.mp3
+le train               ->  le_train.mp3
+le vélo                ->  le_velo.mp3
+l'avion                ->  l_avion.mp3
+le bus                 ->  le_bus.mp3
+la rue                 ->  la_rue.mp3
+la ville               ->  la_ville.mp3
+le village             ->  le_village.mp3
+la mer                 ->  la_mer.mp3
+la plage               ->  la_plage.mp3
+la montagne            ->  la_montagne.mp3
+la forêt               ->  la_foret.mp3
+le parc                ->  le_parc.mp3
+le musée               ->  le_musee.mp3
+l'église               ->  l_eglise.mp3
+le pont                ->  le_pont.mp3
+le marché              ->  le_marche.mp3
+la gare                ->  la_gare.mp3
+le restaurant          ->  le_restaurant.mp3
+rouge                  ->  rouge.mp3
+bleu                   ->  bleu.mp3
+vert                   ->  vert.mp3
+jaune                  ->  jaune.mp3
+noir                   ->  noir.mp3
+blanc                  ->  blanc.mp3
+gris                   ->  gris.mp3
+grand                  ->  grand.mp3
+petit                  ->  petit.mp3
+beau                   ->  beau.mp3
+bon                    ->  bon.mp3
+mauvais                ->  mauvais.mp3
+chaud                  ->  chaud.mp3
+froid                  ->  froid.mp3
+nouveau                ->  nouveau.mp3
+vieux                  ->  vieux.mp3
+jeune                  ->  jeune.mp3
+facile                 ->  facile.mp3
+difficile              ->  difficile.mp3
+rapide                 ->  rapide.mp3
+lent                   ->  lent.mp3
+content                ->  content.mp3
+fatigué                ->  fatigue.mp3
+manger                 ->  manger.mp3
+boire                  ->  boire.mp3
+dormir                 ->  dormir.mp3
+parler                 ->  parler.mp3
+lire                   ->  lire.mp3
+écrire                 ->  ecrire.mp3
+jouer                  ->  jouer.mp3
+nager                  ->  nager.mp3
+courir                 ->  courir.mp3
+marcher                ->  marcher.mp3
+regarder               ->  regarder.mp3
+écouter                ->  ecouter.mp3
+acheter                ->  acheter.mp3
+aimer                  ->  aimer.mp3
+aller                  ->  aller.mp3
+venir                  ->  venir.mp3
+faire                  ->  faire.mp3
+voir                   ->  voir.mp3
+donner                 ->  donner.mp3
+prendre                ->  prendre.mp3
+un                     ->  un.mp3
+deux                   ->  deux.mp3
+trois                  ->  trois.mp3
+quatre                 ->  quatre.mp3
+cinq                   ->  cinq.mp3
+six                    ->  six.mp3
+sept                   ->  sept.mp3
+huit                   ->  huit.mp3
+neuf                   ->  neuf.mp3
+dix                    ->  dix.mp3
+lundi                  ->  lundi.mp3
+mardi                  ->  mardi.mp3
+mercredi               ->  mercredi.mp3
+jeudi                  ->  jeudi.mp3
+vendredi               ->  vendredi.mp3
+samedi                 ->  samedi.mp3
+dimanche               ->  dimanche.mp3
+aujourd'hui            ->  aujourd_hui.mp3
+demain                 ->  demain.mp3
+hier                   ->  hier.mp3
+la mère                ->  la_mere.mp3
+le père                ->  le_pere.mp3
+le frère               ->  le_frere.mp3
+la sœur                ->  la_s_ur.mp3
+l'ami                  ->  l_ami.mp3
+le professeur          ->  le_professeur.mp3
+bonjour                ->  bonjour.mp3
+merci                  ->  merci.mp3
+oui                    ->  oui.mp3
+non                    ->  non.mp3
+s'il vous plaît        ->  s_il_vous_plait.mp3
+au revoir              ->  au_revoir.mp3
+la cathédrale          ->  la_cathedrale.mp3
+célèbre                ->  celebre.mp3
+le symbole             ->  le_symbole.mp3
+la promenade           ->  la_promenade.mp3
+la couleur             ->  la_couleur.mp3
+le palmier             ->  le_palmier.mp3

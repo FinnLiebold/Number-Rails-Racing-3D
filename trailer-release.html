@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Rails Racing 3D - Official Release Trailer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+
+/* ============== STAGE ============== */
+#stage { position: fixed; inset: 0; overflow: hidden; background: #000; perspective: 1100px; perspective-origin: 50% 50%; }
+
+.letterbox { position: fixed; left: 0; right: 0; height: 60px; background: #000; z-index: 10000; pointer-events: none; }
+.letterbox.top    { top: 0;    transform: translateY(-100%); }
+.letterbox.bottom { bottom: 0; transform: translateY(100%);  }
+body.playing .letterbox.top    { transform: translateY(0); transition: transform 1.4s cubic-bezier(.5, 0, .25, 1) 0.2s; }
+body.playing .letterbox.bottom { transform: translateY(0); transition: transform 1.4s cubic-bezier(.5, 0, .25, 1) 0.2s; }
+
+.vignette { position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.55) 100%); pointer-events: none; z-index: 9999; }
+
+.scene { position: absolute; inset: 0; opacity: 0; pointer-events: none; will-change: opacity, transform; transition: opacity 0.7s ease; }
+.scene.active { opacity: 1; }
+
+@keyframes fadeIn   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleIn  { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+@keyframes popIn    { 0% { opacity: 0; transform: scale(0.6); } 60% { opacity: 1; transform: scale(1.08); } 100% { transform: scale(1); } }
+
+/* ============== START SCREEN ============== */
+#start-screen {
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, #1a3a8a 0%, #0a0a25 70%, #000 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 99998;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+#start-screen.gone { opacity: 0; transform: scale(1.05); pointer-events: none; }
+#start-screen .pre-title { font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 6px; color: #93c5fd; margin-bottom: 14px; opacity: 0.75; }
+#start-screen h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 7vw, 80px);
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #ffd700, #ff7e33, #f43f5e);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 26px;
+    text-align: center;
+}
+#start-screen p { font-size: 15px; opacity: 0.65; margin-bottom: 30px; max-width: 540px; text-align: center; padding: 0 20px; line-height: 1.5; }
+#play-btn {
+    background: linear-gradient(135deg, #f97316, #dc2626);
+    color: #fff; border: none;
+    padding: 18px 44px;
+    border-radius: 14px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900; font-size: 19px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    box-shadow: 0 12px 40px rgba(249, 115, 22, 0.55), 0 0 60px rgba(220, 38, 38, 0.35);
+    transition: transform 0.15s ease;
+}
+#play-btn::before { content: '▶  '; color: #fff8; }
+#play-btn:hover { transform: scale(1.06) translateY(-2px); }
+#sound-hint { margin-top: 14px; font-size: 12px; color: #93c5fd; opacity: 0.7; letter-spacing: 1px; }
+
+/* Top bar */
+#topbar { position: fixed; top: 12px; left: 22px; right: 22px; z-index: 99999; display: flex; justify-content: space-between; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease 0.5s; }
+body.playing #topbar { opacity: 1; pointer-events: auto; }
+#topbar button {
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px; letter-spacing: 2px;
+    cursor: pointer;
+}
+#topbar button:hover { background: rgba(0,0,0,0.85); border-color: rgba(255,255,255,0.5); }
+#chapter-label { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 4px; color: #fbbf24; opacity: 0.85; }
+
+#progress { position: fixed; bottom: 0; left: 0; height: 3px; background: linear-gradient(to right, #f97316, #fbbf24, #22c55e); width: 0%; z-index: 99997; box-shadow: 0 0 12px rgba(251, 191, 36, 0.6); transition: width 0.1s linear; }
+
+/* ============== SCENE 1: COLD OPEN / LOGO ============== */
+#scene-intro { background: radial-gradient(ellipse at center, #060615 0%, #000 80%); }
+.starfield { position: absolute; inset: 0; background-image:
+    radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 80% 60%, #fff, transparent),
+    radial-gradient(2px 2px at 65% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 75%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 50% 45%, #fff, transparent),
+    radial-gradient(1px 1px at 12% 85%, #fff, transparent),
+    radial-gradient(2px 2px at 90% 90%, #fff, transparent),
+    radial-gradient(1px 1px at 5% 50%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 70% 88%, #fff, transparent),
+    radial-gradient(1px 1px at 88% 10%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 28% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 42%, #fff, transparent);
+    animation: starsTwinkle 4s ease-in-out infinite alternate; }
+@keyframes starsTwinkle { from { opacity: 0.4; } to { opacity: 1; } }
+
+.warp-line { position: absolute; width: 2px; height: 80px; background: linear-gradient(to bottom, transparent, #fff, transparent); transform-origin: center bottom; opacity: 0; animation: warpStreak 1.4s ease-in infinite; }
+@keyframes warpStreak {
+    0%   { transform: translate(-50%, -50%) scale(0.05); opacity: 0; }
+    25%  { opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(900px) scale(1.6); opacity: 0; }
+}
+#logo-card { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; opacity: 0; }
+#scene-intro.active #logo-card { animation: logoZoomIn 1.4s cubic-bezier(.2, 1.2, .2, 1) forwards 0.7s; }
+@keyframes logoZoomIn {
+    0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0; filter: blur(10px); }
+    60%  { opacity: 1; filter: blur(0); }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+#logo-card .preword { font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 8px; color: #93c5fd; margin-bottom: 16px; opacity: 0; }
+#scene-intro.active #logo-card .preword { animation: fadeIn 0.5s ease forwards 1.5s; }
+#logo-card h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(46px, 8vw, 96px);
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, #fde047 0%, #ff9933 35%, #f43f5e 70%, #c026d3 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 80px rgba(255, 200, 100, 0.4);
+    line-height: 1; margin-bottom: 12px;
+}
+#logo-card .subtitle { font-family: 'Orbitron', sans-serif; font-size: clamp(14px, 1.6vw, 18px); letter-spacing: 12px; color: #fff; opacity: 0; text-shadow: 0 0 12px rgba(255,255,255,0.4); }
+#scene-intro.active #logo-card .subtitle { animation: fadeIn 0.6s ease forwards 1.9s; }
+.logo-glow-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 0; height: 0; border-radius: 50%; border: 2px solid rgba(255, 200, 80, 0.6); box-shadow: 0 0 30px rgba(255, 200, 80, 0.5); opacity: 0; }
+#scene-intro.active .logo-glow-ring { animation: ringExpand 2s cubic-bezier(.3, 0, .3, 1) forwards 1.4s; }
+@keyframes ringExpand { 0% { width: 0; height: 0; opacity: 0; border-width: 4px; } 20% { opacity: 1; } 100% { width: 1500px; height: 1500px; opacity: 0; border-width: 1px; } }
+
+/* ============== SCENE 2: PREMISE (Question + lanes) ============== */
+#scene-premise { background: linear-gradient(to bottom, #050510 0%, #0a0a25 30%, #1a3050 70%, #102030 100%); }
+.q-card-large {
+    position: absolute; top: 18%; left: 50%;
+    transform: translateX(-50%) translateY(40px) scale(0.85);
+    background: linear-gradient(135deg, rgba(50, 30, 90, 0.95), rgba(120, 30, 130, 0.95));
+    color: #fff; border: 2px solid rgba(255, 215, 100, 0.55);
+    border-radius: 20px; padding: 36px 64px; text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 60px rgba(255, 200, 80, 0.25);
+    opacity: 0;
+}
+#scene-premise.active .q-card-large { animation: scaleIn 0.7s cubic-bezier(.2,1.2,.3,1) forwards 0.4s; }
+.q-card-large .label { font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 6px; color: #fbbf24; margin-bottom: 12px; }
+.q-card-large .word { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(36px, 5.5vw, 72px); letter-spacing: 3px; text-shadow: 0 0 30px rgba(255, 215, 100, 0.5); }
+.q-card-large .timer { margin-top: 14px; font-family: 'Orbitron', sans-serif; font-size: 16px; color: #fde047; letter-spacing: 4px; }
+
+.lanes-row { position: absolute; bottom: 14%; left: 50%; transform: translateX(-50%); display: flex; gap: 28px; }
+.lane-box {
+    width: 200px; padding: 36px 20px;
+    border-radius: 16px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700; font-size: clamp(22px, 3.4vw, 36px);
+    letter-spacing: 2px; color: #fff;
+    border: 3px solid rgba(255,255,255,0.18);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.55);
+    opacity: 0; transform: translateY(40px);
+}
+.lane-box.l1 { background: linear-gradient(135deg, rgba(231,76,60,0.7), rgba(192,57,43,0.7)); border-color: rgba(231,76,60,0.7); }
+.lane-box.l2 { background: linear-gradient(135deg, rgba(46,204,113,0.7), rgba(39,174,96,0.7)); border-color: rgba(46,204,113,0.7); }
+.lane-box.l3 { background: linear-gradient(135deg, rgba(52,152,219,0.7), rgba(41,128,185,0.7)); border-color: rgba(52,152,219,0.7); }
+#scene-premise.active .lane-box.l1 { animation: laneIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 1.0s; }
+#scene-premise.active .lane-box.l2 { animation: laneIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 1.15s, laneCorrect 0.6s ease-out forwards 2.2s; }
+#scene-premise.active .lane-box.l3 { animation: laneIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 1.3s; }
+@keyframes laneIn { to { opacity: 1; transform: translateY(0); } }
+@keyframes laneCorrect {
+    0%   { transform: translateY(0) scale(1); }
+    40%  { transform: translateY(-10px) scale(1.07); box-shadow: 0 12px 36px rgba(0,0,0,0.55), 0 0 60px rgba(46, 204, 113, 0.8); border-color: #fff; }
+    100% { transform: translateY(0) scale(1.04); box-shadow: 0 12px 40px rgba(0,0,0,0.55), 0 0 40px rgba(46, 204, 113, 0.5); }
+}
+.scene-title-overlay { position: absolute; top: 7%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(22px, 3.5vw, 38px); letter-spacing: 6px; color: #fff; text-shadow: 0 0 14px rgba(255,255,255,0.3); opacity: 0; }
+.scene-title-overlay .accent { color: #fbbf24; }
+.scene .scene-title-overlay { animation: fadeIn 0.6s ease forwards 0.2s; animation-play-state: paused; }
+.scene.active .scene-title-overlay { animation-play-state: running; }
+
+/* ============== SCENE 3: 8 GAME MODES ============== */
+#scene-modes { background: linear-gradient(135deg, #0c1a2e 0%, #16264a 50%, #2c1858 100%); }
+.modes-grid { position: absolute; top: 22%; bottom: 12%; left: 50%; transform: translateX(-50%); width: 92%; max-width: 1100px; display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; gap: 14px; }
+.mode-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 2px solid rgba(96, 165, 250, 0.5);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    opacity: 0; transform: translateY(30px) scale(0.92);
+    gap: 6px;
+}
+#scene-modes.active .mode-card { animation: modeCardIn 0.5s cubic-bezier(.2,.9,.2,1) forwards; }
+#scene-modes.active .mode-card:nth-child(1) { animation-delay: 0.5s; }
+#scene-modes.active .mode-card:nth-child(2) { animation-delay: 0.62s; }
+#scene-modes.active .mode-card:nth-child(3) { animation-delay: 0.74s; }
+#scene-modes.active .mode-card:nth-child(4) { animation-delay: 0.86s; }
+#scene-modes.active .mode-card:nth-child(5) { animation-delay: 0.98s; }
+#scene-modes.active .mode-card:nth-child(6) { animation-delay: 1.10s; }
+#scene-modes.active .mode-card:nth-child(7) { animation-delay: 1.22s; }
+#scene-modes.active .mode-card:nth-child(8) { animation-delay: 1.34s; }
+@keyframes modeCardIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+.mode-card .ico { font-size: clamp(28px, 3vw, 40px); }
+.mode-card .name { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(13px, 1.3vw, 17px); letter-spacing: 1.5px; color: #fff; }
+.mode-card .desc { font-size: clamp(10px, 0.95vw, 12px); color: #cbd5e1; opacity: 0.85; line-height: 1.3; }
+.mode-card.mix { border-color: rgba(251, 191, 36, 0.6); background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.1)); }
+
+/* ============== SCENE 4: CARS GRID ============== */
+#scene-cars { background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+.cars-category-label { position: absolute; top: 14%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(22px, 3.5vw, 36px); letter-spacing: 6px; color: #fbbf24; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; text-shadow: 0 0 22px rgba(251,191,36,0.4); }
+.cars-category-label.shown { opacity: 1; }
+.cars-flex { position: absolute; top: 24%; bottom: 16%; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1200px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-content: center; }
+.car-tile {
+    width: 110px; height: 90px;
+    border-radius: 12px;
+    background: var(--c1, #f39c12);
+    background-image: linear-gradient(135deg, var(--c1, #f39c12), var(--c2, #e67e22));
+    border: 2px solid rgba(255,255,255,0.18);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.4);
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0;
+    transform: scale(0.4);
+}
+.car-tile.shown { animation: popIn 0.45s cubic-bezier(.2,1.2,.3,1) forwards; }
+.car-tile .lbl { font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 1px; color: #fff; text-align: center; padding: 4px 6px; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+.car-tile .body { width: 60px; height: 36px; border-radius: 8px 8px 4px 4px; background: linear-gradient(to bottom, var(--c2, #e67e22), color-mix(in srgb, var(--c2, #e67e22) 60%, #000)); margin-bottom: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 -2px 0 rgba(0,0,0,0.3); }
+.car-tile.legendary { box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(255, 215, 0, 0.4); border-color: rgba(255, 215, 0, 0.7); }
+.car-count-banner { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(40px, 6vw, 76px); letter-spacing: 4px; opacity: 0; }
+.car-count-banner .num { background: linear-gradient(135deg, #fde047, #f97316); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+#scene-cars.active .car-count-banner { animation: fadeIn 0.6s ease forwards 9s; }
+
+/* ============== SCENE 5: CAR GARAGE / UPGRADES ============== */
+#scene-garage { background: linear-gradient(to bottom, #1a1410 0%, #2a1a14 50%, #0a0a08 100%); }
+.garage-floor { position: absolute; bottom: 0; left: 0; right: 0; height: 35%; background:
+    linear-gradient(to bottom, transparent, rgba(0,0,0,0.5)),
+    repeating-linear-gradient(90deg, #2a2421 0, #2a2421 80px, #1f1a18 80px, #1f1a18 82px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 80px, rgba(0,0,0,0.4) 80px, rgba(0,0,0,0.4) 82px);
+}
+.garage-stage { position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); display: flex; gap: 60px; align-items: flex-end; }
+.garage-build { display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; }
+#scene-garage.active .garage-build.before { animation: scaleIn 0.7s cubic-bezier(.2,.9,.2,1) forwards 0.5s; }
+#scene-garage.active .garage-build.after  { animation: scaleIn 0.7s cubic-bezier(.2,.9,.2,1) forwards 1.5s; }
+.garage-build .car-large {
+    width: 160px; height: 120px;
+    border-radius: 18px;
+    background-image: linear-gradient(135deg, var(--c1), var(--c2));
+    border: 3px solid rgba(255,255,255,0.22);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.6);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+}
+.garage-build .car-large .body { width: 100px; height: 56px; border-radius: 10px 10px 6px 6px; background: linear-gradient(to bottom, var(--c2), color-mix(in srgb, var(--c2) 50%, #000)); box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 -3px 0 rgba(0,0,0,0.4); }
+.garage-build.after .car-large { box-shadow: 0 14px 36px rgba(0,0,0,0.6), 0 0 30px rgba(56, 189, 248, 0.4), 0 0 60px rgba(168, 85, 247, 0.3); border-color: rgba(56, 189, 248, 0.7); }
+.garage-build .name { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2px; color: #fff; }
+.garage-build .stats { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 1px; color: #fbbf24; }
+.garage-arrow { font-size: 50px; color: #fbbf24; align-self: center; opacity: 0; }
+#scene-garage.active .garage-arrow { animation: fadeIn 0.5s ease forwards 1.0s; }
+.upgrade-bullets { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; opacity: 0; }
+#scene-garage.active .upgrade-bullets { animation: fadeIn 0.6s ease forwards 1.7s; }
+.upgrade-bullets .ub { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 10px; padding: 10px 18px; font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 2px; color: #93c5fd; }
+
+/* ============== SCENE 6: BIOMES MONTAGE ============== */
+#scene-biomes { background: #000; }
+.biome-card { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; }
+.biome-card.active { opacity: 1; }
+.biome-card .biome-name { position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(40px, 7vw, 84px); letter-spacing: 12px; color: #fff; text-shadow: 0 4px 18px rgba(0,0,0,0.6), 0 0 30px rgba(255,255,255,0.25); opacity: 0; transform: translateX(-50%) translateY(20px); }
+.biome-card.active .biome-name { animation: fadeIn 0.6s ease forwards 0.15s; }
+.biome-card .biome-icon { position: absolute; top: 22%; left: 50%; transform: translateX(-50%) scale(0.7); font-size: clamp(80px, 14vw, 180px); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6)); opacity: 0; }
+.biome-card.active .biome-icon { animation: popIn 0.7s cubic-bezier(.2,1.2,.3,1) forwards 0.05s; }
+.bc-day    { background: linear-gradient(to bottom, #1e90ff 0%, #87CEEB 30%, #98d4bb 70%, #50c850 100%); }
+.bc-night  { background: linear-gradient(to bottom, #050510 0%, #151540 45%, #1a3050 80%, #285028 100%); }
+.bc-desert { background: linear-gradient(to bottom, #ff5500 0%, #ff9955 30%, #ffdd99 60%, #ecd070 100%); }
+.bc-snow   { background: linear-gradient(to bottom, #7090b0 0%, #a8c4dc 40%, #d8e8f4 70%, #f8fcff 100%); }
+.bc-space  { background: linear-gradient(to bottom, #000005 0%, #0a0a30 30%, #200a50 70%, #350a55 100%); }
+.bc-jungle { background: linear-gradient(to bottom, #4d8b3a 0%, #8fc56a 50%, #2a7430 100%); }
+.bc-royal  { background: linear-gradient(to bottom, #0a0020 0%, #2d1060 50%, #4a0e6b 100%); }
+.bc-snow .biome-name { color: #1e3a5a; text-shadow: 0 4px 12px rgba(255,255,255,0.6); }
+.bc-night::before, .bc-space::before, .bc-royal::before { content: ''; position: absolute; inset: 0; background-image:
+    radial-gradient(2px 2px at 15% 22%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 75% 35%, #fff, transparent),
+    radial-gradient(2px 2px at 50% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 28% 45%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 88% 60%, #fff, transparent),
+    radial-gradient(2px 2px at 35% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 65% 80%, #fff, transparent);
+    opacity: 0.85; }
+
+/* ============== SCENE 7: WEATHER ============== */
+#scene-weather { background: linear-gradient(to bottom, #1a1a2e 0%, #2a3a4e 50%, #1a2a3e 100%); }
+.weather-grid { position: absolute; top: 24%; bottom: 12%; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.weather-tile {
+    border-radius: 18px;
+    border: 2px solid rgba(255,255,255,0.18);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 14px 36px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(40px);
+}
+#scene-weather.active .weather-tile:nth-child(1) { animation: laneIn 0.6s cubic-bezier(.2,.9,.2,1) forwards 0.5s; }
+#scene-weather.active .weather-tile:nth-child(2) { animation: laneIn 0.6s cubic-bezier(.2,.9,.2,1) forwards 0.7s; }
+#scene-weather.active .weather-tile:nth-child(3) { animation: laneIn 0.6s cubic-bezier(.2,.9,.2,1) forwards 0.9s; }
+.weather-tile .label { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 4px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+.weather-tile.rain { background: linear-gradient(to bottom, #455a6a 0%, #2a3a4a 70%); }
+.weather-tile.rain::after { content: ''; position: absolute; inset: 0; background-image:
+    repeating-linear-gradient(85deg, transparent 0, transparent 8px, rgba(140, 180, 220, 0.5) 8px, rgba(140, 180, 220, 0.5) 9px);
+    animation: rainSlide 0.4s linear infinite; }
+@keyframes rainSlide { from { background-position: 0 0; } to { background-position: 30px 50px; } }
+.weather-tile.storm { background: linear-gradient(to bottom, #1a1a2e 0%, #0a0a18 70%); }
+.weather-tile.storm::after { content: ''; position: absolute; inset: 0; background-image:
+    repeating-linear-gradient(75deg, transparent 0, transparent 5px, rgba(180, 200, 230, 0.6) 5px, rgba(180, 200, 230, 0.6) 7px);
+    animation: rainSlide 0.25s linear infinite; }
+.weather-tile.storm .lightning { position: absolute; inset: 0; background: rgba(255,255,255,0); animation: lightningFlash 2.5s ease-in infinite; }
+@keyframes lightningFlash { 0%, 92% { background: rgba(255,255,255,0); } 94% { background: rgba(255,255,255,0.7); } 96% { background: rgba(255,255,255,0); } 98% { background: rgba(255,255,255,0.5); } 100% { background: rgba(255,255,255,0); } }
+.weather-tile.fog { background: linear-gradient(to bottom, #6a7a85 0%, #485058 70%); }
+.weather-tile.fog::after { content: ''; position: absolute; inset: 0; background:
+    radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(255,255,255,0.3) 0%, transparent 50%);
+    animation: fogDrift 6s ease-in-out infinite alternate; }
+@keyframes fogDrift { from { transform: translateX(-5%); } to { transform: translateX(5%); } }
+
+/* ============== SCENE 8: POWER-UPS ============== */
+#scene-powerups { background: linear-gradient(135deg, #1f0938 0%, #2d0855 50%, #100425 100%); }
+.powerup-row { position: absolute; top: 35%; left: 50%; transform: translateX(-50%); display: flex; gap: 80px; }
+.powerup-tile {
+    width: 200px; height: 200px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.04));
+    border: 3px solid var(--bord, #fff);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.5), 0 0 40px var(--glow, rgba(255,255,255,0.2));
+    opacity: 0;
+    transform: scale(0.7) rotateY(-30deg);
+}
+#scene-powerups.active .powerup-tile { animation: powerupIn 0.6s cubic-bezier(.2,1.1,.3,1) forwards; }
+#scene-powerups.active .powerup-tile:nth-child(1) { animation-delay: 0.6s; }
+#scene-powerups.active .powerup-tile:nth-child(2) { animation-delay: 0.85s; }
+#scene-powerups.active .powerup-tile:nth-child(3) { animation-delay: 1.1s; }
+@keyframes powerupIn { to { opacity: 1; transform: scale(1) rotateY(0); } }
+.powerup-tile .ico { font-size: 80px; filter: drop-shadow(0 4px 14px rgba(0,0,0,0.6)); }
+.powerup-tile .name { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: 3px; color: #fff; }
+.powerup-tile .desc { font-size: 12px; color: #cbd5e1; text-align: center; padding: 0 16px; }
+.powerup-tile.skip  { --bord: #fbbf24; --glow: rgba(251,191,36,0.35); }
+.powerup-tile.slow  { --bord: #38bdf8; --glow: rgba(56,189,248,0.35); }
+.powerup-tile.coin  { --bord: #22c55e; --glow: rgba(34,197,94,0.35); }
+
+/* ============== SCENE 9: MYSTERY BOX ============== */
+#scene-mystery { background: radial-gradient(ellipse at center, #2d0855 0%, #0a0118 70%, #000 100%); }
+.mystery-stage { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.mystery-box {
+    width: 200px; height: 200px;
+    background: linear-gradient(135deg, #92400e 0%, #d97706 30%, #fbbf24 60%, #d97706 100%);
+    border: 4px solid #fde047;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.6), 0 0 50px rgba(251, 191, 36, 0.4);
+    opacity: 0; transform: scale(0.6);
+}
+#scene-mystery.active .mystery-box { animation: mysteryShake 0.9s ease forwards 0.4s, mysteryShake2 1.3s linear forwards 1.3s, mysteryExplode 0.8s ease-out forwards 2.6s; }
+@keyframes mysteryShake {
+    0%   { opacity: 0; transform: scale(0.6); }
+    100% { opacity: 1; transform: scale(1); }
+}
+@keyframes mysteryShake2 {
+    0%, 100% { transform: scale(1) translate(0, 0) rotate(0); }
+    10% { transform: scale(1.05) translate(-6px, 0) rotate(-3deg); }
+    20% { transform: scale(1.05) translate(6px, 0) rotate(3deg); }
+    30% { transform: scale(1.05) translate(-6px, 2px) rotate(-3deg); }
+    40% { transform: scale(1.05) translate(6px, -2px) rotate(3deg); }
+    50% { transform: scale(1.1) translate(-4px, 0) rotate(-2deg); }
+    60% { transform: scale(1.1) translate(4px, 0) rotate(2deg); }
+}
+@keyframes mysteryExplode {
+    from { opacity: 1; transform: scale(1.1); }
+    to   { opacity: 0; transform: scale(2.5); }
+}
+.mystery-question { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 110px; color: #fff; text-shadow: 0 0 30px rgba(255,255,255,0.6); }
+.mystery-burst { position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: radial-gradient(circle, rgba(251, 191, 36, 0.7) 0%, transparent 70%); transform: translate(-50%, -50%); pointer-events: none; opacity: 0; }
+#scene-mystery.active .mystery-burst { animation: mysteryBurst 1.0s ease-out forwards 2.6s; }
+@keyframes mysteryBurst { 0% { width: 0; height: 0; opacity: 0; } 30% { opacity: 0.9; } 100% { width: 1500px; height: 1500px; opacity: 0; } }
+.mystery-reveal {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
+    width: 280px; padding: 24px;
+    background: linear-gradient(135deg, rgba(40,40,40,0.95), rgba(60,40,60,0.95));
+    border: 4px solid #fbbf24;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 80px rgba(251,191,36,0.5);
+    opacity: 0;
+    z-index: 5;
+}
+#scene-mystery.active .mystery-reveal { animation: revealIn 0.7s cubic-bezier(.2,1.2,.3,1) forwards 3.0s; }
+@keyframes revealIn { to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+.mystery-reveal .label { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 6px; color: #fbbf24; margin-bottom: 8px; }
+.mystery-reveal .icon { font-size: 64px; margin: 8px 0; }
+.mystery-reveal .name { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 22px; color: #fff; letter-spacing: 2px; }
+.mystery-reveal .sub { font-size: 12px; color: #cbd5e1; margin-top: 4px; letter-spacing: 1px; }
+
+/* ============== SCENE 10: PLANES LINEUP ============== */
+#scene-planes-lineup { background: linear-gradient(to bottom, #0f1729 0%, #1e293b 50%, #334155 100%); }
+.lineup-grid { position: absolute; top: 22%; left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 90%; max-width: 1100px; }
+.lineup-card {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(2, 132, 199, 0.18));
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-radius: 14px;
+    aspect-ratio: 1.15;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(40px);
+}
+#scene-planes-lineup.active .lineup-card { animation: lineupCardIn 0.5s cubic-bezier(.2,.9,.2,1) forwards; }
+#scene-planes-lineup.active .lineup-card:nth-child(1) { animation-delay: 0.4s; }
+#scene-planes-lineup.active .lineup-card:nth-child(2) { animation-delay: 0.5s; }
+#scene-planes-lineup.active .lineup-card:nth-child(3) { animation-delay: 0.6s; }
+#scene-planes-lineup.active .lineup-card:nth-child(4) { animation-delay: 0.7s; }
+#scene-planes-lineup.active .lineup-card:nth-child(5) { animation-delay: 0.8s; }
+#scene-planes-lineup.active .lineup-card:nth-child(6) { animation-delay: 0.9s; }
+#scene-planes-lineup.active .lineup-card:nth-child(7) { animation-delay: 1.0s; }
+#scene-planes-lineup.active .lineup-card:nth-child(8) { animation-delay: 1.1s; }
+#scene-planes-lineup.active .lineup-card:nth-child(9) { animation-delay: 1.2s; }
+#scene-planes-lineup.active .lineup-card:nth-child(10) { animation-delay: 1.3s; }
+#scene-planes-lineup.active .lineup-card:nth-child(11) { animation-delay: 1.4s; }
+#scene-planes-lineup.active .lineup-card:nth-child(12) { animation-delay: 1.5s; }
+@keyframes lineupCardIn { to { opacity: 1; transform: translateY(0); } }
+.lineup-card .ico { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(32px, 4vw, 50px); filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); }
+.lineup-card .lbl { position: absolute; bottom: 6%; left: 0; right: 0; text-align: center; font-family: 'Orbitron', sans-serif; font-size: clamp(9px, 0.95vw, 12px); letter-spacing: 1.2px; color: #cbd5e1; }
+.lineup-count-banner { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(36px, 5.5vw, 64px); letter-spacing: 4px; opacity: 0; }
+.lineup-count-banner .num { background: linear-gradient(135deg, #fde047, #f97316); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+#scene-planes-lineup.active .lineup-count-banner { animation: fadeIn 0.6s ease forwards 1.7s; }
+
+/* ============== SCENE 11: PLANE FLIGHT ============== */
+#scene-plane-flight { background: linear-gradient(to bottom, #1a5cb0 0%, #2e7fd6 22%, #5aa9ee 50%, #8fc8f5 78%, #d0e8fb 100%); }
+.cloud-zoom-fast { position: absolute; background: linear-gradient(to bottom, #fff, #e8f1fa 60%, #c5d6e8); border-radius: 50% 60% 50% 60% / 50% 50% 60% 50%; box-shadow: 0 12px 30px rgba(60,100,140,0.25); animation: cloudRush 4s linear infinite; }
+.cloud-zoom-fast::before, .cloud-zoom-fast::after { content: ''; position: absolute; background: inherit; border-radius: 50%; }
+.cloud-zoom-fast::before { top: -45%; left: 15%; width: 55%; height: 95%; }
+.cloud-zoom-fast::after  { top: -30%; right: 10%; width: 45%; height: 80%; }
+@keyframes cloudRush { 0% { transform: translateY(-15vh) scale(0.2); opacity: 0; } 15% { opacity: 0.85; } 100% { transform: translateY(120vh) scale(2.4); opacity: 0; } }
+
+.plane-hero { position: absolute; bottom: 22%; left: 50%; transform: translate(-50%, 30vh) scale(0.6); width: 220px; height: 200px; z-index: 80; filter: drop-shadow(0 16px 30px rgba(0,0,0,0.45)); opacity: 0; }
+#scene-plane-flight.active .plane-hero { animation: planeFlyIn 1.6s cubic-bezier(.2,.8,.2,1) forwards 0.4s; }
+@keyframes planeFlyIn { 0% { transform: translate(-50%, 60vh) scale(0.3); opacity: 0; } 30% { opacity: 1; } 100% { transform: translate(-50%, 0) scale(1); opacity: 1; } }
+.plane-fuselage-hero { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 28px; height: 170px; background: linear-gradient(to right, #475569 0%, #94a3b8 25%, #e2e8f0 50%, #94a3b8 75%, #475569 100%); border-radius: 60% 60% 30% 30% / 25% 25% 12% 12%; box-shadow: inset 0 -10px 14px rgba(0,0,0,0.25), 0 4px 10px rgba(0,0,0,0.4); }
+.plane-nose-hero { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 18px; height: 28px; background: linear-gradient(to right, #475569, #cbd5e1 50%, #475569); clip-path: polygon(50% 0%, 100% 100%, 0% 100%); }
+.plane-cockpit-hero { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 18px; height: 26px; background: linear-gradient(to bottom, #67e8f9 0%, #0e7490 70%, #083344 100%); border-radius: 60% 60% 30% 30%; }
+.plane-wing-hero { position: absolute; top: 70px; width: 90px; height: 70px; background: linear-gradient(to bottom, #cbd5e1 0%, #64748b 60%, #334155 100%); box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+.plane-wing-hero.left  { left: 0; clip-path: polygon(100% 0%, 100% 100%, 20% 100%, 0% 70%); }
+.plane-wing-hero.right { right: 0; clip-path: polygon(0% 0%, 100% 70%, 80% 100%, 0% 100%); }
+.plane-tailfin-hero { position: absolute; top: 150px; left: 50%; transform: translateX(-50%); width: 12px; height: 30px; background: linear-gradient(to bottom, #475569, #1e293b); clip-path: polygon(0% 100%, 50% 0%, 100% 100%); }
+.plane-engine-hero { position: absolute; top: 180px; width: 12px; height: 18px; background: radial-gradient(ellipse at top, #fff5b0 0%, #ffaa33 35%, #ff5500 70%, transparent 100%); border-radius: 50%; box-shadow: 0 0 16px #ff7700, 0 0 30px rgba(255, 120, 0, 0.6); animation: engineGlow 0.25s ease-in-out infinite alternate; }
+.plane-engine-hero.left { left: 38%; } .plane-engine-hero.right { right: 38%; }
+@keyframes engineGlow { from { opacity: 0.6; transform: scaleY(0.8); } to { opacity: 1; transform: scaleY(1.4); } }
+.plane-flight-tagline { position: absolute; top: 18%; left: 50%; transform: translateX(-50%); text-align: center; opacity: 0; }
+#scene-plane-flight.active .plane-flight-tagline { animation: fadeIn 0.7s ease forwards 1.5s; }
+.plane-flight-tagline .pre { font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 8px; color: #1e3a8a; opacity: 0.7; margin-bottom: 8px; }
+.plane-flight-tagline h2 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(36px, 6vw, 64px); letter-spacing: 6px; color: #fff; text-shadow: 0 6px 22px rgba(0,30,80,0.5), 0 0 24px rgba(255,255,255,0.4); }
+
+/* ============== SCENE 12: MULTIPLAYER ============== */
+#scene-multiplayer { background: linear-gradient(to bottom, #1a0a2e 0%, #2a1a4e 50%, #0a0518 100%); }
+.mp-stage { position: absolute; top: 22%; bottom: 16%; left: 50%; transform: translateX(-50%); display: flex; gap: 28px; }
+.mp-side {
+    width: 360px;
+    background: linear-gradient(135deg, var(--c1, rgba(231,76,60,0.18)), var(--c2, rgba(192,57,43,0.18)));
+    border: 3px solid var(--bord, #e74c3c);
+    border-radius: 18px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.5), 0 0 30px var(--glow, rgba(231,76,60,0.25));
+    opacity: 0; transform: translateX(var(--from, -100px));
+    display: flex; flex-direction: column; gap: 14px;
+}
+#scene-multiplayer.active .mp-side.p1 { animation: mpSideIn 0.7s cubic-bezier(.2,.9,.2,1) forwards 0.4s; }
+#scene-multiplayer.active .mp-side.p2 { animation: mpSideIn 0.7s cubic-bezier(.2,.9,.2,1) forwards 0.6s; }
+@keyframes mpSideIn { to { opacity: 1; transform: translateX(0); } }
+.mp-side .badge { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 3px; color: #fff; opacity: 0.85; }
+.mp-side .player-car { width: 80px; height: 70px; margin: 0 auto; border-radius: 12px; background-image: linear-gradient(135deg, var(--carc1), var(--carc2)); border: 2px solid rgba(255,255,255,0.25); box-shadow: 0 4px 14px rgba(0,0,0,0.5); position: relative; }
+.mp-side .player-car::after { content: ''; position: absolute; top: 14px; left: 14px; right: 14px; height: 22px; background: linear-gradient(to bottom, #1a1a2e, #2c3e50); border-radius: 4px; border: 2px solid #333; }
+.mp-side .qword { font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900; color: #fff; letter-spacing: 2px; }
+.mp-side .answers { display: flex; gap: 8px; justify-content: center; }
+.mp-side .answers .a { padding: 8px 14px; border-radius: 8px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); font-family: 'Orbitron', sans-serif; font-size: 14px; color: #fff; }
+.mp-side .keys { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--bord); }
+.mp-side.p1 { --c1: rgba(231,76,60,0.18); --c2: rgba(192,57,43,0.12); --bord: #e74c3c; --glow: rgba(231,76,60,0.3); --carc1: #e74c3c; --carc2: #c0392b; --from: -120px; }
+.mp-side.p2 { --c1: rgba(52,152,219,0.18); --c2: rgba(41,128,185,0.12); --bord: #3498db; --glow: rgba(52,152,219,0.3); --carc1: #3498db; --carc2: #2980b9; --from: 120px; }
+.mp-divider { width: 4px; align-self: stretch; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3) 30%, rgba(255,255,255,0.3) 70%, transparent); border-radius: 4px; }
+
+/* ============== SCENE 13: TUTORIAL + STATS + BADGES ============== */
+#scene-extras { background: linear-gradient(135deg, #0f0e2a 0%, #1f1d4a 50%, #2c1858 100%); }
+.extras-grid { position: absolute; top: 22%; bottom: 14%; left: 50%; transform: translateX(-50%); width: 92%; max-width: 1150px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.extra-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 2px solid var(--bord, rgba(255,255,255,0.18));
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 14px 36px rgba(0,0,0,0.4);
+    opacity: 0; transform: translateY(40px) scale(0.95);
+    display: flex; flex-direction: column; gap: 14px;
+}
+#scene-extras.active .extra-card:nth-child(1) { animation: laneIn 0.6s cubic-bezier(.2,.9,.2,1) forwards 0.4s; }
+#scene-extras.active .extra-card:nth-child(2) { animation: laneIn 0.6s cubic-bezier(.2,.9,.2,1) forwards 0.6s; }
+#scene-extras.active .extra-card:nth-child(3) { animation: laneIn 0.6s cubic-bezier(.2,.9,.2,1) forwards 0.8s; }
+.extra-card .ico { font-size: 60px; }
+.extra-card .name { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 3px; color: #fff; }
+.extra-card .desc { color: #cbd5e1; font-size: 14px; line-height: 1.5; }
+.extra-card.tut { --bord: rgba(34, 197, 94, 0.5); }
+.extra-card.stats { --bord: rgba(56, 189, 248, 0.5); }
+.extra-card.badges { --bord: rgba(251, 191, 36, 0.5); }
+
+/* mini stat bars */
+.stat-bar { display: flex; align-items: center; gap: 10px; }
+.stat-bar .label { width: 90px; font-family: 'Orbitron', sans-serif; font-size: 11px; color: #cbd5e1; letter-spacing: 1px; }
+.stat-bar .track { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+.stat-bar .fill { height: 100%; background: linear-gradient(to right, #38bdf8, #818cf8); border-radius: 4px; transform-origin: left; transform: scaleX(0); animation: statFill 1.2s ease-out forwards 1.0s; }
+@keyframes statFill { to { transform: scaleX(var(--w, 0.7)); } }
+.stat-bar .val { font-family: 'Orbitron', sans-serif; font-size: 12px; color: #fff; min-width: 36px; text-align: right; }
+
+/* mini badge grid */
+.badge-mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.badge-mini { aspect-ratio: 1; background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.1)); border: 1px solid rgba(251,191,36,0.4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.badge-mini.locked { opacity: 0.3; filter: grayscale(0.7); }
+
+/* ============== SCENE 14: GIFT CODES ============== */
+#scene-codes { background: radial-gradient(ellipse at center, #1f0938 0%, #0a0118 70%, #000 100%); }
+.codes-title { position: absolute; top: 14%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(28px, 4.5vw, 48px); letter-spacing: 6px; color: #fde047; text-shadow: 0 0 24px rgba(253,224,71,0.4); opacity: 0; }
+#scene-codes.active .codes-title { animation: fadeIn 0.6s ease forwards 0.3s; }
+.codes-list { position: absolute; top: 28%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 14px; }
+.code-row {
+    background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(245,158,11,0.1));
+    border: 2px solid rgba(251, 191, 36, 0.5);
+    border-radius: 12px;
+    padding: 14px 36px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(18px, 2vw, 24px);
+    letter-spacing: 5px;
+    color: #fff;
+    text-shadow: 0 0 16px rgba(253, 224, 71, 0.5);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.4), 0 0 30px rgba(251,191,36,0.2);
+    opacity: 0; transform: translateX(-60px);
+    text-align: center;
+}
+#scene-codes.active .code-row:nth-child(1) { animation: codeIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 0.7s; }
+#scene-codes.active .code-row:nth-child(2) { animation: codeIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 0.95s; }
+#scene-codes.active .code-row:nth-child(3) { animation: codeIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 1.2s; }
+#scene-codes.active .code-row:nth-child(4) { animation: codeIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 1.45s; }
+#scene-codes.active .code-row:nth-child(5) { animation: codeIn 0.5s cubic-bezier(.2,.9,.2,1) forwards 1.7s; }
+@keyframes codeIn { to { opacity: 1; transform: translateX(0); } }
+.codes-cta-note { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 3px; color: #93c5fd; opacity: 0; }
+#scene-codes.active .codes-cta-note { animation: fadeIn 0.6s ease forwards 2.0s; }
+
+/* ============== SCENE 15: FINAL CTA ============== */
+#scene-cta { background: radial-gradient(ellipse at center, #1e1b4b 0%, #0a0918 70%, #000 100%); }
+.cta-block { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 90%; max-width: 880px; }
+.cta-block h1 { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(36px, 6.5vw, 84px); letter-spacing: 5px; background: linear-gradient(135deg, #fde047 0%, #ff9933 35%, #f43f5e 70%, #c026d3 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 80px rgba(255, 200, 100, 0.4); margin-bottom: 8px; opacity: 0; }
+#scene-cta.active .cta-block h1 { animation: ctaTitleIn 0.8s cubic-bezier(.2,1.2,.3,1) forwards 0.3s; }
+@keyframes ctaTitleIn { from { opacity: 0; transform: scale(0.8); filter: blur(8px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
+.cta-tagline { font-family: 'Orbitron', sans-serif; font-size: clamp(13px, 1.4vw, 18px); letter-spacing: 8px; color: #fff; opacity: 0; margin-bottom: 36px; }
+#scene-cta.active .cta-tagline { animation: fadeIn 0.6s ease forwards 1.0s; }
+.cta-button {
+    display: inline-block;
+    padding: 22px 56px;
+    background: linear-gradient(135deg, #f97316 0%, #dc2626 100%);
+    color: #fff;
+    border-radius: 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(20px, 2.2vw, 28px);
+    letter-spacing: 6px;
+    text-decoration: none;
+    box-shadow: 0 16px 50px rgba(249, 115, 22, 0.55), 0 0 80px rgba(220, 38, 38, 0.4);
+    opacity: 0; transform: translateY(20px);
+}
+.cta-button::before { content: '▶  '; }
+#scene-cta.active .cta-button { animation: ctaButtonIn 0.7s cubic-bezier(.2,1.2,.3,1) forwards 1.4s, ctaPulse 2.4s ease-in-out infinite 2.1s; }
+@keyframes ctaButtonIn { to { opacity: 1; transform: translateY(0); } }
+@keyframes ctaPulse { 0%,100% { box-shadow: 0 16px 50px rgba(249,115,22,0.55), 0 0 80px rgba(220,38,38,0.4); } 50% { box-shadow: 0 18px 60px rgba(249,115,22,0.75), 0 0 120px rgba(220,38,38,0.6); } }
+.confetti { position: absolute; width: 8px; height: 12px; background: var(--c, #fde047); top: -20px; pointer-events: none; animation: confettiFall 3.5s linear infinite; will-change: transform; }
+@keyframes confettiFall { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(110vh) rotate(720deg); } }
+
+</style>
+</head>
+<body>
+
+<!-- =============== START SCREEN =============== -->
+<div id="start-screen">
+    <div class="pre-title">OFFICIAL RELEASE TRAILER</div>
+    <h1>Number Rails Racing 3D</h1>
+    <p>Sit back - this is a full guided tour of every feature in the game. With music, lots of animations, and all 5 launch gift codes at the end.</p>
+    <button id="play-btn">PLAY TRAILER</button>
+    <div id="sound-hint">🔊 Sound on for the full effect</div>
+</div>
+
+<div id="topbar">
+    <div id="chapter-label">CHAPTER 1 / 15</div>
+    <div style="display: flex; gap: 8px;">
+        <button id="mute-btn">🔊 MUTE</button>
+        <button id="replay-btn">↻ REPLAY</button>
+    </div>
+</div>
+
+<div id="stage">
+
+    <!-- SCENE 1: Cold open + logo -->
+    <div class="scene" id="scene-intro">
+        <div class="starfield"></div>
+        <div id="warp-lines"></div>
+        <div class="logo-glow-ring"></div>
+        <div id="logo-card">
+            <div class="preword">- OFFICIAL RELEASE -</div>
+            <h1>NUMBER RAILS<br>RACING 3D</h1>
+            <div class="subtitle">LEARN AT FULL SPEED</div>
+        </div>
+    </div>
+
+    <!-- SCENE 2: Premise -->
+    <div class="scene" id="scene-premise">
+        <div class="starfield"></div>
+        <div class="scene-title-overlay">THE <span class="accent">PREMISE</span></div>
+        <div class="q-card-large">
+            <div class="label">TRANSLATE</div>
+            <div class="word">cinquante</div>
+            <div class="timer">⏱ 4.3s</div>
+        </div>
+        <div class="lanes-row">
+            <div class="lane-box l1">40</div>
+            <div class="lane-box l2">50</div>
+            <div class="lane-box l3">60</div>
+        </div>
+    </div>
+
+    <!-- SCENE 3: 8 game modes -->
+    <div class="scene" id="scene-modes">
+        <div class="scene-title-overlay">8 GAME <span class="accent">MODES</span></div>
+        <div class="modes-grid">
+            <div class="mode-card"><div class="ico">🇩🇪→🇫🇷</div><div class="name">NUM DE→FR</div><div class="desc">German numbers → French</div></div>
+            <div class="mode-card"><div class="ico">🇫🇷→🇩🇪</div><div class="name">NUM FR→DE</div><div class="desc">French numbers → German</div></div>
+            <div class="mode-card"><div class="ico">📖</div><div class="name">VOCAB DE→FR</div><div class="desc">220+ vocabulary words</div></div>
+            <div class="mode-card"><div class="ico">📚</div><div class="name">VOCAB FR→DE</div><div class="desc">220+ vocabulary words</div></div>
+            <div class="mode-card"><div class="ico">✖️</div><div class="name">1×1 EASY</div><div class="desc">Multiplication 1–5</div></div>
+            <div class="mode-card"><div class="ico">✖️</div><div class="name">1×1 MEDIUM</div><div class="desc">Multiplication 1–10</div></div>
+            <div class="mode-card"><div class="ico">✖️</div><div class="name">1×1 HARD</div><div class="desc">Multiplication 1–20</div></div>
+            <div class="mode-card mix"><div class="ico">🌀</div><div class="name">MIXMODE</div><div class="desc">All modes combined!</div></div>
+        </div>
+    </div>
+
+    <!-- SCENE 4: Cars -->
+    <div class="scene" id="scene-cars">
+        <div class="scene-title-overlay">39 <span class="accent">CARS</span> TO COLLECT</div>
+        <div class="cars-category-label" id="cars-cat-label">STARTER</div>
+        <div class="cars-flex" id="cars-flex"></div>
+        <div class="car-count-banner"><span class="num">39</span> CARS</div>
+    </div>
+
+    <!-- SCENE 5: Garage / upgrades -->
+    <div class="scene" id="scene-garage">
+        <div class="scene-title-overlay">CAR <span class="accent">GARAGE</span> - UPGRADE EVERY RIDE</div>
+        <div class="garage-floor"></div>
+        <div class="garage-stage">
+            <div class="garage-build before" style="--c1:#374151; --c2:#1f2937;">
+                <div class="car-large"><div class="body" style="background: linear-gradient(to bottom, #f39c12, #e67e22);"></div></div>
+                <div class="name">STOCK</div>
+                <div class="stats">+0.00 / answer</div>
+            </div>
+            <div class="garage-arrow">→</div>
+            <div class="garage-build after" style="--c1:#1e3a8a; --c2:#172554;">
+                <div class="car-large"><div class="body" style="background: linear-gradient(to bottom, #fde047, #f97316); box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 -3px 0 rgba(0,0,0,0.4), 0 0 20px rgba(56,189,248,0.4);"></div></div>
+                <div class="name">FULL BUILD</div>
+                <div class="stats">+3.75 / answer</div>
+            </div>
+        </div>
+        <div class="upgrade-bullets">
+            <div class="ub">🛞 TIRES +5</div>
+            <div class="ub">🦅 SPOILER +5</div>
+            <div class="ub">🪟 WINDOWS +5</div>
+        </div>
+    </div>
+
+    <!-- SCENE 6: Biomes -->
+    <div class="scene" id="scene-biomes">
+        <div class="scene-title-overlay" style="z-index: 5;">7 <span class="accent">BIOMES</span></div>
+        <div class="biome-card bc-day"    data-biome="day"><div class="biome-icon">☀️</div><div class="biome-name">DAY</div></div>
+        <div class="biome-card bc-night"  data-biome="night"><div class="biome-icon">🌙</div><div class="biome-name">NIGHT</div></div>
+        <div class="biome-card bc-desert" data-biome="desert"><div class="biome-icon">🏜️</div><div class="biome-name">DESERT</div></div>
+        <div class="biome-card bc-snow"   data-biome="snow"><div class="biome-icon">❄️</div><div class="biome-name">SNOW</div></div>
+        <div class="biome-card bc-space"  data-biome="space"><div class="biome-icon">🚀</div><div class="biome-name">SPACE</div></div>
+        <div class="biome-card bc-jungle" data-biome="jungle"><div class="biome-icon">🌴</div><div class="biome-name">JUNGLE</div></div>
+        <div class="biome-card bc-royal"  data-biome="royal"><div class="biome-icon">👑</div><div class="biome-name">ROYAL</div></div>
+    </div>
+
+    <!-- SCENE 7: Weather -->
+    <div class="scene" id="scene-weather">
+        <div class="scene-title-overlay"><span class="accent">DYNAMIC</span> WEATHER</div>
+        <div class="weather-grid">
+            <div class="weather-tile rain"><div class="label">RAIN</div></div>
+            <div class="weather-tile storm"><div class="lightning"></div><div class="label">STORM</div></div>
+            <div class="weather-tile fog"><div class="label">FOG</div></div>
+        </div>
+    </div>
+
+    <!-- SCENE 8: Power-ups -->
+    <div class="scene" id="scene-powerups">
+        <div class="scene-title-overlay">IN-RUN <span class="accent">POWER-UPS</span></div>
+        <div class="powerup-row">
+            <div class="powerup-tile skip">
+                <div class="ico">⏭️</div>
+                <div class="name">SKIP</div>
+                <div class="desc">Skip a tough question instantly</div>
+            </div>
+            <div class="powerup-tile slow">
+                <div class="ico">⏰</div>
+                <div class="name">SLOW TIME</div>
+                <div class="desc">Cut speed in half for 5 seconds</div>
+            </div>
+            <div class="powerup-tile coin">
+                <div class="ico">🪙</div>
+                <div class="name">COIN BOOST</div>
+                <div class="desc">Next correct answer = bonus coins</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 9: Mystery box -->
+    <div class="scene" id="scene-mystery">
+        <div class="starfield"></div>
+        <div class="scene-title-overlay"><span class="accent">MYSTERY</span> BOX</div>
+        <div class="mystery-stage">
+            <div class="mystery-box"><div class="mystery-question">?</div></div>
+            <div class="mystery-burst"></div>
+            <div class="mystery-reveal">
+                <div class="label">LEGENDARY!</div>
+                <div class="icon">🏆</div>
+                <div class="name">GALAXY CRUISER</div>
+                <div class="sub">added to your garage</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 10: Planes lineup -->
+    <div class="scene" id="scene-planes-lineup">
+        <div class="scene-title-overlay">12 <span class="accent">AIRCRAFT</span> · NEW PLANE SHOP</div>
+        <div class="lineup-grid">
+            <div class="lineup-card"><div class="ico">📄</div><div class="lbl">PAPER PLANE</div></div>
+            <div class="lineup-card"><div class="ico">🛩️</div><div class="lbl">RED BARON</div></div>
+            <div class="lineup-card"><div class="ico">✈️</div><div class="lbl">SPITFIRE</div></div>
+            <div class="lineup-card"><div class="ico">🚜</div><div class="lbl">CROP DUSTER</div></div>
+            <div class="lineup-card"><div class="ico">⚡</div><div class="lbl">LIGHTNING JET</div></div>
+            <div class="lineup-card"><div class="ico">🌊</div><div class="lbl">SEAPLANE</div></div>
+            <div class="lineup-card"><div class="ico">🛬</div><div class="lbl">CARGO HAULER</div></div>
+            <div class="lineup-card"><div class="ico">🛫</div><div class="lbl">AIRLINER</div></div>
+            <div class="lineup-card"><div class="ico">💨</div><div class="lbl">CONCORDE</div></div>
+            <div class="lineup-card"><div class="ico">🌑</div><div class="lbl">F-117</div></div>
+            <div class="lineup-card"><div class="ico">🦇</div><div class="lbl">B-2 STEALTH</div></div>
+            <div class="lineup-card"><div class="ico">🚀</div><div class="lbl">SPACE SHUTTLE</div></div>
+        </div>
+        <div class="lineup-count-banner"><span class="num">12</span> PLANES</div>
+    </div>
+
+    <!-- SCENE 11: Plane flight -->
+    <div class="scene" id="scene-plane-flight">
+        <div id="plane-clouds"></div>
+        <div class="plane-hero">
+            <div class="plane-wing-hero left"></div>
+            <div class="plane-wing-hero right"></div>
+            <div class="plane-fuselage-hero"></div>
+            <div class="plane-nose-hero"></div>
+            <div class="plane-cockpit-hero"></div>
+            <div class="plane-tailfin-hero"></div>
+            <div class="plane-engine-hero left"></div>
+            <div class="plane-engine-hero right"></div>
+        </div>
+        <div class="plane-flight-tagline">
+            <div class="pre">FLY OVER THE CLOUDS</div>
+            <h2>TAKE TO THE SKIES</h2>
+        </div>
+    </div>
+
+    <!-- SCENE 12: Multiplayer -->
+    <div class="scene" id="scene-multiplayer">
+        <div class="scene-title-overlay">2-PLAYER <span class="accent">SPLIT-SCREEN</span></div>
+        <div class="mp-stage">
+            <div class="mp-side p1">
+                <div class="badge">PLAYER 1 - KEYBOARD</div>
+                <div class="player-car"></div>
+                <div class="qword">drei</div>
+                <div class="answers"><div class="a">2</div><div class="a">3</div><div class="a">4</div></div>
+                <div class="keys">A · W · D</div>
+            </div>
+            <div class="mp-divider"></div>
+            <div class="mp-side p2">
+                <div class="badge">PLAYER 2 - MOUSE</div>
+                <div class="player-car"></div>
+                <div class="qword">vier</div>
+                <div class="answers"><div class="a">3</div><div class="a">4</div><div class="a">5</div></div>
+                <div class="keys">CLICK</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 13: Tutorial + Stats + Badges -->
+    <div class="scene" id="scene-extras">
+        <div class="scene-title-overlay"><span class="accent">PLUS</span> A WHOLE LOT MORE</div>
+        <div class="extras-grid">
+            <div class="extra-card tut">
+                <div class="ico">📚</div>
+                <div class="name">REAL TUTORIAL</div>
+                <div class="desc">A guided walkthrough teaches new players the lanes, timer, and answer system before they jump in.</div>
+            </div>
+            <div class="extra-card stats">
+                <div class="ico">📊</div>
+                <div class="name">LIVE STATS</div>
+                <div class="desc" style="margin-bottom: 10px;">Track everything you do - and watch the numbers climb.</div>
+                <div class="stat-bar"><span class="label">GAMES</span><div class="track"><div class="fill" style="--w:0.85;"></div></div><span class="val">128</span></div>
+                <div class="stat-bar"><span class="label">CORRECT</span><div class="track"><div class="fill" style="--w:0.92;"></div></div><span class="val">2114</span></div>
+                <div class="stat-bar"><span class="label">ACCURACY</span><div class="track"><div class="fill" style="--w:0.88;"></div></div><span class="val">88%</span></div>
+            </div>
+            <div class="extra-card badges">
+                <div class="ico">🏆</div>
+                <div class="name">25 BADGES</div>
+                <div class="desc">Unlock achievements as you play - milestones for games, scores, coins, and combos.</div>
+                <div class="badge-mini-grid">
+                    <div class="badge-mini">🎮</div>
+                    <div class="badge-mini">⭐</div>
+                    <div class="badge-mini">🪙</div>
+                    <div class="badge-mini">🚗</div>
+                    <div class="badge-mini">🔥</div>
+                    <div class="badge-mini">🌩️</div>
+                    <div class="badge-mini locked">🔒</div>
+                    <div class="badge-mini locked">🔒</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 14: Gift codes -->
+    <div class="scene" id="scene-codes">
+        <div class="codes-title">🎁 5 LAUNCH GIFT CODES</div>
+        <div class="codes-list">
+            <div class="code-row">9HBX · UHUD · UF6W</div>
+            <div class="code-row">Q28V · 7YHD · GF8H</div>
+            <div class="code-row">SFFP · 77VM · MKZP</div>
+            <div class="code-row">8SUE · 9BRY · 7HT7</div>
+            <div class="code-row">734Z · MCKR · NX5</div>
+        </div>
+        <div class="codes-cta-note">Redeem each one inside the game · One use per profile</div>
+    </div>
+
+    <!-- SCENE 15: Final CTA -->
+    <div class="scene" id="scene-cta">
+        <div class="starfield"></div>
+        <div id="cta-confetti"></div>
+        <div class="cta-block">
+            <h1>NUMBER RAILS<br>RACING 3D</h1>
+            <div class="cta-tagline">- OUT NOW -</div>
+            <a class="cta-button" id="cta-play" href="../index.html">PLAY NOW</a>
+        </div>
+    </div>
+
+</div>
+
+<div class="letterbox top"></div>
+<div class="letterbox bottom"></div>
+<div class="vignette"></div>
+<div id="progress"></div>
+
+<script>
+/* =================================================================
+   TIMELINE - each scene's duration in ms.
+   Total ≈ 102 seconds.
+================================================================= */
+const TIMELINE = [
+    { id: 'scene-intro',          title: 'OPENING',     duration: 5500 },
+    { id: 'scene-premise',        title: 'PREMISE',     duration: 5500 },
+    { id: 'scene-modes',          title: 'MODES',       duration: 7000 },
+    { id: 'scene-cars',           title: 'CARS',        duration: 11500 },
+    { id: 'scene-garage',         title: 'GARAGE',      duration: 6500 },
+    { id: 'scene-biomes',         title: 'BIOMES',      duration: 8500 }, // 7 biomes × ~1.2s
+    { id: 'scene-weather',        title: 'WEATHER',     duration: 5000 },
+    { id: 'scene-powerups',       title: 'POWER-UPS',   duration: 5500 },
+    { id: 'scene-mystery',        title: 'MYSTERY BOX', duration: 6000 },
+    { id: 'scene-planes-lineup',  title: 'PLANES',      duration: 6000 },
+    { id: 'scene-plane-flight',   title: 'PLANE MODE',  duration: 5500 },
+    { id: 'scene-multiplayer',    title: 'MULTIPLAYER', duration: 5000 },
+    { id: 'scene-extras',         title: 'TUTORIAL · STATS · BADGES', duration: 7000 },
+    { id: 'scene-codes',          title: 'GIFT CODES',  duration: 6500 },
+    { id: 'scene-cta',            title: 'OUT NOW',     duration: 9000 }
+];
+const TOTAL_DURATION = TIMELINE.reduce((a, s) => a + s.duration, 0);
+
+let trailerStartTime = 0;
+let timeoutHandles = [];
+let progressInterval = null;
+let biomeCycleInterval = null;
+let carCategoryInterval = null;
+let musicCtx = null;
+let muted = false;
+let musicSchedulers = [];
+
+function clearAllTimers() {
+    timeoutHandles.forEach(h => clearTimeout(h));
+    timeoutHandles = [];
+    if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+    if (biomeCycleInterval) { clearInterval(biomeCycleInterval); biomeCycleInterval = null; }
+    if (carCategoryInterval) { clearInterval(carCategoryInterval); carCategoryInterval = null; }
+    musicSchedulers.forEach(h => clearTimeout(h));
+    musicSchedulers = [];
+}
+
+function activateScene(idx) {
+    document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+    if (idx < 0 || idx >= TIMELINE.length) return;
+    const sc = document.getElementById(TIMELINE[idx].id);
+    if (sc) sc.classList.add('active');
+
+    const lbl = document.getElementById('chapter-label');
+    if (lbl) lbl.textContent = `CHAPTER ${idx + 1} / ${TIMELINE.length} - ${TIMELINE[idx].title}`;
+
+    if (TIMELINE[idx].id === 'scene-biomes') startBiomeCycle();
+    else if (biomeCycleInterval) { clearInterval(biomeCycleInterval); biomeCycleInterval = null; }
+
+    if (TIMELINE[idx].id === 'scene-cars') startCarShow();
+    else if (carCategoryInterval) { clearInterval(carCategoryInterval); carCategoryInterval = null; }
+
+    if (TIMELINE[idx].id === 'scene-cta') spawnConfetti();
+}
+
+/* =================================================================
+   BIOME CYCLE (scene 6)
+================================================================= */
+function startBiomeCycle() {
+    const cards = document.querySelectorAll('#scene-biomes .biome-card');
+    let i = 0;
+    cards.forEach(c => c.classList.remove('active'));
+    cards[0].classList.add('active');
+    if (biomeCycleInterval) clearInterval(biomeCycleInterval);
+    biomeCycleInterval = setInterval(() => {
+        cards[i].classList.remove('active');
+        i = (i + 1) % cards.length;
+        cards[i].classList.add('active');
+    }, 1200);
+}
+
+/* =================================================================
+   CAR SHOW - cycle through categories with all 39 cars
+================================================================= */
+const CAR_CATEGORIES = [
+    {
+        name: 'STARTER',
+        cars: [
+            { n: 'Classic',   c1: '#f39c12', c2: '#e67e22' },
+            { n: 'Fiat 500',  c1: '#facc15', c2: '#ca8a04' },
+            { n: 'VW Beetle', c1: '#60a5fa', c2: '#1d4ed8' },
+            { n: 'Yellow Taxi', c1: '#fde047', c2: '#a16207' },
+            { n: 'Red Racer', c1: '#ef4444', c2: '#991b1b' },
+            { n: 'Pickup',    c1: '#84cc16', c2: '#3f6212' },
+            { n: 'Jeep',      c1: '#65a30d', c2: '#365314' }
+        ]
+    },
+    {
+        name: 'SPORT',
+        cars: [
+            { n: 'Drift King',  c1: '#06b6d4', c2: '#0e7490' },
+            { n: 'Porsche',     c1: '#fbbf24', c2: '#a16207' },
+            { n: 'Muscle',      c1: '#7c2d12', c2: '#431407' },
+            { n: 'Rally',       c1: '#3b82f6', c2: '#1e3a8a' },
+            { n: 'Hot Rod',     c1: '#dc2626', c2: '#7f1d1d' },
+            { n: 'Ferrari',     c1: '#dc2626', c2: '#991b1b' },
+            { n: 'McLaren',     c1: '#f97316', c2: '#9a3412' },
+            { n: 'Formula 1',   c1: '#dc2626', c2: '#1f2937' }
+        ]
+    },
+    {
+        name: 'LUXURY',
+        cars: [
+            { n: 'Tesla',       c1: '#f1f5f9', c2: '#94a3b8' },
+            { n: 'Lambo',       c1: '#facc15', c2: '#ca8a04' },
+            { n: 'Bugatti',     c1: '#1e3a8a', c2: '#0f172a' },
+            { n: 'Limousine',   c1: '#0f0f0f', c2: '#000' },
+            { n: 'Golden',      c1: '#fde047', c2: '#92400e' },
+            { n: 'Royal',       c1: '#a855f7', c2: '#581c87', legendary: true },
+            { n: 'Diamond',     c1: '#67e8f9', c2: '#0e7490' }
+        ]
+    },
+    {
+        name: 'SPECIAL',
+        cars: [
+            { n: 'Police',      c1: '#1e3a8a', c2: '#0f172a' },
+            { n: 'Ambulance',   c1: '#f1f5f9', c2: '#94a3b8' },
+            { n: 'Fire Truck',  c1: '#dc2626', c2: '#7f1d1d' },
+            { n: 'Army Jeep',   c1: '#3f4a23', c2: '#1c2410' },
+            { n: 'School Bus',  c1: '#fde047', c2: '#a16207' },
+            { n: 'Monster',     c1: '#84cc16', c2: '#3f6212' },
+            { n: 'Ice Cream',   c1: '#fbcfe8', c2: '#ec4899' },
+            { n: 'Easter',      c1: '#f9a8d4', c2: '#be185d' }
+        ]
+    },
+    {
+        name: 'LEGENDARY',
+        cars: [
+            { n: 'Neon',        c1: '#ec4899', c2: '#7e22ce', legendary: true },
+            { n: 'Flame',       c1: '#f97316', c2: '#7c2d12', legendary: true },
+            { n: 'Stealth',     c1: '#1f2937', c2: '#000', legendary: true },
+            { n: 'Ice Racer',   c1: '#67e8f9', c2: '#155e75', legendary: true },
+            { n: 'Galaxy',      c1: '#8b5cf6', c2: '#2e1065', legendary: true },
+            { n: 'Cybertruck',  c1: '#94a3b8', c2: '#1e293b', legendary: true },
+            { n: 'Rainbow',     c1: '#f97316', c2: '#7c3aed', legendary: true },
+            { n: 'Dark Knight', c1: '#1f2937', c2: '#000', legendary: true },
+            { n: 'UFO',         c1: '#22d3ee', c2: '#7e22ce', legendary: true }
+        ]
+    }
+];
+
+function buildCarsForCategory(idx) {
+    const cont = document.getElementById('cars-flex');
+    if (!cont) return;
+    cont.innerHTML = '';
+    const cat = CAR_CATEGORIES[idx];
+    document.getElementById('cars-cat-label').textContent = cat.name;
+    cat.cars.forEach((car, i) => {
+        const el = document.createElement('div');
+        el.className = 'car-tile' + (car.legendary ? ' legendary' : '');
+        el.style.setProperty('--c1', car.c1);
+        el.style.setProperty('--c2', car.c2);
+        el.innerHTML = `<div class="body"></div><div class="lbl">${car.n}</div>`;
+        cont.appendChild(el);
+        // Stagger pop-in
+        setTimeout(() => el.classList.add('shown'), 60 * i);
+    });
+}
+
+function startCarShow() {
+    let i = 0;
+    const lbl = document.getElementById('cars-cat-label');
+    lbl.classList.add('shown');
+    buildCarsForCategory(i);
+    if (carCategoryInterval) clearInterval(carCategoryInterval);
+    carCategoryInterval = setInterval(() => {
+        i = (i + 1) % CAR_CATEGORIES.length;
+        buildCarsForCategory(i);
+    }, 2100);
+}
+
+/* =================================================================
+   PROGRESS BAR
+================================================================= */
+function startProgressBar() {
+    const bar = document.getElementById('progress');
+    bar.style.width = '0%';
+    if (progressInterval) clearInterval(progressInterval);
+    progressInterval = setInterval(() => {
+        const elapsed = Date.now() - trailerStartTime;
+        const pct = Math.min(100, (elapsed / TOTAL_DURATION) * 100);
+        bar.style.width = pct + '%';
+        if (pct >= 100) clearInterval(progressInterval);
+    }, 80);
+}
+
+/* =================================================================
+   DECOR SPAWNERS
+================================================================= */
+function spawnWarpLines() {
+    const host = document.getElementById('warp-lines');
+    if (!host) return;
+    host.innerHTML = '';
+    for (let i = 0; i < 70; i++) {
+        const w = document.createElement('div');
+        w.className = 'warp-line';
+        const ang = Math.random() * Math.PI * 2;
+        w.style.left = '50%';
+        w.style.top  = '50%';
+        w.style.transform = `translate(-50%, -50%) rotate(${ang}rad)`;
+        w.style.animationDelay = (-Math.random() * 1.4) + 's';
+        w.style.animationDuration = (0.9 + Math.random() * 0.7) + 's';
+        host.appendChild(w);
+    }
+}
+
+function spawnPlaneClouds() {
+    const host = document.getElementById('plane-clouds');
+    if (!host) return;
+    host.innerHTML = '';
+    for (let i = 0; i < 32; i++) {
+        const c = document.createElement('div');
+        c.className = 'cloud-zoom-fast';
+        const w = 120 + Math.random() * 220;
+        c.style.width  = w + 'px';
+        c.style.height = (w * 0.5) + 'px';
+        c.style.left = (Math.random() * 110 - 5) + '%';
+        c.style.animationDuration = (3 + Math.random() * 3.5) + 's';
+        c.style.animationDelay = (-Math.random() * 5) + 's';
+        host.appendChild(c);
+    }
+}
+
+function spawnConfetti() {
+    const host = document.getElementById('cta-confetti');
+    if (!host) return;
+    host.innerHTML = '';
+    const colors = ['#fde047', '#f97316', '#ef4444', '#ec4899', '#a855f7', '#22c55e', '#38bdf8'];
+    for (let i = 0; i < 70; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = (Math.random() * 100) + '%';
+        c.style.background = colors[i % colors.length];
+        c.style.animationDelay = (-Math.random() * 3.5) + 's';
+        c.style.animationDuration = (2.6 + Math.random() * 2.4) + 's';
+        host.appendChild(c);
+    }
+}
+
+/* =================================================================
+   PROCEDURAL MUSIC - Web Audio
+   124 BPM. Chord progression: Am – F – C – G (cycling).
+   Layers: bass · pad · arpeggio · kick · snare · hi-hat
+================================================================= */
+const BPM = 124;
+const SECS_PER_BEAT = 60 / BPM;          // ≈0.484s
+const BAR_BEATS = 4;
+const SECS_PER_BAR = SECS_PER_BEAT * BAR_BEATS;
+// 4 chords, 1 bar each → 4 bars per progression loop ≈ 7.74s
+
+const NOTE = (semis) => 440 * Math.pow(2, semis / 12);
+// Reference pitches (A4 = 440) - chords
+const CHORDS = [
+    // Am (root A2 = -24, third C3 = -21, fifth E3 = -17)
+    { name: 'Am', root: NOTE(-24), pad: [NOTE(-12), NOTE(-9), NOTE(-5)], arp: [-12, -9, -5, -9] },
+    // F  (root F2 = -28, third A2 = -24, fifth C3 = -21)
+    { name: 'F',  root: NOTE(-28), pad: [NOTE(-16), NOTE(-12), NOTE(-9)], arp: [-16, -12, -9, -12] },
+    // C  (root C2 = -33 too low; use C3 = -21 root)
+    { name: 'C',  root: NOTE(-21), pad: [NOTE(-9), NOTE(-5), NOTE(0)], arp: [-9, -5, 0, -5] },
+    // G  (root G2 = -26)
+    { name: 'G',  root: NOTE(-26), pad: [NOTE(-14), NOTE(-10), NOTE(-7)], arp: [-14, -10, -7, -10] }
+];
+
+function initAudio() {
+    if (musicCtx) return musicCtx;
+    musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return musicCtx;
+}
+
+function tone(ctx, dest, freq, startAt, dur, type='sine', peak=0.15, attack=0.005, release=0.15) {
+    const osc = ctx.createOscillator();
+    const env = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, startAt);
+    env.gain.setValueAtTime(0, startAt);
+    env.gain.linearRampToValueAtTime(peak, startAt + attack);
+    env.gain.linearRampToValueAtTime(peak * 0.6, startAt + dur * 0.5);
+    env.gain.exponentialRampToValueAtTime(0.0001, startAt + dur + release);
+    osc.connect(env); env.connect(dest);
+    osc.start(startAt); osc.stop(startAt + dur + release + 0.05);
+}
+
+function kick(ctx, dest, t) {
+    const osc = ctx.createOscillator();
+    const env = ctx.createGain();
+    osc.frequency.setValueAtTime(140, t);
+    osc.frequency.exponentialRampToValueAtTime(40, t + 0.1);
+    env.gain.setValueAtTime(0.6, t);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+    osc.connect(env); env.connect(dest);
+    osc.start(t); osc.stop(t + 0.22);
+}
+
+function noiseBuffer(ctx, dur) {
+    const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    return buf;
+}
+
+function snare(ctx, dest, t) {
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuffer(ctx, 0.18);
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.value = 1400;
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(0.32, t);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+    noise.connect(filter); filter.connect(env); env.connect(dest);
+    noise.start(t); noise.stop(t + 0.2);
+
+    // tonal body
+    const osc = ctx.createOscillator();
+    const oenv = ctx.createGain();
+    osc.frequency.setValueAtTime(220, t);
+    osc.frequency.exponentialRampToValueAtTime(140, t + 0.08);
+    oenv.gain.setValueAtTime(0.18, t);
+    oenv.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+    osc.connect(oenv); oenv.connect(dest);
+    osc.start(t); osc.stop(t + 0.12);
+}
+
+function hihat(ctx, dest, t, open=false) {
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuffer(ctx, open ? 0.18 : 0.05);
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.value = 7500;
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(open ? 0.13 : 0.09, t);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + (open ? 0.18 : 0.04));
+    noise.connect(filter); filter.connect(env); env.connect(dest);
+    noise.start(t); noise.stop(t + (open ? 0.2 : 0.06));
+}
+
+function startMusic() {
+    if (muted) return;
+    const ctx = initAudio();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    // Master chain
+    const master = ctx.createGain();
+    master.gain.value = 0.42;
+    const compressor = ctx.createDynamicsCompressor();
+    compressor.threshold.value = -16;
+    compressor.knee.value = 28;
+    compressor.ratio.value = 6;
+    compressor.attack.value = 0.005;
+    compressor.release.value = 0.18;
+    master.connect(compressor);
+    compressor.connect(ctx.destination);
+
+    // Per-layer gains for ducking / mixing
+    const drumBus = ctx.createGain(); drumBus.gain.value = 0.7; drumBus.connect(master);
+    const bassBus = ctx.createGain(); bassBus.gain.value = 0.55; bassBus.connect(master);
+    const padBus  = ctx.createGain(); padBus.gain.value = 0.32; padBus.connect(master);
+    const arpBus  = ctx.createGain(); arpBus.gain.value = 0.22; arpBus.connect(master);
+
+    // Subtle reverb-ish feedback delay on arp
+    const delay = ctx.createDelay(); delay.delayTime.value = SECS_PER_BEAT * 0.5;
+    const fb = ctx.createGain(); fb.gain.value = 0.3;
+    delay.connect(fb); fb.connect(delay); delay.connect(master);
+
+    const startTime = ctx.currentTime + 0.05;
+    const totalSeconds = TOTAL_DURATION / 1000;
+    const totalBars = Math.ceil(totalSeconds / SECS_PER_BAR) + 2;
+
+    // Intro: lower drums/bass for first 2 bars
+    function busForBar(bar) {
+        return {
+            drum: bar < 2 ? 0.35 : (bar >= totalBars - 4 ? 0.85 : 0.7),
+            bass: bar < 2 ? 0.25 : 0.55,
+            pad:  bar < 2 ? 0.45 : 0.32,
+            arp:  bar < 2 ? 0.0  : (bar < 4 ? 0.12 : 0.22)
+        };
+    }
+
+    for (let bar = 0; bar < totalBars; bar++) {
+        const chord = CHORDS[bar % CHORDS.length];
+        const t0 = startTime + bar * SECS_PER_BAR;
+        const buses = busForBar(bar);
+
+        // Schedule a gain change (smooth)
+        drumBus.gain.setValueAtTime(buses.drum, t0);
+        bassBus.gain.setValueAtTime(buses.bass, t0);
+        padBus.gain.setValueAtTime(buses.pad, t0);
+        arpBus.gain.setValueAtTime(buses.arp, t0);
+
+        // PAD - sustained chord (sine + triangle layers)
+        chord.pad.forEach(f => {
+            tone(ctx, padBus, f, t0, SECS_PER_BAR * 0.95, 'sine', 0.18, 0.6, 0.4);
+            tone(ctx, padBus, f * 1.005, t0, SECS_PER_BAR * 0.95, 'triangle', 0.10, 0.6, 0.4);
+        });
+
+        // BASS - root on each beat (1, 2, 3, 4) with slight emphasis on 1 and 3
+        for (let b = 0; b < 4; b++) {
+            const tb = t0 + b * SECS_PER_BEAT;
+            const peak = (b === 0 || b === 2) ? 0.45 : 0.28;
+            tone(ctx, bassBus, chord.root, tb, SECS_PER_BEAT * 0.9, 'sawtooth', peak, 0.005, 0.05);
+            tone(ctx, bassBus, chord.root * 0.5, tb, SECS_PER_BEAT * 0.9, 'sine', peak * 0.6, 0.005, 0.05);
+        }
+
+        // ARP - eight 8th notes cycling chord arp pattern
+        if (buses.arp > 0.001) {
+            const arpSeq = chord.arp; // 4 semitone offsets
+            for (let s = 0; s < 8; s++) {
+                const ts = t0 + s * (SECS_PER_BEAT / 2);
+                const semi = arpSeq[s % arpSeq.length] + 12; // up an octave
+                const f = NOTE(semi);
+                tone(ctx, delay, f, ts, SECS_PER_BEAT * 0.4, 'square', 0.14, 0.005, 0.05);
+            }
+        }
+
+        // DRUMS - kick on 1, 3 ; snare on 2, 4 ; closed hi-hat every 8th, open on 4&
+        if (bar >= 1) {
+            for (let b = 0; b < 4; b++) {
+                const tb = t0 + b * SECS_PER_BEAT;
+                if (b === 0 || b === 2) kick(ctx, drumBus, tb);
+                if (b === 1 || b === 3) snare(ctx, drumBus, tb);
+                hihat(ctx, drumBus, tb);
+                hihat(ctx, drumBus, tb + SECS_PER_BEAT / 2, b === 3); // open on the &-of-4
+            }
+            // Build crash on bar 2 and at 8-bar boundaries
+            if (bar % 8 === 0 && bar > 0) {
+                const crash = ctx.createBufferSource();
+                crash.buffer = noiseBuffer(ctx, 0.6);
+                const cf = ctx.createBiquadFilter();
+                cf.type = 'highpass';
+                cf.frequency.value = 5500;
+                const ce = ctx.createGain();
+                ce.gain.setValueAtTime(0.18, t0);
+                ce.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.6);
+                crash.connect(cf); cf.connect(ce); ce.connect(drumBus);
+                crash.start(t0); crash.stop(t0 + 0.65);
+            }
+        }
+    }
+}
+
+function stopMusic() {
+    if (musicCtx) {
+        try { musicCtx.close(); } catch(e) {}
+        musicCtx = null;
+    }
+}
+
+/* =================================================================
+   DRIVER
+================================================================= */
+function playTrailer() {
+    clearAllTimers();
+    stopMusic();
+    trailerStartTime = Date.now();
+    document.body.classList.add('playing');
+    document.getElementById('start-screen').classList.add('gone');
+    startProgressBar();
+    if (!muted) startMusic();
+
+    let acc = 0;
+    TIMELINE.forEach((s, idx) => {
+        timeoutHandles.push(setTimeout(() => activateScene(idx), acc));
+        acc += s.duration;
+    });
+}
+
+document.getElementById('play-btn').addEventListener('click', playTrailer);
+document.getElementById('replay-btn').addEventListener('click', () => {
+    clearAllTimers();
+    stopMusic();
+    document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+    document.body.classList.remove('playing');
+    void document.body.offsetWidth;
+    setTimeout(playTrailer, 30);
+});
+
+document.getElementById('mute-btn').addEventListener('click', (e) => {
+    muted = !muted;
+    e.target.textContent = muted ? '🔇 UNMUTE' : '🔊 MUTE';
+    if (muted) stopMusic();
+    else if (document.body.classList.contains('playing')) startMusic();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+        e.preventDefault();
+        if (!document.body.classList.contains('playing')) playTrailer();
+    } else if (e.code === 'KeyR') {
+        document.getElementById('replay-btn').click();
+    } else if (e.code === 'KeyM') {
+        document.getElementById('mute-btn').click();
+    }
+});
+
+spawnWarpLines();
+spawnPlaneClouds();
+</script>
+</body>
+</html>

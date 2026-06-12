@@ -1,0 +1,4 @@
+# Never commit secrets
+eleven_key.txt
+*.key
+.env

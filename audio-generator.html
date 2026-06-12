@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOSJE · Spelling-Bee Audio Generator (ElevenLabs)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; min-height: 100vh; background: #0f1729; color: #fff;
+        font-family: 'Segoe UI', system-ui, sans-serif; padding: 24px;
+        display: flex; flex-direction: column; align-items: center;
+    }
+    .box { width: 100%; max-width: 720px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    p.sub { color: rgba(255,255,255,0.55); margin: 0 0 20px; font-size: 14px; }
+    .card { background: #1b2845; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+    label { display: block; font-size: 12px; font-weight: 700; color: #93c5fd; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    input, select {
+        width: 100%; background: #233056; color: #fff; border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 10px; padding: 11px 12px; font-size: 15px; font-family: inherit;
+    }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: end; }
+    .row > div { flex: 1; min-width: 200px; }
+    button {
+        background: #58cc02; color: #fff; border: none; border-radius: 12px;
+        padding: 12px 20px; font-weight: 800; font-size: 15px; cursor: pointer;
+        box-shadow: 0 4px 0 #46a302; font-family: inherit;
+    }
+    button:disabled { background: #233056; box-shadow: 0 4px 0 rgba(0,0,0,0.3); color: rgba(255,255,255,0.4); cursor: default; }
+    button.alt { background: #1cb0f6; box-shadow: 0 4px 0 #1899d6; }
+    button:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+    .bar { height: 14px; background: #233056; border-radius: 8px; overflow: hidden; margin: 12px 0 6px; }
+    .bar > div { height: 100%; width: 0%; background: #ffc800; transition: width .2s; }
+    #log { background: #0c1322; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px; height: 200px; overflow-y: auto; font-family: ui-monospace, monospace; font-size: 12px; white-space: pre-wrap; }
+    .ok { color: #58cc02; } .err { color: #ff6b6b; } .muted { color: rgba(255,255,255,0.5); }
+    code { background: #0c1322; padding: 2px 6px; border-radius: 6px; }
+    a { color: #1cb0f6; }
+</style>
+</head>
+<body>
+<div class="box">
+    <h1>🐝 Spelling-Bee Audio Generator</h1>
+    <p class="sub">Generates one MP3 per French word with your ElevenLabs voice, then downloads a ZIP. Your API key stays in this browser and is sent only to ElevenLabs.</p>
+
+    <div class="card">
+        <label>1 · ElevenLabs API key</label>
+        <div class="row">
+            <div><input id="key" type="password" placeholder="paste your xi-api-key here" autocomplete="off"></div>
+            <button class="alt" onclick="loadVoices()">Load my voices</button>
+        </div>
+        <p class="sub" style="margin-top:8px;">Find it at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">elevenlabs.io → Settings → API Keys</a>. It's stored locally only.</p>
+    </div>
+
+    <div class="card">
+        <label>2 · Voice</label>
+        <select id="voice"><option value="">- load voices first -</option></select>
+        <p class="sub" style="margin-top:8px;">Auto-selects “Paul K” if it's in your library. Model: <code>eleven_multilingual_v2</code> (best for French).</p>
+    </div>
+
+    <div class="card">
+        <label>3 · Generate</label>
+        <div class="row">
+            <button id="go" onclick="generate()" disabled>Generate all clips → ZIP</button>
+            <button class="alt" onclick="testOne()" disabled id="testbtn">Test one word 🔊</button>
+        </div>
+        <div class="bar"><div id="prog"></div></div>
+        <div id="count" class="sub">0 / 0</div>
+        <div id="log"></div>
+    </div>
+
+    <div class="card">
+        <label>4 · Install</label>
+        <p class="sub" style="margin:0;">Unzip the downloaded <code>bee-audio.zip</code> into a folder named <code>audio</code> next to <code>index.html</code> (so the files end up at <code>NumberRailGame/audio/le_chien.mp3</code> …). The Spelling Bee will use them automatically; any missing word falls back to the browser voice.</p>
+    </div>
+</div>
+
+<script>
+// ---- Word list (matches the hub's FRENCH_VOCAB French side) ----
+const WORDS = ["le chien","le chat","la maison","l'école","le livre","la table","la chaise","la porte","la fenêtre","l'eau","le pain","le lait","la pomme","la voiture","le train","le vélo","l'avion","le bus","la rue","la ville","le village","la mer","la plage","la montagne","la forêt","le parc","le musée","l'église","le pont","le marché","la gare","le restaurant","rouge","bleu","vert","jaune","noir","blanc","gris","grand","petit","beau","bon","mauvais","chaud","froid","nouveau","vieux","jeune","facile","difficile","rapide","lent","content","fatigué","manger","boire","dormir","parler","lire","écrire","jouer","nager","courir","marcher","regarder","écouter","acheter","aimer","aller","venir","faire","voir","donner","prendre","un","deux","trois","quatre","cinq","six","sept","huit","neuf","dix","lundi","mardi","mercredi","jeudi","vendredi","samedi","dimanche","aujourd'hui","demain","hier","la mère","le père","le frère","la sœur","l'ami","le professeur","bonjour","merci","oui","non","s'il vous plaît","au revoir","la cathédrale","célèbre","le symbole","la promenade","la couleur","le palmier"];
+
+// ---- Slug must match the hub's beeSlug() exactly ----
+function stripAccents(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[‘’'`]/g,"'").trim(); }
+function slug(fr){ return stripAccents(fr).replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,''); }
+
+const $ = id => document.getElementById(id);
+function log(msg, cls){ const d=document.createElement('div'); if(cls)d.className=cls; d.textContent=msg; $('log').appendChild(d); $('log').scrollTop=$('log').scrollHeight; }
+
+try { $('key').value = localStorage.getItem('eleven_key') || ''; } catch(e){}
+$('key').addEventListener('input', () => { try { localStorage.setItem('eleven_key', $('key').value.trim()); } catch(e){} });
+
+async function loadVoices(){
+    const key = $('key').value.trim();
+    if(!key){ log('Enter your API key first.','err'); return; }
+    log('Loading voices…','muted');
+    try {
+        const r = await fetch('https://api.elevenlabs.io/v1/voices', { headers: { 'xi-api-key': key }});
+        if(!r.ok){ log('Failed to load voices: HTTP '+r.status+' '+(await r.text()).slice(0,200),'err'); return; }
+        const data = await r.json();
+        const sel = $('voice'); sel.innerHTML='';
+        data.voices.forEach(v => { const o=document.createElement('option'); o.value=v.voice_id; o.textContent=v.name; sel.appendChild(o); });
+        // auto-select Paul K
+        const paul = data.voices.find(v => /paul\s*k/i.test(v.name)) || data.voices.find(v => /paul/i.test(v.name));
+        if(paul) sel.value = paul.voice_id;
+        $('go').disabled = false; $('testbtn').disabled = false;
+        log('Loaded '+data.voices.length+' voices. '+(paul ? 'Selected "'+paul.name+'".' : 'Pick your French voice above.'), 'ok');
+    } catch(e){ log('Network/CORS error: '+e.message+'\nIf this keeps failing on file://, run this page from a local server.','err'); }
+}
+
+async function tts(key, voiceId, text){
+    const r = await fetch('https://api.elevenlabs.io/v1/text-to-speech/'+voiceId, {
+        method: 'POST',
+        headers: { 'xi-api-key': key, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+        body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.8 } })
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,160));
+    return await r.blob();
+}
+
+async function testOne(){
+    const key=$('key').value.trim(), voiceId=$('voice').value;
+    if(!key||!voiceId){ log('Need key + voice.','err'); return; }
+    try { const b = await tts(key, voiceId, 'le chat'); new Audio(URL.createObjectURL(b)).play(); log('Played a test of "le chat".','ok'); }
+    catch(e){ log('Test failed: '+e.message,'err'); }
+}
+
+async function generate(){
+    const key=$('key').value.trim(), voiceId=$('voice').value;
+    if(!key||!voiceId){ log('Need key + voice.','err'); return; }
+    $('go').disabled=true; $('testbtn').disabled=true;
+    const zip = new JSZip();
+    let done=0; const total=WORDS.length;
+    $('count').textContent = '0 / '+total;
+    for(const w of WORDS){
+        try {
+            const blob = await tts(key, voiceId, w);
+            zip.file(slug(w)+'.mp3', blob);
+            log('✓ '+w+'  →  '+slug(w)+'.mp3','ok');
+        } catch(e){
+            log('✗ '+w+'  ('+e.message+')','err');
+        }
+        done++; $('prog').style.width = Math.round(done/total*100)+'%'; $('count').textContent = done+' / '+total;
+        await new Promise(r=>setTimeout(r, 350)); // be gentle on rate limits
+    }
+    log('Zipping…','muted');
+    const out = await zip.generateAsync({ type:'blob' });
+    const a=document.createElement('a'); a.href=URL.createObjectURL(out); a.download='bee-audio.zip'; a.click();
+    log('Done! Downloaded bee-audio.zip - unzip it into an "audio" folder next to index.html.','ok');
+    $('go').disabled=false; $('testbtn').disabled=false;
+}
+</script>
+</body>
+</html>
