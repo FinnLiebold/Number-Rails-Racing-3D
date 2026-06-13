@@ -120,6 +120,8 @@
         .course-btn .ic { font-size: 20px; }
         .course-btn.active { border-color: var(--accent); background: rgba(88,204,2,0.12); box-shadow: 0 4px 14px rgba(88,204,2,0.18); }
         .course-btn.math.active { border-color: var(--blue); background: rgba(28,176,246,0.12); box-shadow: 0 4px 14px rgba(28,176,246,0.18); }
+        .course-btn.german.active { border-color: #ffc800; background: rgba(255,200,0,0.12); box-shadow: 0 4px 14px rgba(255,200,0,0.18); }
+        .course-btn.hidden { display: none; }
 
         /* ===== Lesson path ===== */
         #lesson-path, #pairs-path { max-width: 460px; margin: 0 auto; position: relative; padding-bottom: 20px; }
@@ -235,6 +237,57 @@
         .current-profile-card .cp-av { font-size: 56px; }
         .current-profile-card .cp-name { font-weight: 900; font-size: 22px; margin-top: 4px; }
         .current-profile-card .cp-xp { color: var(--gold); font-weight: 800; font-size: 14px; margin-top: 2px; }
+        .cp-action-btn {
+            margin-top: 12px; background: linear-gradient(135deg, #1cb0f6, #1899d6);
+            color: white; border: none; padding: 10px 18px; border-radius: 12px;
+            font-family: 'Nunito'; font-weight: 900; font-size: 14px; cursor: pointer;
+            box-shadow: 0 4px 0 #136e9b; letter-spacing: 0.5px;
+        }
+        .cp-action-btn:active { transform: translateY(2px); box-shadow: none; }
+
+        /* Wardrobe & Shop overlay */
+        #wardrobe-overlay { align-items: stretch; padding: 0; }
+        .wd-top {
+            padding: 14px 16px; display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg2); border-bottom: 1px solid var(--line); gap: 10px;
+        }
+        .wd-title { font-family: 'Orbitron'; font-weight: 900; font-size: 18px; flex: 1; }
+        .wd-gems { font-weight: 800; color: #1cb0f6; font-size: 16px; }
+        .wd-close {
+            background: var(--card); border: 1px solid var(--line); color: white;
+            padding: 8px 14px; border-radius: 10px; cursor: pointer; font-weight: 800;
+            font-family: 'Nunito';
+        }
+        .wd-scroll { overflow-y: auto; flex: 1; }
+        .wd-preview { padding: 18px; text-align: center; }
+        .wd-preview .wd-av {
+            display: inline-flex; padding: 18px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(28,176,246,0.25), transparent 70%);
+            animation: vosjeBreath 4s ease-in-out infinite;
+        }
+        .wd-tabs { display: flex; gap: 6px; padding: 0 12px 10px; overflow-x: auto; }
+        .wd-tab {
+            background: var(--card); border: 2px solid var(--line); color: rgba(255,255,255,0.7);
+            padding: 8px 14px; border-radius: 12px; cursor: pointer; font-weight: 800;
+            font-size: 13px; white-space: nowrap; font-family: 'Nunito';
+        }
+        .wd-tab.sel { border-color: var(--accent); color: var(--accent); background: rgba(88,204,2,0.1); }
+        .wd-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px; padding: 0 14px 24px;
+        }
+        .wd-item {
+            background: var(--card); border: 2px solid var(--line); border-radius: 14px;
+            padding: 10px 8px; text-align: center; cursor: pointer; transition: transform .12s, border-color .12s, box-shadow .14s;
+        }
+        .wd-item:hover { transform: translateY(-2px); }
+        .wd-item.eq { border-color: var(--accent); background: rgba(88,204,2,0.12); box-shadow: 0 0 16px rgba(88,204,2,0.35); }
+        .wd-item.owned { border-color: var(--gold); }
+        .wd-item-name { font-weight: 800; font-size: 12px; margin-top: 6px; }
+        .wd-item-price { font-size: 11px; color: #1cb0f6; font-weight: 800; margin-top: 4px; }
+        .wd-item-price.owned { color: var(--gold); }
+        .wd-item-price.eq { color: var(--accent); }
+        .wd-item.locked { opacity: 0.92; }
 
         .profile-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
         .profile-mini {
@@ -386,6 +439,28 @@
             cursor: pointer; transition: all .12s;
         }
         .av-opt.sel { border-color: var(--accent); background: rgba(88,204,2,0.15); transform: scale(1.08); }
+        /* Bundesland + Schulart grids inside create overlay */
+        .bl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
+        .bl-opt { background: var(--card); border: 2px solid var(--line); border-radius: 12px; padding: 8px 4px; text-align: center; cursor: pointer; transition: all .12s; }
+        .bl-opt:hover { transform: translateY(-2px); }
+        .bl-opt.sel { border-color: var(--accent); background: rgba(88,204,2,0.12); }
+        .bl-opt .bl-em { font-size: 22px; }
+        .bl-opt .bl-nm { font-size: 10px; font-weight: 800; margin-top: 2px; line-height: 1.05; }
+        .sa-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px; }
+        .sa-opt { background: var(--card); border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; text-align: left; cursor: pointer; transition: all .12s; display: flex; align-items: center; gap: 12px; }
+        .sa-opt:hover { transform: translateY(-2px); }
+        .sa-opt.sel { border-color: var(--accent); background: rgba(88,204,2,0.12); }
+        .sa-opt .sa-icon { font-size: 28px; }
+        .sa-opt .sa-name { font-weight: 900; font-size: 16px; }
+        .sa-opt .sa-desc { font-size: 12px; color: var(--txt-dim); margin-top: 2px; }
+        .step-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 14px; }
+        .step-dots .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); transition: all .15s; }
+        .step-dots .dot.active { background: var(--accent); transform: scale(1.2); }
+        .step-dots .dot.done { background: var(--accent); opacity: 0.6; }
+        .create-step { display: none; }
+        .create-step.active { display: block; animation: vosjeScreenIn .26s ease; }
+        .step-head { font-family: 'Orbitron'; font-weight: 900; font-size: 18px; text-align: center; margin-bottom: 4px; }
+        .step-sub { color: var(--txt-dim); font-size: 13px; text-align: center; margin-bottom: 14px; font-weight: 600; }
         #create-name {
             width: 100%; max-width: 300px; background: var(--card); border: 2px solid var(--line);
             color: white; padding: 12px 16px; border-radius: 14px; font-family: 'Nunito';
@@ -531,6 +606,303 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 3px rgba(255,255,255,0.06);
             image-rendering: auto;
         }
+    /* ==========================================================
+       VOSJE GFX ULTRA — animated background, glow, glass, motion
+       ========================================================== */
+    /* Living gradient-mesh background + starfield */
+    body::before {
+        content:''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+        background:
+            radial-gradient(ellipse 60% 50% at 18% 22%, rgba(88,204,2,0.22) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 55% at 82% 12%, rgba(165,96,255,0.26) 0%, transparent 60%),
+            radial-gradient(ellipse 65% 60% at 50% 92%, rgba(28,176,246,0.22) 0%, transparent 60%),
+            radial-gradient(ellipse 55% 50% at 88% 65%, rgba(255,200,0,0.14) 0%, transparent 55%);
+        animation: vosjeBgFlow 22s ease-in-out infinite alternate;
+        will-change: transform;
+    }
+    body::after {
+        content:''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+        background-image:
+            radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.7), transparent 55%),
+            radial-gradient(1.2px 1.2px at 78% 31%, rgba(255,255,255,0.55), transparent 55%),
+            radial-gradient(1px 1px at 33% 73%, rgba(255,255,255,0.6), transparent 55%),
+            radial-gradient(1.2px 1.2px at 84% 84%, rgba(255,255,255,0.45), transparent 55%),
+            radial-gradient(1px 1px at 22% 92%, rgba(255,255,255,0.55), transparent 55%),
+            radial-gradient(1.4px 1.4px at 65% 8%, rgba(255,255,255,0.65), transparent 55%),
+            radial-gradient(1px 1px at 45% 40%, rgba(255,255,255,0.4), transparent 55%),
+            radial-gradient(1.2px 1.2px at 8% 56%, rgba(255,255,255,0.55), transparent 55%),
+            radial-gradient(1px 1px at 94% 44%, rgba(255,255,255,0.5), transparent 55%);
+        animation: vosjeStars 4.5s ease-in-out infinite alternate;
+    }
+    @keyframes vosjeBgFlow {
+        0%   { transform: translate(0,0) scale(1); }
+        50%  { transform: translate(-2.5%, 1.5%) scale(1.06); }
+        100% { transform: translate(2%, -2%) scale(1.04); }
+    }
+    @keyframes vosjeStars { 0%{opacity:0.5;} 100%{opacity:1;} }
+
+    /* Glassy app header with shimmering title */
+    #app-header {
+        background: linear-gradient(180deg, rgba(22,33,62,0.82), rgba(15,23,41,0.45)) !important;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+    }
+    #app-title {
+        background-size: 250% auto;
+        animation: vosjeTitleShine 5s linear infinite;
+        text-shadow: 0 0 28px rgba(165,96,255,0.30), 0 2px 14px rgba(0,0,0,0.4);
+    }
+    @keyframes vosjeTitleShine {
+        0%   { background-position: 0% 50%; }
+        100% { background-position: 250% 50%; }
+    }
+    #header-profile { transition: transform .18s, box-shadow .22s; box-shadow: 0 4px 14px rgba(0,0,0,0.35); }
+    #header-profile:hover { transform: scale(1.05); box-shadow: 0 10px 26px rgba(0,0,0,0.5); }
+
+    /* Section headings with animated gradient underline */
+    .section-head { position: relative; padding-bottom: 8px; }
+    .section-head::after {
+        content:''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+        width: 46px; height: 2.5px; border-radius: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--blue), var(--purple), var(--accent));
+        background-size: 300% auto;
+        animation: vosjeTitleShine 4s linear infinite;
+    }
+
+    /* Course-select buttons — frosty + glow on active */
+    .course-btn { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: transform .15s, box-shadow .25s, border-color .2s, background .2s; }
+    .course-btn:hover { transform: translateY(-2px); }
+    .course-btn.active { box-shadow: 0 6px 18px rgba(88,204,2,0.28), 0 0 0 1px rgba(88,204,2,0.4); }
+    .course-btn.math.active { box-shadow: 0 6px 18px rgba(28,176,246,0.28), 0 0 0 1px rgba(28,176,246,0.4); }
+
+    /* Unit banners — shifting gradient + soft outer glow */
+    .unit-banner {
+        background-size: 220% auto;
+        animation: vosjeTitleShine 7s linear infinite;
+        box-shadow: 0 8px 22px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    /* Lesson path nodes — sparkles + halo on current, shimmer on done */
+    .lesson-node { transition: transform .15s; }
+    .lesson-node:hover:not(.locked) { transform: translateY(-3px) scale(1.04); }
+    .lesson-node.current {
+        box-shadow:
+            0 6px 0 var(--accent-d),
+            0 0 24px rgba(88,204,2,0.55),
+            0 0 48px rgba(88,204,2,0.30) !important;
+    }
+    #lesson-path.course-math .lesson-node.current,
+    #pairs-path.course-math .lesson-node.current {
+        box-shadow:
+            0 6px 0 var(--blue-d),
+            0 0 24px rgba(28,176,246,0.55),
+            0 0 48px rgba(28,176,246,0.30) !important;
+    }
+    .lesson-node.current::after {
+        content:'✨'; position: absolute; top: -10px; right: -10px;
+        font-size: 18px; pointer-events: none;
+        animation: vosjeSparkle 1.8s ease-in-out infinite;
+    }
+    @keyframes vosjeSparkle {
+        0%,100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+        50%     { transform: scale(1.35) rotate(18deg); opacity: 1; }
+    }
+    .lesson-node.done {
+        box-shadow: 0 6px 0 #c79500, 0 0 18px rgba(255,200,0,0.4) !important;
+        animation: vosjeDoneShimmer 3s ease-in-out infinite;
+    }
+    @keyframes vosjeDoneShimmer {
+        0%,100% { filter: brightness(1) hue-rotate(0deg); }
+        50%     { filter: brightness(1.1) hue-rotate(15deg); }
+    }
+
+    /* Game cards — glass + 3D-ish hover lift */
+    .game-card {
+        background: linear-gradient(135deg, rgba(35,48,86,0.7), rgba(27,40,69,0.6)) !important;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        transition: transform .25s cubic-bezier(.2,.85,.2,1), box-shadow .25s, border-color .2s !important;
+    }
+    .game-card:hover {
+        transform: translateY(-5px) scale(1.012);
+        box-shadow: 0 18px 44px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06) !important;
+    }
+    .gc-banner { position: relative; overflow: hidden; }
+    .gc-banner::after {
+        content:''; position: absolute; inset: 0;
+        background: radial-gradient(circle at 50% -20%, rgba(255,255,255,0.35), transparent 60%);
+        pointer-events: none;
+    }
+
+    /* Buttons — sweep highlight on hover */
+    .big-btn, .gc-play, .course-btn, #lesson-check, #bee-check, #bee-listen {
+        position: relative; overflow: hidden;
+    }
+    .big-btn::after, .gc-play::after, .course-btn::after,
+    #lesson-check:not(:disabled)::after, #bee-check:not(:disabled)::after, #bee-listen::after {
+        content:''; position: absolute; top: 0; left: -120%;
+        width: 60%; height: 100%;
+        background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.20) 50%, transparent 100%);
+        transition: left .65s ease;
+        pointer-events: none;
+    }
+    .big-btn:hover::after, .gc-play:hover::after, .course-btn:hover::after,
+    #lesson-check:not(:disabled):hover::after, #bee-check:not(:disabled):hover::after, #bee-listen:hover::after { left: 220%; }
+
+    /* Profile mini + stat boxes — glass + hover */
+    .profile-mini, .stat-box {
+        background: linear-gradient(135deg, rgba(35,48,86,0.65), rgba(27,40,69,0.55)) !important;
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        transition: transform .2s, box-shadow .25s, border-color .2s !important;
+    }
+    .profile-mini:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 28px rgba(0,0,0,0.45); }
+    .stat-box:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,0.35); }
+
+    /* Current profile card — animated rainbow halo around the AVATAR (not the whole card) */
+    .current-profile-card {
+        background: linear-gradient(135deg, rgba(35,48,86,0.75), rgba(27,40,69,0.62)) !important;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    }
+    .current-profile-card .cp-av {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 96px; height: 96px;
+        border-radius: 50%;
+        margin-bottom: 4px;
+        isolation: isolate;
+        animation: vosjeBreath 4s ease-in-out infinite;
+    }
+    .current-profile-card .cp-av::before {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, #58cc02, #1cb0f6, #a560ff, #ffc800, #ff4b4b, #58cc02);
+        filter: blur(10px);
+        z-index: -1;
+        opacity: 0.85;
+        animation: vosjeRotate 9s linear infinite;
+        transform-origin: center;
+    }
+    @keyframes vosjeRotate { to { transform: rotate(360deg); } }
+    @keyframes vosjeBreath { 0%,100%{transform:scale(1) translateY(0);} 50%{transform:scale(1.05) translateY(-2px);} }
+
+    /* Leaderboard rows — glass + slide-on-hover + "me" glow */
+    .lb-row {
+        background: linear-gradient(135deg, rgba(35,48,86,0.6), rgba(27,40,69,0.55)) !important;
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        transition: transform .18s, box-shadow .22s, border-color .2s !important;
+    }
+    .lb-row:hover { transform: translateX(4px); box-shadow: 0 6px 16px rgba(0,0,0,0.35); }
+    .lb-row.me { animation: vosjeMeGlow 2.8s ease-in-out infinite; }
+    @keyframes vosjeMeGlow {
+        0%,100% { box-shadow: 0 0 0 0 rgba(88,204,2,0); }
+        50%     { box-shadow: 0 0 24px rgba(88,204,2,0.30); }
+    }
+    .lb-row.top1 { background: linear-gradient(135deg, rgba(255,200,0,0.18), rgba(27,40,69,0.55)) !important; }
+    .lb-row.top2 { background: linear-gradient(135deg, rgba(192,200,212,0.16), rgba(27,40,69,0.55)) !important; }
+    .lb-row.top3 { background: linear-gradient(135deg, rgba(205,127,50,0.16), rgba(27,40,69,0.55)) !important; }
+
+    /* Achievement badges — pulsing shine when unlocked */
+    .ach-badge.unlocked .ab-ic {
+        animation: vosjeAchPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes vosjeAchPulse {
+        0%,100% { box-shadow: 0 0 14px rgba(255,200,0,0.5); transform: scale(1); }
+        50%     { box-shadow: 0 0 28px rgba(255,200,0,0.8); transform: scale(1.06); }
+    }
+    .ach-badge:hover .ab-ic { transform: scale(1.12); transition: transform .2s; }
+
+    /* Bottom nav — glow under active + pop on hover */
+    #bottom-nav {
+        background: linear-gradient(180deg, rgba(22,33,62,0.92), rgba(15,23,41,0.95)) !important;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .nav-btn { position: relative; }
+    .nav-btn.active::before {
+        content:''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+        width: 48px; height: 48px;
+        background: radial-gradient(circle, rgba(88,204,2,0.30), transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: vosjeNavGlow 1.8s ease-in-out infinite;
+    }
+    @keyframes vosjeNavGlow {
+        0%,100% { opacity: 0.55; transform: translateX(-50%) scale(1); }
+        50%     { opacity: 1;    transform: translateX(-50%) scale(1.18); }
+    }
+    .nav-btn:not(.active):hover .nv-ic { transform: translateY(-3px) scale(1.1); }
+
+    /* Music toggle — when on, ripple rings */
+    #music-toggle { isolation: isolate; }
+    #music-toggle.on::before, #music-toggle.on::after {
+        content:''; position: absolute; inset: -2px;
+        border-radius: 50%; border: 2px solid rgba(165,96,255,0.6);
+        z-index: -1;
+        animation: vosjeRipple 2s ease-out infinite;
+    }
+    #music-toggle.on::after { animation-delay: 1s; }
+    @keyframes vosjeRipple {
+        0%   { transform: scale(0.6); opacity: 0.9; }
+        100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    /* Spelling Bee avatar idle breathing (when NOT speaking) */
+    #bee-avatar:not(.speaking) { animation: vosjeBreath 4s ease-in-out infinite; }
+
+    /* Pair tiles — match pop animation */
+    .pair-tile { transition: transform .15s, border-color .15s, background .15s, box-shadow .2s; }
+    .pair-tile:not(.matched):hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.35); }
+    .pair-tile.matched { animation: vosjeMatchPop .5s cubic-bezier(.2,.85,.2,1); }
+    @keyframes vosjeMatchPop {
+        0%   { transform: scale(1); }
+        45%  { transform: scale(1.10); }
+        100% { transform: scale(1); }
+    }
+
+    /* Choice buttons — soft hover lift */
+    .choice:not(.disabled) { transition: transform .14s, border-color .15s, background .15s, box-shadow .2s; }
+    .choice:not(.disabled):hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.35); }
+    .choice.correct { animation: vosjeMatchPop .5s; }
+
+    /* Smoother screen transitions */
+    .screen.active { animation: vosjeScreenIn .5s cubic-bezier(.2,.85,.2,1); }
+    @keyframes vosjeScreenIn {
+        from { opacity: 0; transform: translateY(16px) scale(0.985); filter: blur(8px); }
+        to   { opacity: 1; transform: none; filter: blur(0); }
+    }
+
+    /* Lesson-done emoji burst-in */
+    #lesson-done.active .ld-emoji {
+        animation: vosjeBurstIn .7s cubic-bezier(.2,.85,.2,1);
+    }
+    @keyframes vosjeBurstIn {
+        0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
+        60%  { transform: scale(1.25) rotate(20deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg); }
+    }
+    #ld-stars { animation: vosjeBreath 1.6s ease-in-out infinite; text-shadow: 0 0 16px rgba(255,200,0,0.55); }
+    #ld-xp { animation: vosjeXPPulse 1.4s ease-in-out infinite; }
+    @keyframes vosjeXPPulse {
+        0%,100% { text-shadow: 0 0 12px rgba(255,200,0,0.4); transform: scale(1); }
+        50%     { text-shadow: 0 0 28px rgba(255,200,0,0.8); transform: scale(1.06); }
+    }
+
+    /* Toast — slide-in */
+    .toast { animation: vosjeToastIn .35s cubic-bezier(.2,.85,.2,1); }
+    @keyframes vosjeToastIn {
+        from { transform: translate(-50%, -20px); opacity: 0; }
+        to   { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    /* Avatar-pick options in profile create — wobble on hover */
+    .av-opt { transition: transform .15s, border-color .15s, background .15s; }
+    .av-opt:hover { transform: scale(1.15) rotate(-4deg); }
+
+    /* Confetti canvas */
+    #vosje-confetti { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
     </style>
 </head>
 <body>
@@ -541,7 +913,7 @@
     <header id="app-header">
         <div id="app-title">VOSJE LERN-HUB</div>
         <div id="header-profile" onclick="goTab('profile')">
-            <span class="hp-av" id="hp-av">🦊</span>
+            <span class="hp-av" id="hp-av"></span>
             <div style="display:flex;flex-direction:column;line-height:1.1;">
                 <span class="hp-name" id="hp-name">-</span>
                 <span class="hp-xp" id="hp-xp">0 XP</span>
@@ -554,7 +926,8 @@
         <!-- LESSONS -->
         <section class="screen active" id="screen-lessons">
             <div class="course-select">
-                <button class="course-btn french active" id="cb-french" onclick="setCourse('french')"><span class="ic">🇫🇷</span> Französisch</button>
+                <button class="course-btn french" id="cb-french" onclick="setCourse('french')"><span class="ic">🇫🇷</span> Französisch</button>
+                <button class="course-btn german active" id="cb-german" onclick="setCourse('german')"><span class="ic">🇩🇪</span> Deutsch</button>
                 <button class="course-btn math" id="cb-math" onclick="setCourse('math')"><span class="ic">🔢</span> Mathe</button>
             </div>
             <div id="achievements-strip"></div>
@@ -565,7 +938,8 @@
         <section class="screen" id="screen-pairs">
             <div class="section-head">Finde die Paare</div>
             <div class="course-select">
-                <button class="course-btn french active" id="pcb-french" onclick="setPairsCourse('french')"><span class="ic">🇫🇷</span> Französisch</button>
+                <button class="course-btn french" id="pcb-french" onclick="setPairsCourse('french')"><span class="ic">🇫🇷</span> Französisch</button>
+                <button class="course-btn german active" id="pcb-german" onclick="setPairsCourse('german')"><span class="ic">🇩🇪</span> Deutsch</button>
                 <button class="course-btn math" id="pcb-math" onclick="setPairsCourse('math')"><span class="ic">🔢</span> Mathe</button>
             </div>
             <div id="pairs-path"></div>
@@ -596,9 +970,11 @@
         <!-- PROFILE -->
         <section class="screen" id="screen-profile">
             <div class="current-profile-card" id="cp-card">
-                <div class="cp-av" id="cp-av">🦊</div>
+                <div class="cp-av" id="cp-av"></div>
                 <div class="cp-name" id="cp-name">-</div>
+                <div class="cp-meta" id="cp-meta" style="margin-top:4px;font-weight:800;font-size:13px;color:var(--txt-dim);"></div>
                 <div class="cp-xp" id="cp-xp">0 XP · Level 1</div>
+                <button class="cp-action-btn" onclick="openWardrobe()">👕 Garderobe & Shop</button>
             </div>
             <div class="panel">
                 <div class="section-head">Deine Statistik</div>
@@ -608,6 +984,7 @@
                     <div class="stat-box"><div class="sv" id="st-games">0</div><div class="sl">Spiele</div></div>
                     <div class="stat-box"><div class="sv" id="st-highscore">0</div><div class="sl">Beste Runde</div></div>
                     <div class="stat-box"><div class="sv" id="st-coins">0</div><div class="sl">Münzen</div></div>
+                    <div class="stat-box"><div class="sv" id="st-gems" style="color:#1cb0f6;">0</div><div class="sl">Edelsteine</div></div>
                     <div class="stat-box"><div class="sv" id="st-streak">0</div><div class="sl">Richtig (Lektionen)</div></div>
                 </div>
             </div>
@@ -642,16 +1019,59 @@
         <button class="nav-btn" data-tab="leaderboard" onclick="goTab('leaderboard')"><span class="nv-ic">🏆</span>Rangliste</button>
     </nav>
 
-    <!-- ===== Create profile overlay ===== -->
+    <!-- ===== Wardrobe & Shop overlay ===== -->
+    <div class="overlay" id="wardrobe-overlay">
+        <div class="wd-top">
+            <div class="wd-title">👕 Garderobe & Shop</div>
+            <div class="wd-gems" id="wd-gems">💎 0</div>
+            <button class="wd-close" onclick="closeWardrobe()">Schließen</button>
+        </div>
+        <div class="wd-scroll">
+            <div class="wd-preview"><div class="wd-av" id="wd-av"></div></div>
+            <div class="wd-tabs" id="wd-tabs"></div>
+            <div class="wd-grid" id="wd-grid"></div>
+        </div>
+    </div>
+
+    <!-- ===== Create profile overlay (multi-step: Bundesland → Schulart → Avatar/Name) ===== -->
     <div class="overlay" id="create-overlay">
-        <div class="create-box">
+        <div class="create-box" style="max-width:480px;">
             <h2>Neues Profil</h2>
-            <p>Wähle einen Avatar und einen Namen</p>
-            <div class="avatar-pick" id="avatar-pick"></div>
-            <input type="text" id="create-name" placeholder="Dein Name..." maxlength="14" autocomplete="off" spellcheck="false">
-            <div class="btn-row">
-                <button class="big-btn" onclick="confirmCreateProfile()">Erstellen</button>
-                <button class="big-btn ghost" onclick="closeCreate()">Abbrechen</button>
+            <div class="step-dots">
+                <div class="dot" id="dot-1"></div>
+                <div class="dot" id="dot-2"></div>
+                <div class="dot" id="dot-3"></div>
+            </div>
+
+            <div class="create-step" id="step-1">
+                <div class="step-head">In welchem Bundesland?</div>
+                <div class="step-sub">So bekommst du passende Lehrpläne.</div>
+                <div class="bl-grid" id="bl-grid"></div>
+                <div class="btn-row">
+                    <button class="big-btn" onclick="createNextStep()">Weiter</button>
+                    <button class="big-btn ghost" onclick="closeCreate()">Abbrechen</button>
+                </div>
+            </div>
+
+            <div class="create-step" id="step-2">
+                <div class="step-head">Welche Schulart?</div>
+                <div class="step-sub">Französisch gibt's nur am Gymnasium.</div>
+                <div class="sa-grid" id="sa-grid"></div>
+                <div class="btn-row">
+                    <button class="big-btn ghost" onclick="createPrevStep()">Zurück</button>
+                    <button class="big-btn" onclick="createNextStep()">Weiter</button>
+                </div>
+            </div>
+
+            <div class="create-step" id="step-3">
+                <div class="step-head">Avatar &amp; Name</div>
+                <div class="step-sub">Such dir ein Tier aus und gib deinen Namen ein.</div>
+                <div class="avatar-pick" id="avatar-pick"></div>
+                <input type="text" id="create-name" placeholder="Dein Name..." maxlength="14" autocomplete="off" spellcheck="false">
+                <div class="btn-row">
+                    <button class="big-btn ghost" onclick="createPrevStep()">Zurück</button>
+                    <button class="big-btn" onclick="confirmCreateProfile()">Erstellen</button>
+                </div>
             </div>
         </div>
     </div>
@@ -709,7 +1129,533 @@
    selected profile.
    ===================================================================== */
 
-const AVATARS = ['🦊','🐼','🐸','🦁','🐯','🐵','🐶','🐱','🦄','🐙'];
+// ===== Bundesland + Schulart (drives course availability + math difficulty) =====
+const BUNDESLAENDER = [
+    { code: 'bw', name: 'Baden-Württemberg', emoji: '🌳' },
+    { code: 'by', name: 'Bayern',            emoji: '🥨' },
+    { code: 'be', name: 'Berlin',            emoji: '🐻' },
+    { code: 'bb', name: 'Brandenburg',       emoji: '🦅' },
+    { code: 'hb', name: 'Bremen',            emoji: '⚓' },
+    { code: 'hh', name: 'Hamburg',           emoji: '⛴️' },
+    { code: 'he', name: 'Hessen',            emoji: '🦁' },
+    { code: 'mv', name: 'Mecklenburg-Vorpommern', emoji: '🌊' },
+    { code: 'ni', name: 'Niedersachsen',     emoji: '🐎' },
+    { code: 'nw', name: 'Nordrhein-Westfalen', emoji: '⛰️' },
+    { code: 'rp', name: 'Rheinland-Pfalz',   emoji: '🍷' },
+    { code: 'sl', name: 'Saarland',          emoji: '⛏️' },
+    { code: 'sn', name: 'Sachsen',           emoji: '👑' },
+    { code: 'st', name: 'Sachsen-Anhalt',    emoji: '🏰' },
+    { code: 'sh', name: 'Schleswig-Holstein', emoji: '🦢' },
+    { code: 'th', name: 'Thüringen',         emoji: '🌲' }
+];
+const SCHULARTEN = [
+    { code: 'mittel',    name: 'Mittelschule', icon: '📘', desc: 'Klasse 5–9 · Grundlagen' },
+    { code: 'real',      name: 'Realschule',   icon: '📗', desc: 'Klasse 5–10 · Mittelweg' },
+    { code: 'gymnasium', name: 'Gymnasium',    icon: '📕', desc: 'Klasse 5–12 · inkl. Französisch' }
+];
+function bundeslandByCode(code) { return BUNDESLAENDER.find(b => b.code === code) || BUNDESLAENDER[1]; }
+function schulartByCode(code)   { return SCHULARTEN.find(s => s.code === code)   || SCHULARTEN[2];   }
+function hasFrench(p) { return p && p.schulart === 'gymnasium'; }
+
+// Endless-money cheat: gems never run out and purchases are free.
+const ENDLESS_GEMS = true;
+const GEM_DISPLAY = () => ENDLESS_GEMS ? '∞' : String((curP() && curP().hub && curP().hub.gems) || 0);
+
+// ===== Avatar system: 10 hand-drawn SVG animals, same quality as the Bee characters =====
+const AVATARS = ['fox','panda','frog','lion','tiger','monkey','dog','cat','unicorn','octopus'];
+const AVATAR_NAMES = { fox:'Fuchs', panda:'Panda', frog:'Frosch', lion:'Löwe', tiger:'Tiger', monkey:'Affe', dog:'Hund', cat:'Katze', unicorn:'Einhorn', octopus:'Krake' };
+const AVATAR_EMOJI_MAP = { '🦊':'fox','🐼':'panda','🐸':'frog','🦁':'lion','🐯':'tiger','🐵':'monkey','🐶':'dog','🐱':'cat','🦄':'unicorn','🐙':'octopus' };
+const ANIMAL_SVG = {
+    fox: `<defs><radialGradient id="foxBg" cx="50%" cy="38%"><stop offset="0%" stop-color="#ffb168"/><stop offset="100%" stop-color="#ff7a26"/></radialGradient></defs>
+        <path d="M18 32 L26 4 L42 30 Z" fill="url(#foxBg)" stroke="#2a1408" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M82 32 L74 4 L58 30 Z" fill="url(#foxBg)" stroke="#2a1408" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M22 28 L28 12 L36 26 Z" fill="#5a2410"/>
+        <path d="M78 28 L72 12 L64 26 Z" fill="#5a2410"/>
+        <circle cx="50" cy="55" r="38" fill="url(#foxBg)" stroke="#2a1408" stroke-width="2.5"/>
+        <path d="M22 56 Q35 92 50 92 Q65 92 78 56 Q78 78 50 84 Q22 78 22 56 Z" fill="#fff"/>
+        <ellipse cx="36" cy="49" rx="6" ry="7" fill="#2a1408"/>
+        <ellipse cx="64" cy="49" rx="6" ry="7" fill="#2a1408"/>
+        <circle cx="38" cy="46" r="2" fill="#fff"/><circle cx="66" cy="46" r="2" fill="#fff"/>
+        <ellipse cx="50" cy="62" rx="6" ry="4.5" fill="#2a1408"/>
+        <path d="M50 66 Q50 74 44 76" stroke="#2a1408" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M50 66 Q50 74 56 76" stroke="#2a1408" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    panda: `<circle cx="22" cy="22" r="12" fill="#222"/>
+        <circle cx="78" cy="22" r="12" fill="#222"/>
+        <circle cx="50" cy="55" r="38" fill="#fff" stroke="#222" stroke-width="2.5"/>
+        <ellipse cx="36" cy="50" rx="9" ry="11" fill="#222" transform="rotate(-12 36 50)"/>
+        <ellipse cx="64" cy="50" rx="9" ry="11" fill="#222" transform="rotate(12 64 50)"/>
+        <circle cx="37" cy="51" r="3.5" fill="#fff"/><circle cx="63" cy="51" r="3.5" fill="#fff"/>
+        <circle cx="37" cy="51" r="2" fill="#222"/><circle cx="63" cy="51" r="2" fill="#222"/>
+        <ellipse cx="50" cy="64" rx="5" ry="3.5" fill="#222"/>
+        <path d="M50 67 Q50 73 44 75" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M50 67 Q50 73 56 75" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="22" cy="62" r="5" fill="#ff9ec0" opacity="0.6"/>
+        <circle cx="78" cy="62" r="5" fill="#ff9ec0" opacity="0.6"/>`,
+    frog: `<circle cx="30" cy="28" r="14" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2"/>
+        <circle cx="70" cy="28" r="14" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2"/>
+        <circle cx="30" cy="28" r="9" fill="#fff"/><circle cx="70" cy="28" r="9" fill="#fff"/>
+        <circle cx="30" cy="30" r="5" fill="#1f5e1f"/><circle cx="70" cy="30" r="5" fill="#1f5e1f"/>
+        <circle cx="31" cy="28" r="2" fill="#fff"/><circle cx="71" cy="28" r="2" fill="#fff"/>
+        <ellipse cx="50" cy="62" rx="42" ry="32" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2.5"/>
+        <ellipse cx="50" cy="74" rx="28" ry="14" fill="#a8eda8" opacity="0.7"/>
+        <path d="M22 62 Q50 84 78 62" stroke="#1f5e1f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="44" cy="56" r="1.5" fill="#1f5e1f"/><circle cx="56" cy="56" r="1.5" fill="#1f5e1f"/>
+        <circle cx="20" cy="64" r="3.5" fill="#ff9ec0" opacity="0.7"/>
+        <circle cx="80" cy="64" r="3.5" fill="#ff9ec0" opacity="0.7"/>`,
+    lion: `<defs><radialGradient id="lionMane" cx="50%" cy="50%"><stop offset="0%" stop-color="#c46a1c"/><stop offset="100%" stop-color="#8b3f0a"/></radialGradient></defs>
+        <g fill="url(#lionMane)" stroke="#4a1f06" stroke-width="1.5">
+            <circle cx="50" cy="50" r="46"/>
+            <circle cx="14" cy="30" r="10"/><circle cx="86" cy="30" r="10"/>
+            <circle cx="10" cy="50" r="11"/><circle cx="90" cy="50" r="11"/>
+            <circle cx="14" cy="70" r="10"/><circle cx="86" cy="70" r="10"/>
+            <circle cx="30" cy="14" r="10"/><circle cx="70" cy="14" r="10"/>
+            <circle cx="30" cy="86" r="10"/><circle cx="70" cy="86" r="10"/>
+            <circle cx="50" cy="6" r="9"/><circle cx="50" cy="94" r="9"/>
+        </g>
+        <circle cx="50" cy="52" r="30" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <circle cx="28" cy="32" r="6" fill="#ffd47a" stroke="#4a1f06" stroke-width="1.5"/>
+        <circle cx="72" cy="32" r="6" fill="#ffd47a" stroke="#4a1f06" stroke-width="1.5"/>
+        <ellipse cx="40" cy="48" rx="4" ry="5" fill="#4a1f06"/>
+        <ellipse cx="60" cy="48" rx="4" ry="5" fill="#4a1f06"/>
+        <circle cx="41" cy="46" r="1.5" fill="#fff"/><circle cx="61" cy="46" r="1.5" fill="#fff"/>
+        <ellipse cx="50" cy="65" rx="14" ry="10" fill="#fff5d5"/>
+        <path d="M44 60 L56 60 L50 67 Z" fill="#4a1f06"/>
+        <path d="M50 67 L50 71" stroke="#4a1f06" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 71 Q44 75 40 71" stroke="#4a1f06" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M50 71 Q56 75 60 71" stroke="#4a1f06" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    tiger: `<circle cx="24" cy="24" r="9" fill="#ff8a26" stroke="#3a1407" stroke-width="2"/>
+        <circle cx="76" cy="24" r="9" fill="#ff8a26" stroke="#3a1407" stroke-width="2"/>
+        <circle cx="24" cy="24" r="5" fill="#ff9ec0"/><circle cx="76" cy="24" r="5" fill="#ff9ec0"/>
+        <circle cx="50" cy="55" r="38" fill="#ff9a3d" stroke="#3a1407" stroke-width="2.5"/>
+        <path d="M30 24 Q34 34 30 42" stroke="#3a1407" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M50 18 L50 30" stroke="#3a1407" stroke-width="3" stroke-linecap="round"/>
+        <path d="M70 24 Q66 34 70 42" stroke="#3a1407" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M16 50 L22 52" stroke="#3a1407" stroke-width="3" stroke-linecap="round"/>
+        <path d="M84 50 L78 52" stroke="#3a1407" stroke-width="3" stroke-linecap="round"/>
+        <path d="M20 66 L26 64" stroke="#3a1407" stroke-width="3" stroke-linecap="round"/>
+        <path d="M80 66 L74 64" stroke="#3a1407" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="50" cy="68" rx="20" ry="14" fill="#fff5e7"/>
+        <ellipse cx="36" cy="50" rx="5" ry="6" fill="#3a1407"/>
+        <ellipse cx="64" cy="50" rx="5" ry="6" fill="#3a1407"/>
+        <circle cx="37" cy="48" r="1.8" fill="#fff"/><circle cx="65" cy="48" r="1.8" fill="#fff"/>
+        <path d="M44 62 L56 62 L50 68 Z" fill="#3a1407"/>
+        <path d="M50 68 L50 73" stroke="#3a1407" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 73 Q45 77 41 74" stroke="#3a1407" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M50 73 Q55 77 59 74" stroke="#3a1407" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    monkey: `<circle cx="14" cy="50" r="11" fill="#a06b3a" stroke="#3a1f0a" stroke-width="2"/>
+        <circle cx="86" cy="50" r="11" fill="#a06b3a" stroke="#3a1f0a" stroke-width="2"/>
+        <circle cx="14" cy="50" r="6" fill="#f0b380"/><circle cx="86" cy="50" r="6" fill="#f0b380"/>
+        <circle cx="50" cy="52" r="36" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2.5"/>
+        <path d="M50 30 Q26 30 26 52 Q26 80 50 86 Q74 80 74 52 Q74 30 50 30 Z" fill="#f0b380"/>
+        <path d="M40 30 Q50 22 60 30" stroke="#3a1f0a" stroke-width="2" fill="none"/>
+        <circle cx="40" cy="48" r="5" fill="#3a1f0a"/><circle cx="60" cy="48" r="5" fill="#3a1f0a"/>
+        <circle cx="41" cy="46" r="1.6" fill="#fff"/><circle cx="61" cy="46" r="1.6" fill="#fff"/>
+        <ellipse cx="46" cy="62" rx="1.5" ry="2" fill="#3a1f0a"/>
+        <ellipse cx="54" cy="62" rx="1.5" ry="2" fill="#3a1f0a"/>
+        <path d="M40 70 Q50 78 60 70" stroke="#3a1f0a" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
+    dog: `<ellipse cx="22" cy="46" rx="11" ry="22" fill="#6e3a1c" stroke="#2a1408" stroke-width="2" transform="rotate(-12 22 46)"/>
+        <ellipse cx="78" cy="46" rx="11" ry="22" fill="#6e3a1c" stroke="#2a1408" stroke-width="2" transform="rotate(12 78 46)"/>
+        <circle cx="50" cy="52" r="36" fill="#c08254" stroke="#2a1408" stroke-width="2.5"/>
+        <ellipse cx="50" cy="68" rx="20" ry="14" fill="#e6b88a"/>
+        <circle cx="38" cy="42" r="9" fill="#6e3a1c" opacity="0.45"/>
+        <circle cx="40" cy="50" r="4.5" fill="#2a1408"/><circle cx="60" cy="50" r="4.5" fill="#2a1408"/>
+        <circle cx="41" cy="48" r="1.6" fill="#fff"/><circle cx="61" cy="48" r="1.6" fill="#fff"/>
+        <ellipse cx="50" cy="62" rx="5" ry="4" fill="#2a1408"/>
+        <path d="M44 72 Q50 84 56 72 Q56 80 50 82 Q44 80 44 72 Z" fill="#ff6b8a"/>
+        <path d="M50 76 L50 82" stroke="#c44060" stroke-width="1.5"/>`,
+    cat: `<path d="M20 12 L28 38 L42 24 Z" fill="#8e8e9c" stroke="#2a2a36" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M80 12 L72 38 L58 24 Z" fill="#8e8e9c" stroke="#2a2a36" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M24 18 L30 32 L38 24 Z" fill="#ff9ec0"/>
+        <path d="M76 18 L70 32 L62 24 Z" fill="#ff9ec0"/>
+        <circle cx="50" cy="55" r="36" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2.5"/>
+        <path d="M30 36 Q34 44 30 50" stroke="#5a5a68" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M70 36 Q66 44 70 50" stroke="#5a5a68" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M50 28 L50 38" stroke="#5a5a68" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="38" cy="52" rx="5" ry="7" fill="#7be041"/>
+        <ellipse cx="62" cy="52" rx="5" ry="7" fill="#7be041"/>
+        <ellipse cx="38" cy="52" rx="1.5" ry="6" fill="#2a2a36"/>
+        <ellipse cx="62" cy="52" rx="1.5" ry="6" fill="#2a2a36"/>
+        <circle cx="39" cy="49" r="1.5" fill="#fff"/><circle cx="63" cy="49" r="1.5" fill="#fff"/>
+        <path d="M46 65 L54 65 L50 70 Z" fill="#ff9ec0"/>
+        <path d="M50 70 L50 73" stroke="#2a2a36" stroke-width="2" stroke-linecap="round"/>
+        <path d="M50 73 Q45 76 41 74" stroke="#2a2a36" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M50 73 Q55 76 59 74" stroke="#2a2a36" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M22 68 L34 66" stroke="#2a2a36" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M22 72 L34 70" stroke="#2a2a36" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M78 68 L66 66" stroke="#2a2a36" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M78 72 L66 70" stroke="#2a2a36" stroke-width="1.2" stroke-linecap="round"/>`,
+    unicorn: `<defs>
+            <linearGradient id="uniHorn" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd75e"/><stop offset="50%" stop-color="#ff9ec0"/><stop offset="100%" stop-color="#a560ff"/></linearGradient>
+            <linearGradient id="uniMane" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6b8a"/><stop offset="33%" stop-color="#ffd75e"/><stop offset="66%" stop-color="#7be041"/><stop offset="100%" stop-color="#1cb0f6"/></linearGradient>
+        </defs>
+        <path d="M14 36 Q4 64 18 80 Q22 70 26 78 Q30 66 34 76 Q34 50 22 30 Z" fill="url(#uniMane)" stroke="#3a1f4a" stroke-width="1.5"/>
+        <path d="M30 24 L36 6 L44 26 Z" fill="#fff" stroke="#3a1f4a" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M70 24 L64 6 L56 26 Z" fill="#fff" stroke="#3a1f4a" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M34 22 L36 12 L40 24 Z" fill="#ff9ec0"/>
+        <path d="M66 22 L64 12 L60 24 Z" fill="#ff9ec0"/>
+        <path d="M50 2 L44 28 L56 28 Z" fill="url(#uniHorn)" stroke="#3a1f4a" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M46 22 L54 22" stroke="#3a1f4a" stroke-width="1"/>
+        <ellipse cx="52" cy="58" rx="36" ry="34" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2.5"/>
+        <circle cx="32" cy="66" r="6" fill="#ff9ec0" opacity="0.7"/>
+        <circle cx="72" cy="66" r="6" fill="#ff9ec0" opacity="0.7"/>
+        <path d="M34 50 Q40 56 46 50" stroke="#3a1f4a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M58 50 Q64 56 70 50" stroke="#3a1f4a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M46 49 L48 47" stroke="#3a1f4a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M70 49 L72 47" stroke="#3a1f4a" stroke-width="1.5" stroke-linecap="round"/>
+        <ellipse cx="50" cy="72" rx="2" ry="1.5" fill="#3a1f4a"/>
+        <path d="M46 78 Q52 82 58 78" stroke="#3a1f4a" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    octopus: `<defs><radialGradient id="octBg" cx="50%" cy="35%"><stop offset="0%" stop-color="#cf8aff"/><stop offset="100%" stop-color="#7e3fc4"/></radialGradient></defs>
+        <path d="M16 50 Q16 18 50 18 Q84 18 84 50 L84 68 Q82 72 78 70 Q78 80 70 76 Q66 84 60 78 Q56 86 50 80 Q44 86 40 78 Q34 84 30 76 Q22 80 22 70 Q18 72 16 68 Z" fill="url(#octBg)" stroke="#3a155a" stroke-width="2"/>
+        <circle cx="78" cy="74" r="2" fill="#ffb8d9"/>
+        <circle cx="70" cy="78" r="2" fill="#ffb8d9"/>
+        <circle cx="60" cy="82" r="2" fill="#ffb8d9"/>
+        <circle cx="50" cy="84" r="2" fill="#ffb8d9"/>
+        <circle cx="40" cy="82" r="2" fill="#ffb8d9"/>
+        <circle cx="30" cy="78" r="2" fill="#ffb8d9"/>
+        <circle cx="22" cy="74" r="2" fill="#ffb8d9"/>
+        <ellipse cx="40" cy="32" rx="14" ry="6" fill="#fff" opacity="0.35"/>
+        <circle cx="36" cy="46" r="9" fill="#fff" stroke="#3a155a" stroke-width="2"/>
+        <circle cx="64" cy="46" r="9" fill="#fff" stroke="#3a155a" stroke-width="2"/>
+        <circle cx="38" cy="47" r="4" fill="#3a155a"/><circle cx="62" cy="47" r="4" fill="#3a155a"/>
+        <circle cx="39" cy="45" r="1.5" fill="#fff"/><circle cx="63" cy="45" r="1.5" fill="#fff"/>
+        <ellipse cx="50" cy="62" rx="6" ry="3" fill="#3a155a"/>
+        <path d="M44 62 Q50 68 56 62" fill="#ff6b8a"/>
+        <circle cx="22" cy="58" r="4" fill="#ff6b8a" opacity="0.6"/>
+        <circle cx="78" cy="58" r="4" fill="#ff6b8a" opacity="0.6"/>`
+};
+function avatarKey(v) {
+    if (!v) return AVATARS[0];
+    if (AVATARS.indexOf(v) >= 0) return v;
+    if (AVATAR_EMOJI_MAP[v]) return AVATAR_EMOJI_MAP[v];
+    return AVATARS[0];
+}
+// Per-animal chibi body (drawn below the head when avatarSvg gets {body:true}).
+// Each body matches the head's colors so the whole avatar reads as a real animal.
+const ANIMAL_BODY_SVG = {
+    fox: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#ff8a3d" stroke="#2a1408" stroke-width="2"/>
+        <path d="M78 132 Q108 122 104 162 Q92 168 80 156 Z" fill="#ff8a3d" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="100" cy="158" rx="9" ry="7" fill="#fff"/>
+        <ellipse cx="20" cy="124" rx="8" ry="14" fill="#ff8a3d" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="80" cy="124" rx="8" ry="14" fill="#ff8a3d" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="30" ry="28" fill="#ff8a3d" stroke="#2a1408" stroke-width="2.5"/>
+        <ellipse cx="50" cy="146" rx="18" ry="18" fill="#fff"/>
+        <ellipse cx="32" cy="168" rx="11" ry="11" fill="#ff8a3d" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="68" cy="168" rx="11" ry="11" fill="#ff8a3d" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="32" cy="174" rx="7" ry="3" fill="#2a1408"/>
+        <ellipse cx="68" cy="174" rx="7" ry="3" fill="#2a1408"/>
+        <circle cx="18" cy="138" r="6" fill="#fff" stroke="#2a1408" stroke-width="1.5"/>
+        <circle cx="82" cy="138" r="6" fill="#fff" stroke="#2a1408" stroke-width="1.5"/>`,
+    panda: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#fff" stroke="#222" stroke-width="2"/>
+        <ellipse cx="14" cy="120" rx="9" ry="18" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="86" cy="120" rx="9" ry="18" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="50" cy="138" rx="32" ry="30" fill="#fff" stroke="#222" stroke-width="2.5"/>
+        <ellipse cx="50" cy="144" rx="20" ry="18" fill="#f0e6d8" opacity="0.4"/>
+        <circle cx="14" cy="138" r="7" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <circle cx="86" cy="138" r="7" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="30" cy="170" rx="13" ry="11" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="70" cy="170" rx="13" ry="11" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="30" cy="174" rx="7" ry="3" fill="#5a2a2a"/>
+        <ellipse cx="70" cy="174" rx="7" ry="3" fill="#5a2a2a"/>`,
+    frog: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2"/>
+        <path d="M14 144 Q-2 168 22 178 Q34 174 28 150 Z" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M86 144 Q102 168 78 178 Q66 174 72 150 Z" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M4 172 L26 172 M6 176 L24 176" stroke="#1f5e1f" stroke-width="1.5"/>
+        <path d="M74 172 L96 172 M76 176 L94 176" stroke="#1f5e1f" stroke-width="1.5"/>
+        <ellipse cx="18" cy="124" rx="7" ry="13" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2"/>
+        <ellipse cx="82" cy="124" rx="7" ry="13" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="30" ry="26" fill="#5fd75f" stroke="#1f5e1f" stroke-width="2.5"/>
+        <ellipse cx="50" cy="148" rx="22" ry="14" fill="#a8eda8"/>
+        <circle cx="16" cy="138" r="6" fill="#5fd75f" stroke="#1f5e1f" stroke-width="1.5"/>
+        <circle cx="84" cy="138" r="6" fill="#5fd75f" stroke="#1f5e1f" stroke-width="1.5"/>`,
+    lion: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <path d="M82 152 Q108 144 110 172 Q98 174 84 162 Z" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <circle cx="108" cy="170" r="7" fill="#c46a1c" stroke="#4a1f06" stroke-width="1.5"/>
+        <ellipse cx="20" cy="124" rx="8" ry="14" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <ellipse cx="80" cy="124" rx="8" ry="14" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="28" ry="28" fill="#ffd47a" stroke="#4a1f06" stroke-width="2.5"/>
+        <ellipse cx="50" cy="146" rx="16" ry="16" fill="#fff5d5"/>
+        <ellipse cx="34" cy="168" rx="10" ry="10" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <ellipse cx="66" cy="168" rx="10" ry="10" fill="#ffd47a" stroke="#4a1f06" stroke-width="2"/>
+        <ellipse cx="34" cy="173" rx="6" ry="3" fill="#4a1f06"/>
+        <ellipse cx="66" cy="173" rx="6" ry="3" fill="#4a1f06"/>
+        <circle cx="18" cy="138" r="6" fill="#fff5d5" stroke="#4a1f06" stroke-width="1.5"/>
+        <circle cx="82" cy="138" r="6" fill="#fff5d5" stroke="#4a1f06" stroke-width="1.5"/>`,
+    tiger: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#ff9a3d" stroke="#3a1407" stroke-width="2"/>
+        <path d="M80 150 Q108 138 106 168 Q94 174 80 158 Z" fill="#ff9a3d" stroke="#3a1407" stroke-width="2"/>
+        <path d="M88 152 L94 154 M92 160 L100 162" stroke="#3a1407" stroke-width="2"/>
+        <ellipse cx="20" cy="124" rx="8" ry="14" fill="#ff9a3d" stroke="#3a1407" stroke-width="2"/>
+        <ellipse cx="80" cy="124" rx="8" ry="14" fill="#ff9a3d" stroke="#3a1407" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="28" ry="28" fill="#ff9a3d" stroke="#3a1407" stroke-width="2.5"/>
+        <path d="M22 130 Q26 138 22 146" stroke="#3a1407" stroke-width="3" fill="none"/>
+        <path d="M78 130 Q74 138 78 146" stroke="#3a1407" stroke-width="3" fill="none"/>
+        <path d="M50 112 L50 124" stroke="#3a1407" stroke-width="3"/>
+        <ellipse cx="50" cy="146" rx="16" ry="16" fill="#fff5e7"/>
+        <ellipse cx="34" cy="168" rx="10" ry="10" fill="#ff9a3d" stroke="#3a1407" stroke-width="2"/>
+        <ellipse cx="66" cy="168" rx="10" ry="10" fill="#ff9a3d" stroke="#3a1407" stroke-width="2"/>
+        <path d="M30 162 L40 162" stroke="#3a1407" stroke-width="2.5"/>
+        <path d="M60 162 L70 162" stroke="#3a1407" stroke-width="2.5"/>
+        <circle cx="18" cy="138" r="6" fill="#fff5e7" stroke="#3a1407" stroke-width="1.5"/>
+        <circle cx="82" cy="138" r="6" fill="#fff5e7" stroke="#3a1407" stroke-width="1.5"/>`,
+    monkey: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2"/>
+        <path d="M80 140 Q108 130 106 162 Q96 172 84 158" fill="none" stroke="#7a4a22" stroke-width="6" stroke-linecap="round"/>
+        <ellipse cx="16" cy="128" rx="8" ry="18" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2"/>
+        <ellipse cx="84" cy="128" rx="8" ry="18" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2"/>
+        <circle cx="16" cy="148" r="7" fill="#f0b380" stroke="#3a1f0a" stroke-width="1.5"/>
+        <circle cx="84" cy="148" r="7" fill="#f0b380" stroke="#3a1f0a" stroke-width="1.5"/>
+        <ellipse cx="50" cy="138" rx="28" ry="28" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2.5"/>
+        <ellipse cx="50" cy="146" rx="18" ry="18" fill="#f0b380"/>
+        <ellipse cx="34" cy="168" rx="10" ry="10" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2"/>
+        <ellipse cx="66" cy="168" rx="10" ry="10" fill="#7a4a22" stroke="#3a1f0a" stroke-width="2"/>
+        <ellipse cx="34" cy="174" rx="7" ry="3" fill="#f0b380"/>
+        <ellipse cx="66" cy="174" rx="7" ry="3" fill="#f0b380"/>`,
+    dog: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#c08254" stroke="#2a1408" stroke-width="2"/>
+        <path d="M80 140 Q108 124 102 142 Q96 148 84 144" fill="#c08254" stroke="#2a1408" stroke-width="2" stroke-linejoin="round"/>
+        <ellipse cx="20" cy="124" rx="8" ry="14" fill="#c08254" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="80" cy="124" rx="8" ry="14" fill="#c08254" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="28" ry="28" fill="#c08254" stroke="#2a1408" stroke-width="2.5"/>
+        <ellipse cx="50" cy="146" rx="17" ry="17" fill="#e6b88a"/>
+        <ellipse cx="66" cy="130" rx="11" ry="7" fill="#6e3a1c" opacity="0.5"/>
+        <ellipse cx="34" cy="168" rx="10" ry="10" fill="#c08254" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="66" cy="168" rx="10" ry="10" fill="#c08254" stroke="#2a1408" stroke-width="2"/>
+        <ellipse cx="34" cy="174" rx="7" ry="3" fill="#2a1408"/>
+        <ellipse cx="66" cy="174" rx="7" ry="3" fill="#2a1408"/>
+        <circle cx="18" cy="138" r="6" fill="#e6b88a" stroke="#2a1408" stroke-width="1.5"/>
+        <circle cx="82" cy="138" r="6" fill="#e6b88a" stroke="#2a1408" stroke-width="1.5"/>`,
+    cat: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2"/>
+        <path d="M78 142 Q108 130 100 100 Q90 96 86 110 Q82 130 80 144 Z" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2"/>
+        <path d="M96 110 L92 116 M94 124 L88 130" stroke="#5a5a68" stroke-width="2"/>
+        <ellipse cx="20" cy="124" rx="8" ry="14" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2"/>
+        <ellipse cx="80" cy="124" rx="8" ry="14" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="28" ry="28" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2.5"/>
+        <path d="M22 130 Q26 138 22 146" stroke="#5a5a68" stroke-width="3" fill="none"/>
+        <path d="M78 130 Q74 138 78 146" stroke="#5a5a68" stroke-width="3" fill="none"/>
+        <ellipse cx="50" cy="146" rx="16" ry="16" fill="#d0d0dc"/>
+        <ellipse cx="34" cy="168" rx="10" ry="10" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2"/>
+        <ellipse cx="66" cy="168" rx="10" ry="10" fill="#a8a8b6" stroke="#2a2a36" stroke-width="2"/>
+        <ellipse cx="34" cy="173" rx="6" ry="3" fill="#ff9ec0"/>
+        <ellipse cx="66" cy="173" rx="6" ry="3" fill="#ff9ec0"/>
+        <circle cx="18" cy="138" r="6" fill="#d0d0dc" stroke="#2a2a36" stroke-width="1.5"/>
+        <circle cx="82" cy="138" r="6" fill="#d0d0dc" stroke="#2a2a36" stroke-width="1.5"/>`,
+    unicorn: `
+        <ellipse cx="50" cy="100" rx="18" ry="14" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2"/>
+        <path d="M80 138 Q108 128 108 168 Q92 174 82 158 Z" fill="url(#uniMane)" stroke="#3a1f4a" stroke-width="1.5"/>
+        <ellipse cx="20" cy="124" rx="8" ry="14" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2"/>
+        <ellipse cx="80" cy="124" rx="8" ry="14" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2"/>
+        <ellipse cx="50" cy="138" rx="28" ry="28" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2.5"/>
+        <path d="M20 110 Q14 134 18 148 Q26 144 30 130 Q22 118 20 110" fill="url(#uniMane)" stroke="#3a1f4a" stroke-width="1.5"/>
+        <ellipse cx="50" cy="146" rx="16" ry="16" fill="#ffe6f0"/>
+        <ellipse cx="32" cy="170" rx="9" ry="11" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2"/>
+        <ellipse cx="68" cy="170" rx="9" ry="11" fill="#fff5fa" stroke="#3a1f4a" stroke-width="2"/>
+        <rect x="26" y="174" width="12" height="6" fill="#3a1f4a" rx="2"/>
+        <rect x="62" y="174" width="12" height="6" fill="#3a1f4a" rx="2"/>
+        <circle cx="18" cy="138" r="6" fill="#ffe6f0" stroke="#3a1f4a" stroke-width="1.5"/>
+        <circle cx="82" cy="138" r="6" fill="#ffe6f0" stroke="#3a1f4a" stroke-width="1.5"/>`,
+    octopus: `
+        <path d="M28 96 Q12 134 16 174 Q26 178 28 162 Q32 134 38 110 Z" fill="url(#octBg)" stroke="#3a155a" stroke-width="2"/>
+        <path d="M40 100 Q34 140 38 176 Q46 176 44 154 Q46 132 50 112 Z" fill="url(#octBg)" stroke="#3a155a" stroke-width="2"/>
+        <path d="M50 102 Q50 142 52 176 Q60 176 56 154 Q58 132 60 112 Z" fill="url(#octBg)" stroke="#3a155a" stroke-width="2"/>
+        <path d="M60 100 Q66 140 62 176 Q70 176 70 154 Q70 132 70 112 Z" fill="url(#octBg)" stroke="#3a155a" stroke-width="2"/>
+        <path d="M72 96 Q88 134 84 174 Q74 178 72 162 Q68 134 62 110 Z" fill="url(#octBg)" stroke="#3a155a" stroke-width="2"/>
+        <circle cx="22" cy="142" r="2" fill="#ffb8d9"/>
+        <circle cx="24" cy="158" r="2" fill="#ffb8d9"/>
+        <circle cx="40" cy="142" r="2" fill="#ffb8d9"/>
+        <circle cx="42" cy="160" r="2" fill="#ffb8d9"/>
+        <circle cx="54" cy="142" r="2" fill="#ffb8d9"/>
+        <circle cx="56" cy="160" r="2" fill="#ffb8d9"/>
+        <circle cx="66" cy="142" r="2" fill="#ffb8d9"/>
+        <circle cx="66" cy="160" r="2" fill="#ffb8d9"/>
+        <circle cx="78" cy="142" r="2" fill="#ffb8d9"/>
+        <circle cx="76" cy="160" r="2" fill="#ffb8d9"/>`
+};
+
+function avatarSvg(v, size, opts) {
+    size = size || 64;
+    const key = avatarKey(v);
+    const body = ANIMAL_SVG[key] || ANIMAL_SVG.fox;
+    const eq = (opts && opts.equipped) || {};
+    const showBody = !!(opts && opts.body);
+    let behind = '', frontHead = '', frontBody = '';
+    Object.values(eq).forEach(itemId => {
+        const it = ITEMS[itemId];
+        if (!it) return;
+        const piece = (showBody && it.bodySvg) ? it.bodySvg : it.svg;
+        if (it.behind) behind += piece;
+        else if (showBody && it.slot === 'armor') frontBody += piece;
+        else frontHead += piece;
+    });
+    if (showBody) {
+        const h = Math.round(size * 1.8);
+        const animalBody = ANIMAL_BODY_SVG[key] || '';
+        const HEAD_DROP = 10;
+        return `<svg class="av-svg" viewBox="0 0 100 180" width="${size}" height="${h}" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">${behind}${animalBody}<g transform="translate(0 ${HEAD_DROP})">${body}${frontHead}</g>${frontBody}</svg>`;
+    }
+    return `<svg class="av-svg" viewBox="0 0 100 100" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">${behind}${body}${frontHead}${frontBody}</svg>`;
+}
+
+// ===== Wearables: hats, glasses, neck, capes, armor (each is an SVG overlay positioned in the 100x100 viewBox) =====
+const ITEM_SLOTS = ['hat','eyes','neck','back','armor'];
+const SLOT_LABEL = { hat:'Hut', eyes:'Brille', neck:'Hals', back:'Umhang', armor:'Rüstung' };
+const ITEMS = {
+    crown: { slot:'hat', name:'Krone', price:150, svg:`
+        <defs><linearGradient id="crownG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd75e"/><stop offset="100%" stop-color="#c79500"/></linearGradient></defs>
+        <path d="M20 18 L30 8 L40 16 L50 4 L60 16 L70 8 L80 18 L78 30 L22 30 Z" fill="url(#crownG)" stroke="#7a5a00" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="30" cy="11" r="3" fill="#ff4b6e"/>
+        <circle cx="50" cy="7" r="3" fill="#1cb0f6"/>
+        <circle cx="70" cy="11" r="3" fill="#7be041"/>` },
+    topHat: { slot:'hat', name:'Zylinder', price:90, svg:`
+        <rect x="22" y="22" width="56" height="6" fill="#222" rx="1"/>
+        <rect x="30" y="2" width="40" height="22" fill="#222" stroke="#000" stroke-width="1.5"/>
+        <rect x="30" y="14" width="40" height="3" fill="#c8203c"/>` },
+    wizard: { slot:'hat', name:'Zaubererhut', price:120, svg:`
+        <path d="M50 0 L26 28 L74 28 Z" fill="#5a2a8a" stroke="#3a1657" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M22 26 L78 26 L78 30 L22 30 Z" fill="#5a2a8a" stroke="#3a1657" stroke-width="2"/>
+        <path d="M40 18 L42 22 L46 22 L43 25 L44 29 L40 27 L36 29 L37 25 L34 22 L38 22 Z" fill="#ffd75e"/>
+        <path d="M58 10 L59 12 L61 12 L59.5 13.5 L60 16 L58 14.5 L56 16 L56.5 13.5 L55 12 L57 12 Z" fill="#ffd75e"/>` },
+    partyHat: { slot:'hat', name:'Partyhut', price:40, svg:`
+        <path d="M50 2 L36 30 L64 30 Z" fill="#ff4b6e" stroke="#a02040" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="46" cy="16" r="2" fill="#ffd75e"/>
+        <circle cx="54" cy="22" r="2" fill="#7be041"/>
+        <circle cx="50" cy="10" r="2" fill="#1cb0f6"/>
+        <circle cx="50" cy="4" r="3" fill="#ffd75e"/>` },
+    pirate: { slot:'hat', name:'Piratenhut', price:110, svg:`
+        <path d="M16 22 Q50 0 84 22 Q70 32 50 30 Q30 32 16 22 Z" fill="#1a1a22" stroke="#000" stroke-width="2"/>
+        <path d="M44 14 L56 14 L56 18 L44 18 Z" fill="#fff"/>
+        <circle cx="50" cy="16" r="3" fill="#fff"/>
+        <rect x="46" y="20" width="2" height="4" fill="#fff"/>
+        <rect x="52" y="20" width="2" height="4" fill="#fff"/>` },
+    cap: { slot:'hat', name:'Kappe', price:60, svg:`
+        <path d="M18 26 Q50 4 80 26 Q78 30 70 30 L26 30 Q22 30 18 26 Z" fill="#ff4b6e" stroke="#a02040" stroke-width="2"/>
+        <path d="M78 26 Q90 30 86 34 L70 30 Z" fill="#a02040"/>
+        <text x="50" y="22" text-anchor="middle" font-size="10" fill="#fff" font-weight="900">V</text>` },
+    viking: { slot:'hat', name:'Wikingerhelm', price:140, svg:`
+        <path d="M22 26 Q50 6 78 26 L78 30 L22 30 Z" fill="#9aa6b8" stroke="#3a4252" stroke-width="2"/>
+        <path d="M12 14 Q20 8 26 18 L22 22 Z" fill="#fff5d5" stroke="#3a4252" stroke-width="1.5"/>
+        <path d="M88 14 Q80 8 74 18 L78 22 Z" fill="#fff5d5" stroke="#3a4252" stroke-width="1.5"/>
+        <rect x="48" y="14" width="4" height="16" fill="#7a8290"/>` },
+    flowerCrown: { slot:'hat', name:'Blumenkrone', price:80, svg:`
+        <path d="M20 24 Q50 18 80 24" stroke="#5a8a2c" stroke-width="3" fill="none"/>
+        <circle cx="26" cy="22" r="5" fill="#ff9ec0"/><circle cx="26" cy="22" r="1.5" fill="#ffd75e"/>
+        <circle cx="42" cy="18" r="5" fill="#ffd75e"/><circle cx="42" cy="18" r="1.5" fill="#fff"/>
+        <circle cx="58" cy="18" r="5" fill="#a560ff"/><circle cx="58" cy="18" r="1.5" fill="#ffd75e"/>
+        <circle cx="74" cy="22" r="5" fill="#7be041"/><circle cx="74" cy="22" r="1.5" fill="#fff"/>` },
+    roundGlasses: { slot:'eyes', name:'Brille', price:50, svg:`
+        <circle cx="36" cy="50" r="9" fill="#1cb0f6" opacity="0.15" stroke="#222" stroke-width="2.5"/>
+        <circle cx="64" cy="50" r="9" fill="#1cb0f6" opacity="0.15" stroke="#222" stroke-width="2.5"/>
+        <path d="M45 50 L55 50" stroke="#222" stroke-width="2.5"/>` },
+    sunglasses: { slot:'eyes', name:'Sonnenbrille', price:75, svg:`
+        <path d="M20 46 L48 46 L48 56 L26 56 Q20 56 20 50 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5"/>
+        <path d="M80 46 L52 46 L52 56 L74 56 Q80 56 80 50 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5"/>
+        <path d="M48 49 L52 49" stroke="#000" stroke-width="2"/>
+        <path d="M24 49 L46 49 M24 53 L46 53 M54 49 L76 49 M54 53 L76 53" stroke="#3a3a4a" stroke-width="0.8"/>` },
+    monocle: { slot:'eyes', name:'Monokel', price:90, svg:`
+        <circle cx="64" cy="50" r="11" fill="#fff" opacity="0.2" stroke="#ffd75e" stroke-width="2.5"/>
+        <path d="M64 61 L66 78" stroke="#ffd75e" stroke-width="1.5"/>` },
+    glasses3d: { slot:'eyes', name:'3D-Brille', price:65, svg:`
+        <rect x="22" y="44" width="22" height="12" fill="#ff4b6e" stroke="#000" stroke-width="1.5" rx="1"/>
+        <rect x="56" y="44" width="22" height="12" fill="#1cb0f6" stroke="#000" stroke-width="1.5" rx="1"/>
+        <path d="M44 50 L56 50" stroke="#000" stroke-width="2"/>` },
+    bowtie: { slot:'neck', name:'Fliege', price:35, svg:`
+        <path d="M30 78 L46 72 L46 84 Z" fill="#c8203c" stroke="#7a1020" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M70 78 L54 72 L54 84 Z" fill="#c8203c" stroke="#7a1020" stroke-width="1.5" stroke-linejoin="round"/>
+        <rect x="46" y="74" width="8" height="8" fill="#7a1020" rx="1"/>` },
+    goldChain: { slot:'neck', name:'Goldkette', price:70, svg:`
+        <path d="M22 76 Q50 92 78 76" stroke="#ffd75e" stroke-width="3" fill="none"/>
+        <path d="M44 88 L56 88 L52 96 L50 90 L48 96 Z" fill="#ffd75e" stroke="#c79500" stroke-width="1.5" stroke-linejoin="round"/>` },
+    scarf: { slot:'neck', name:'Schal', price:45, svg:`
+        <path d="M20 72 Q50 88 80 72 L80 84 Q50 100 20 84 Z" fill="#a560ff" stroke="#5a2a8a" stroke-width="1.5"/>
+        <path d="M62 80 L72 100 L82 96 L66 78 Z" fill="#7e3fc4" stroke="#5a2a8a" stroke-width="1.5"/>` },
+    bandana: { slot:'neck', name:'Bandana', price:50, svg:`
+        <path d="M22 74 Q50 90 78 74 L78 84 Q50 98 22 84 Z" fill="#7be041" stroke="#2a5a14" stroke-width="1.5"/>
+        <path d="M28 80 L30 84 M38 82 L40 86 M48 82 L50 86 M58 82 L60 86 M68 80 L70 84" stroke="#fff" stroke-width="1"/>` },
+    redCape: { slot:'back', name:'Heldenumhang', price:100, behind:true, svg:`
+        <path d="M14 30 L8 96 L40 100 L40 36 Z" fill="#c8203c" stroke="#7a1020" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M86 30 L92 96 L60 100 L60 36 Z" fill="#c8203c" stroke="#7a1020" stroke-width="1.5" stroke-linejoin="round"/>`,
+        bodySvg:`
+        <path d="M14 30 L0 168 L100 168 L86 30 L60 36 L40 36 Z" fill="#c8203c" stroke="#7a1020" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M0 168 L8 178 L18 168 L26 178 L34 168 L42 178 L50 168 L58 178 L66 168 L74 178 L82 168 L92 178 L100 168 Z" fill="#7a1020"/>` },
+    vampireCape: { slot:'back', name:'Vampirumhang', price:130, behind:true, svg:`
+        <path d="M14 26 L4 96 L18 92 L22 100 L30 90 L40 100 L40 30 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M86 26 L96 96 L82 92 L78 100 L70 90 L60 100 L60 30 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M14 26 L40 30 L40 36 L18 32 Z" fill="#c8203c"/>
+        <path d="M86 26 L60 30 L60 36 L82 32 Z" fill="#c8203c"/>`,
+        bodySvg:`
+        <path d="M14 26 L0 174 L14 168 L22 178 L30 166 L42 178 L50 168 L58 178 L70 166 L78 178 L86 168 L100 174 L86 26 L60 36 L40 36 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M14 26 L40 30 L40 38 L20 32 Z" fill="#c8203c"/>
+        <path d="M86 26 L60 30 L60 38 L80 32 Z" fill="#c8203c"/>` },
+    royalRobe: { slot:'back', name:'Königsmantel', price:160, behind:true, svg:`
+        <path d="M12 28 L0 100 L42 100 L42 34 Z" fill="#a560ff" stroke="#5a2a8a" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M88 28 L100 100 L58 100 L58 34 Z" fill="#a560ff" stroke="#5a2a8a" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M12 28 Q50 38 88 28 L88 44 Q50 52 12 44 Z" fill="#fff" stroke="#5a2a8a" stroke-width="1.5"/>
+        <circle cx="20" cy="38" r="2" fill="#222"/><circle cx="32" cy="38" r="2" fill="#222"/>
+        <circle cx="50" cy="44" r="2" fill="#222"/>
+        <circle cx="68" cy="38" r="2" fill="#222"/><circle cx="80" cy="38" r="2" fill="#222"/>`,
+        bodySvg:`
+        <path d="M12 28 L-6 178 L106 178 L88 28 L60 36 L40 36 Z" fill="#a560ff" stroke="#5a2a8a" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M12 28 Q50 38 88 28 L88 44 Q50 52 12 44 Z" fill="#fff" stroke="#5a2a8a" stroke-width="1.5"/>
+        <path d="M-6 178 L100 178" stroke="#fff" stroke-width="6"/>
+        <circle cx="20" cy="38" r="2" fill="#222"/><circle cx="32" cy="38" r="2" fill="#222"/>
+        <circle cx="50" cy="44" r="2" fill="#222"/>
+        <circle cx="68" cy="38" r="2" fill="#222"/><circle cx="80" cy="38" r="2" fill="#222"/>` },
+    knightArmor: { slot:'armor', name:'Ritterrüstung', price:120, svg:`
+        <path d="M16 88 Q50 78 84 88 L80 100 L20 100 Z" fill="#c0c8d4" stroke="#3a4252" stroke-width="2"/>
+        <path d="M40 88 L40 100 M60 88 L60 100" stroke="#3a4252" stroke-width="1.5"/>
+        <path d="M50 84 L46 92 L54 92 Z" fill="#7be041"/>`,
+        bodySvg:`
+        <path d="M22 112 Q14 122 20 134 L32 126 Z" fill="#9aa6b8" stroke="#3a4252" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M78 112 Q86 122 80 134 L68 126 Z" fill="#9aa6b8" stroke="#3a4252" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M28 110 L42 112 L50 122 L58 112 L72 110 L74 150 Q50 156 26 150 Z" fill="#c0c8d4" stroke="#3a4252" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M50 124 L50 148" stroke="#3a4252" stroke-width="1.2"/>
+        <path d="M50 128 L44 142 L56 142 Z" fill="#7be041" stroke="#2a5a14" stroke-width="1.5"/>
+        <rect x="28" y="146" width="44" height="5" fill="#3a4252"/>
+        <circle cx="50" cy="148.5" r="1.6" fill="#ffd75e"/>` },
+    goldArmor: { slot:'armor', name:'Goldrüstung', price:200, svg:`
+        <defs><linearGradient id="goldArmorG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd75e"/><stop offset="100%" stop-color="#a07000"/></linearGradient></defs>
+        <path d="M14 86 Q50 76 86 86 L82 100 L18 100 Z" fill="url(#goldArmorG)" stroke="#5a3a00" stroke-width="2"/>
+        <circle cx="50" cy="92" r="6" fill="#ff4b6e" stroke="#5a3a00" stroke-width="1.5"/>
+        <path d="M28 90 L28 100 M72 90 L72 100" stroke="#5a3a00" stroke-width="1.5"/>`,
+        bodySvg:`
+        <defs><linearGradient id="goldArmorBG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffd75e"/><stop offset="100%" stop-color="#a07000"/></linearGradient></defs>
+        <path d="M22 112 Q14 122 20 134 L32 126 Z" fill="#ffd75e" stroke="#5a3a00" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M78 112 Q86 122 80 134 L68 126 Z" fill="#ffd75e" stroke="#5a3a00" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M28 110 L42 112 L50 122 L58 112 L72 110 L74 150 Q50 156 26 150 Z" fill="url(#goldArmorBG)" stroke="#5a3a00" stroke-width="2" stroke-linejoin="round"/>
+        <circle cx="50" cy="132" r="6" fill="#ff4b6e" stroke="#5a3a00" stroke-width="1.5"/>
+        <rect x="28" y="146" width="44" height="5" fill="#5a3a00"/>
+        <circle cx="50" cy="148.5" r="2" fill="#ffd75e" stroke="#5a3a00" stroke-width="1"/>` },
+    ninja: { slot:'armor', name:'Ninja-Anzug', price:90, svg:`
+        <path d="M14 70 Q50 60 86 70 L86 78 Q50 70 14 78 Z" fill="#1a1a22"/>
+        <path d="M16 78 Q50 70 84 78 L82 100 L18 100 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5"/>
+        <circle cx="50" cy="74" r="3" fill="#c8203c"/>`,
+        bodySvg:`
+        <path d="M14 70 Q50 60 86 70 L86 78 Q50 70 14 78 Z" fill="#1a1a22"/>
+        <path d="M22 112 Q14 122 20 134 L32 126 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M78 112 Q86 122 80 134 L68 126 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M28 110 L42 112 L50 122 L58 112 L72 110 L74 152 Q50 158 26 152 Z" fill="#1a1a22" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M26 128 Q50 134 74 128 L74 138 Q50 144 26 138 Z" fill="#c8203c" stroke="#7a1020" stroke-width="1.5"/>
+        <rect x="28" y="148" width="44" height="5" fill="#c8203c"/>
+        <circle cx="50" cy="74" r="3" fill="#c8203c"/>` },
+    spaceSuit: { slot:'armor', name:'Raumanzug', price:170, svg:`
+        <path d="M14 84 Q50 74 86 84 L82 100 L18 100 Z" fill="#fff" stroke="#3a4252" stroke-width="2"/>
+        <rect x="40" y="86" width="20" height="10" fill="#1cb0f6" stroke="#3a4252" stroke-width="1.5" rx="2"/>
+        <circle cx="46" cy="91" r="1.5" fill="#7be041"/>
+        <circle cx="54" cy="91" r="1.5" fill="#ff4b6e"/>`,
+        bodySvg:`
+        <path d="M22 112 Q14 122 20 134 L32 126 Z" fill="#fff" stroke="#3a4252" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M78 112 Q86 122 80 134 L68 126 Z" fill="#fff" stroke="#3a4252" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M28 110 L42 112 L50 122 L58 112 L72 110 L74 152 Q50 158 26 152 Z" fill="#fff" stroke="#3a4252" stroke-width="2" stroke-linejoin="round"/>
+        <rect x="36" y="128" width="28" height="18" fill="#1cb0f6" stroke="#3a4252" stroke-width="1.5" rx="2"/>
+        <circle cx="42" cy="134" r="1.8" fill="#7be041"/>
+        <circle cx="50" cy="134" r="1.8" fill="#ffd75e"/>
+        <circle cx="58" cy="134" r="1.8" fill="#ff4b6e"/>
+        <path d="M40 141 L60 141" stroke="#fff" stroke-width="1.2"/>` }
+};
 
 // ---------- Profile storage (shared with the game) ----------
 let profiles = {};
@@ -730,10 +1676,20 @@ function loadProfiles() {
 function ensureHubFields(p) {
     if (!p) return;
     if (!p.avatar) p.avatar = AVATARS[Math.abs(hashStr(p.name || 'x')) % AVATARS.length];
-    if (!p.lessons) p.lessons = { french: {}, math: {} };
+    // Migrate legacy emoji avatars to keys (so wardrobe/shop overlays line up)
+    if (AVATAR_EMOJI_MAP[p.avatar]) p.avatar = AVATAR_EMOJI_MAP[p.avatar];
+    if (AVATARS.indexOf(p.avatar) < 0) p.avatar = AVATARS[0];
+    // Default existing profiles to Gymnasium/Bayern so French stays unlocked
+    if (!p.bundesland) p.bundesland = 'by';
+    if (!p.schulart) p.schulart = 'gymnasium';
+    if (!p.lessons) p.lessons = { french: {}, math: {}, german: {} };
     if (!p.lessons.french) p.lessons.french = {};
     if (!p.lessons.math) p.lessons.math = {};
+    if (!p.lessons.german) p.lessons.german = {};
     if (!p.hub) p.hub = { xp: 0, lessonsDone: 0, stars: 0, correct: 0 };
+    if (p.hub.gems == null) p.hub.gems = 0;
+    if (!p.hub.owned) p.hub.owned = [];
+    if (!p.hub.equipped) p.hub.equipped = {}; // slot -> itemId
 }
 function saveProfiles() {
     try { localStorage.setItem('nrr_profiles', JSON.stringify(profiles)); } catch (e) {}
@@ -764,12 +1720,13 @@ function goTab(tab) {
 // ---------- Header ----------
 function renderHeader() {
     const p = curP();
-    document.getElementById('hp-av').textContent = p ? p.avatar : '👤';
+    document.getElementById('hp-av').innerHTML = p ? avatarSvg(p.avatar, 32, { equipped: p.hub.equipped, body: true }) : '👤';
     document.getElementById('hp-name').textContent = p ? p.name : 'Kein Profil';
     document.getElementById('hp-xp').textContent = (p ? p.hub.xp : 0) + ' XP';
 }
 
 function renderAll() {
+    applyCourseGating();
     renderHeader();
     if (activeTab === 'lessons') renderLessonPath();
     if (activeTab === 'pairs') renderPairsPath();
@@ -899,40 +1856,179 @@ function makeFrenchGrammar(unite) {
              options: shuffle(item.opts.slice()), answer: item.a };
 }
 
-// Math lesson topics scale with lesson index.
-// Returns {a,b,op,answer,prompt}
-function genMathProblem(lessonIdx) {
-    // Difficulty tiers across 50 lessons
-    const tier = Math.floor(lessonIdx / 5); // 0..9
-    let ops;
-    if (tier <= 1) ops = ['+'];
-    else if (tier <= 3) ops = ['+','-'];
-    else if (tier <= 5) ops = ['+','-','×'];
-    else if (tier <= 7) ops = ['+','-','×','÷'];
-    else ops = ['+','-','×','÷'];
-    const op = ops[Math.floor(Math.random() * ops.length)];
-    const mag = Math.min(10 + tier * 12, 100);
-    let a, b, answer, prompt;
-    if (op === '+') {
-        a = 1 + Math.floor(Math.random() * mag);
-        b = 1 + Math.floor(Math.random() * mag);
-        answer = a + b; prompt = `${a} + ${b}`;
-    } else if (op === '-') {
-        a = 1 + Math.floor(Math.random() * mag);
-        b = 1 + Math.floor(Math.random() * a);
-        answer = a - b; prompt = `${a} − ${b}`;
-    } else if (op === '×') {
-        const m = Math.min(3 + tier * 2, 12);
-        a = 1 + Math.floor(Math.random() * m);
-        b = 1 + Math.floor(Math.random() * m);
-        answer = a * b; prompt = `${a} × ${b}`;
-    } else { // ÷
-        const m = Math.min(3 + tier * 2, 12);
-        b = 2 + Math.floor(Math.random() * (m - 1));
-        answer = 1 + Math.floor(Math.random() * m);
-        a = answer * b; prompt = `${a} ÷ ${b}`;
+// ===== 6th-grade math (Klasse 6 Gymnasium) =====
+// Each generator returns { prompt, answer, wrongs } where answer and wrongs are
+// strings (because fractions like "3/4" and decimals like "1,25" appear). The
+// 50 lessons are divided into 7 topic groups so progression follows the German
+// 6th-grade curriculum: large +/-, ×/÷, negatives, fractions intro, fraction
+// operations, decimals, percentages.
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { [a, b] = [b, a % b]; } return a || 1; }
+function pickK(arr, k) {
+    const seen = new Set(); const out = [];
+    const shuffled = arr.slice().sort(() => Math.random() - 0.5);
+    for (const v of shuffled) {
+        if (v == null) continue;
+        const s = String(v);
+        if (!seen.has(s)) { seen.add(s); out.push(s); if (out.length >= k) break; }
     }
-    return { prompt, answer };
+    return out;
+}
+function fmtNum(n) { return Number.isInteger(n) ? String(n) : String(Math.round(n * 100) / 100).replace('.', ','); }
+function mathGroupForSchulart(idx, schulart) {
+    // Sequence of topic groups (0=Plus/Minus, 1=Mal/Geteilt, 2=Negative, 3=Brüche Basics, 4=Brüche Ops, 5=Dezimal, 6=Prozent)
+    let seq;
+    if (schulart === 'mittel')     seq = [0,0,0,1,1,3,5,6];          // no negatives, no Brüche Ops
+    else if (schulart === 'real')  seq = [0,0,1,1,3,4,5,6];          // skip negatives, lighter mix
+    else                           seq = [0,1,2,3,4,5,6];            // gymnasium = full
+    return seq[Math.min(seq.length - 1, Math.floor(idx / Math.ceil(50 / seq.length)))];
+}
+function genMathProblem(lessonIdx) {
+    const p = curP();
+    const schulart = p ? p.schulart : 'gymnasium';
+    const group = mathGroupForSchulart(lessonIdx, schulart);
+    switch (group) {
+        case 0: return genMathAddSubLarge(lessonIdx);
+        case 1: return genMathMulDiv(lessonIdx);
+        case 2: return genMathNegatives(lessonIdx);
+        case 3: return genMathFractionsBasic(lessonIdx);
+        case 4: return genMathFractionOps(lessonIdx);
+        case 5: return genMathDecimals(lessonIdx);
+        default: return genMathPercent(lessonIdx);
+    }
+}
+function genMathAddSubLarge(idx) {
+    const op = Math.random() < 0.55 ? '+' : '-';
+    const mag = 100 + idx * 50;
+    let a = 30 + Math.floor(Math.random() * mag);
+    let b = 30 + Math.floor(Math.random() * mag);
+    if (op === '-' && b > a) [a, b] = [b, a];
+    const answer = op === '+' ? a + b : a - b;
+    const wrongs = [answer + 1, answer - 1, answer + 10, answer - 10, answer + 100, answer - 100, op === '+' ? a - b : a + b].filter(w => w >= 0 && w !== answer);
+    return { prompt: `${a} ${op === '+' ? '+' : '−'} ${b}`, answer: String(answer), wrongs: pickK(wrongs, 3) };
+}
+function genMathMulDiv(idx) {
+    const op = Math.random() < 0.55 ? '×' : '÷';
+    if (op === '×') {
+        const a = 2 + Math.floor(Math.random() * 14);
+        const b = 2 + Math.floor(Math.random() * 14);
+        const answer = a * b;
+        const wrongs = [answer + a, answer - a, answer + b, answer - b, (a + 1) * b, a * (b + 1), a + b];
+        return { prompt: `${a} · ${b}`, answer: String(answer), wrongs: pickK(wrongs.filter(w => w > 0 && w !== answer), 3) };
+    } else {
+        const b = 2 + Math.floor(Math.random() * 11);
+        const answer = 2 + Math.floor(Math.random() * 14);
+        const a = answer * b;
+        const wrongs = [answer + 1, answer - 1, answer + 2, b, a - b];
+        return { prompt: `${a} : ${b}`, answer: String(answer), wrongs: pickK(wrongs.filter(w => w > 0 && w !== answer), 3) };
+    }
+}
+function genMathNegatives(idx) {
+    const ops = ['+', '-', '×'];
+    const op = ops[Math.floor(Math.random() * ops.length)];
+    const a = (Math.random() < 0.5 ? -1 : 1) * (1 + Math.floor(Math.random() * 18));
+    const b = (Math.random() < 0.5 ? -1 : 1) * (1 + Math.floor(Math.random() * 18));
+    let answer;
+    if (op === '+') answer = a + b;
+    else if (op === '-') answer = a - b;
+    else answer = a * b;
+    const f = v => v < 0 ? `(${v})` : String(v);
+    const sym = op === '×' ? '·' : op === '-' ? '−' : '+';
+    const wrongs = [answer + 1, answer - 1, -answer, answer + 2, answer - 2];
+    return { prompt: `${f(a)} ${sym} ${f(b)}`, answer: String(answer), wrongs: pickK(wrongs.filter(w => w !== answer), 3) };
+}
+function genMathFractionsBasic(idx) {
+    const type = idx % 3;
+    if (type === 0) {
+        // Kürzen
+        const denom = 2 + Math.floor(Math.random() * 8);
+        const num = 1 + Math.floor(Math.random() * (denom - 1));
+        const factor = 2 + Math.floor(Math.random() * 5);
+        const A = num * factor, B = denom * factor;
+        const answer = `${num}/${denom}`;
+        const wrongs = [`${num + 1}/${denom}`, `${num}/${denom + 1}`, `${num + factor}/${denom}`, `${num}/${denom + factor}`, `${A / 2}/${B / 2}`].filter(s => s.indexOf('NaN') === -1);
+        return { prompt: `Kürze: ${A}/${B}`, answer, wrongs: pickK(wrongs.filter(w => w !== answer), 3) };
+    } else if (type === 1) {
+        // Erweitern: 1/2 = ?/8
+        const num = 1 + Math.floor(Math.random() * 4);
+        const denom = num + 1 + Math.floor(Math.random() * 6);
+        const factor = 2 + Math.floor(Math.random() * 5);
+        const targetDenom = denom * factor;
+        const answer = String(num * factor);
+        const wrongs = [String(num * factor + 1), String(num * factor - 1), String(num + factor), String(num * factor + 2)];
+        return { prompt: `${num}/${denom} = ?/${targetDenom}`, answer, wrongs: pickK(wrongs.filter(w => w !== answer), 3) };
+    } else {
+        // Bruchteil von Zahl: 1/n von m
+        const denom = 2 + Math.floor(Math.random() * 7);
+        const total = denom * (2 + Math.floor(Math.random() * 12));
+        const answer = String(total / denom);
+        const wrongs = [String(total / denom + 1), String(total / denom - 1), String(total - denom), String(denom + total / denom)];
+        return { prompt: `1/${denom} von ${total}`, answer, wrongs: pickK(wrongs.filter(w => w !== answer), 3) };
+    }
+}
+function genMathFractionOps(idx) {
+    const ops = ['+', '-', '·'];
+    const op = ops[Math.floor(Math.random() * ops.length)];
+    const denoms = [2, 3, 4, 5, 6, 8];
+    const d1 = denoms[Math.floor(Math.random() * denoms.length)];
+    const d2 = denoms[Math.floor(Math.random() * denoms.length)];
+    const n1 = 1 + Math.floor(Math.random() * (d1 - 1));
+    const n2 = 1 + Math.floor(Math.random() * (d2 - 1));
+    let rN, rD;
+    if (op === '+') { rN = n1 * d2 + n2 * d1; rD = d1 * d2; }
+    else if (op === '-') {
+        const aN = n1 * d2, bN = n2 * d1;
+        if (aN >= bN) { rN = aN - bN; rD = d1 * d2; }
+        else { rN = bN - aN; rD = d1 * d2; }
+        if (rN === 0) { rN = 1; rD = d1 * d2; } // avoid 0 answer to keep it interesting
+    } else { rN = n1 * n2; rD = d1 * d2; }
+    const g = gcd(rN, rD); rN /= g; rD /= g;
+    const answer = rD === 1 ? String(rN) : `${rN}/${rD}`;
+    const wrongs = [
+        rD === 1 ? `${rN + 1}` : `${rN + 1}/${rD}`,
+        rD === 1 ? `${rN - 1}` : `${rN}/${rD + 1}`,
+        `${rN * 2}/${rD}`,
+        rD > 2 ? `${rN}/${rD - 1}` : `${rN + 2}/${rD}`,
+        `${n1 + n2}/${d1 + d2}`
+    ];
+    return { prompt: `${n1}/${d1} ${op} ${n2}/${d2}`, answer, wrongs: pickK(wrongs.filter(w => w !== answer && w.indexOf('NaN') === -1), 3) };
+}
+function genMathDecimals(idx) {
+    const ops = ['+', '-', '·'];
+    const op = ops[Math.floor(Math.random() * ops.length)];
+    const a = (Math.floor(Math.random() * 100) + 1) / 10;
+    const b = (Math.floor(Math.random() * 100) + 1) / 10;
+    let answer;
+    if (op === '+') answer = Math.round((a + b) * 100) / 100;
+    else if (op === '-') {
+        const big = Math.max(a, b), small = Math.min(a, b);
+        answer = Math.round((big - small) * 100) / 100;
+    } else answer = Math.round(a * b * 100) / 100;
+    const ar = op === '-' ? Math.max(a, b) : a;
+    const br = op === '-' ? Math.min(a, b) : b;
+    const ans = fmtNum(answer);
+    const wrongs = [
+        fmtNum(answer + 0.1), fmtNum(Math.max(0, answer - 0.1)),
+        fmtNum(answer + 1), fmtNum(answer * 10), fmtNum(answer / 10)
+    ];
+    return { prompt: `${fmtNum(ar)} ${op} ${fmtNum(br)}`, answer: ans, wrongs: pickK(wrongs.filter(w => w !== ans), 3) };
+}
+function genMathPercent(idx) {
+    const type = idx % 2;
+    const percents = [10, 20, 25, 50, 75];
+    if (type === 0) {
+        const p = percents[Math.floor(Math.random() * percents.length)];
+        const y = 20 + 4 * Math.floor(Math.random() * 40);
+        const answer = (p / 100) * y;
+        const ans = fmtNum(answer);
+        const wrongs = [fmtNum(answer + 1), fmtNum(Math.max(0, answer - 1)), fmtNum(y - answer), fmtNum(answer * 2), fmtNum(y / 2)];
+        return { prompt: `${p}% von ${y}`, answer: ans, wrongs: pickK(wrongs.filter(w => w !== ans), 3) };
+    } else {
+        const p = percents[Math.floor(Math.random() * percents.length)];
+        const y = 4 * (5 + Math.floor(Math.random() * 25));
+        const x = (p / 100) * y;
+        const wrongs = [p + 5, Math.max(0, p - 5), p * 2, 100 - p, Math.round(x)];
+        return { prompt: `${fmtNum(x)} ist wie viel % von ${y}?`, answer: String(p), wrongs: pickK(wrongs.filter(w => w !== p && w >= 0), 3) };
+    }
 }
 
 const LESSONS_PER_COURSE = 50;
@@ -966,6 +2062,14 @@ function buildLessonQuestions(course, idx) {
                 else if (type === 'write') qs.push(makeFrenchWrite(slice, poolSize));
                 else qs.push(makeFrenchChoice(slice, poolSize));
             }
+        }
+    } else if (base === 'german') {
+        for (let i = 0; i < count; i++) {
+            if (pairsOnly) { qs.push(makeGermanPairs(idx)); continue; }
+            const type = pickQuestionType(i, count);
+            if (type === 'pairs') qs.push(makeGermanPairs(idx));
+            else if (type === 'write') qs.push(makeGermanWrite(idx));
+            else qs.push(makeGermanChoice(idx));
         }
     } else {
         for (let i = 0; i < count; i++) {
@@ -1032,42 +2136,219 @@ function makeFrenchPairs(slice) {
 function makeMathChoice(idx) {
     const p = genMathProblem(idx);
     const opts = new Set([p.answer]);
-    while (opts.size < 4) {
-        const delta = (Math.floor(Math.random() * 9) - 4) || 5;
-        const wrong = p.answer + delta;
-        if (wrong >= 0) opts.add(wrong);
+    for (const w of (p.wrongs || [])) { if (opts.size < 4) opts.add(w); }
+    // top up with simple numeric variations if topic didn't provide enough wrongs
+    let guard = 0;
+    while (opts.size < 4 && guard++ < 20) {
+        const n = Number(p.answer);
+        if (!isNaN(n)) {
+            const delta = (Math.floor(Math.random() * 7) - 3) || 4;
+            const wrong = (n + delta);
+            if (wrong >= 0) opts.add(String(wrong));
+        } else {
+            opts.add(p.answer + '?'); // placeholder to break loop
+        }
     }
     return { kind: 'choice', prompt: 'Löse', big: p.prompt + ' = ?',
-             options: shuffle([...opts]).map(String), answer: String(p.answer) };
+             options: shuffle([...opts]), answer: p.answer };
 }
 function makeMathWrite(idx) {
     const p = genMathProblem(idx);
-    return { kind: 'write', prompt: 'Tippe die Antwort', big: p.prompt + ' = ?', answer: String(p.answer), numeric: true };
+    // numeric only when answer is a plain integer (fractions like "3/4" need free-form input)
+    const isNumeric = /^-?\d+$/.test(p.answer);
+    return { kind: 'write', prompt: 'Tippe die Antwort', big: p.prompt + ' = ?', answer: p.answer, numeric: isNumeric };
 }
 function makeMathPairs(idx) {
     const probs = [];
     const used = new Set();
     let guard = 0;
-    while (probs.length < 4 && guard++ < 50) {
+    while (probs.length < 4 && guard++ < 60) {
         const p = genMathProblem(idx);
-        if (used.has(p.answer)) continue;
-        used.add(p.answer);
+        if (used.has(p.answer) || used.has(p.prompt)) continue;
+        used.add(p.answer); used.add(p.prompt);
         probs.push(p);
     }
     return { kind: 'pairs', prompt: 'Ordne die Antworten zu',
         left: probs.map(p => p.prompt),
-        right: shuffle(probs.map(p => String(p.answer))),
-        map: Object.fromEntries(probs.map(p => [p.prompt, String(p.answer)])) };
+        right: shuffle(probs.map(p => p.answer)),
+        map: Object.fromEntries(probs.map(p => [p.prompt, p.answer])) };
+}
+
+// ===== Deutsch (German) content =====
+const GERMAN_NOUNS = [
+    ['Hund','der','Hunde'],['Katze','die','Katzen'],['Haus','das','Häuser'],
+    ['Buch','das','Bücher'],['Auto','das','Autos'],['Schule','die','Schulen'],
+    ['Lehrer','der','Lehrer'],['Stuhl','der','Stühle'],['Tisch','der','Tische'],
+    ['Tür','die','Türen'],['Fenster','das','Fenster'],['Apfel','der','Äpfel'],
+    ['Brot','das','Brote'],['Stadt','die','Städte'],['Land','das','Länder'],
+    ['Berg','der','Berge'],['Fluss','der','Flüsse'],['Garten','der','Gärten'],
+    ['Blume','die','Blumen'],['Baum','der','Bäume'],['Wald','der','Wälder'],
+    ['Vogel','der','Vögel'],['Fisch','der','Fische'],['Maus','die','Mäuse'],
+    ['Pferd','das','Pferde'],['Kind','das','Kinder'],['Mutter','die','Mütter'],
+    ['Vater','der','Väter'],['Bruder','der','Brüder'],['Schwester','die','Schwestern'],
+    ['Freund','der','Freunde'],['Tag','der','Tage'],['Nacht','die','Nächte'],
+    ['Jahr','das','Jahre'],['Woche','die','Wochen'],['Monat','der','Monate'],
+    ['Stunde','die','Stunden'],['Auge','das','Augen'],['Ohr','das','Ohren'],
+    ['Hand','die','Hände'],['Fuß','der','Füße'],['Kopf','der','Köpfe']
+];
+const GERMAN_VERBS = [
+    // [infinitive, ich, du, er, wir, ihr, sie]
+    ['gehen','gehe','gehst','geht','gehen','geht','gehen'],
+    ['sehen','sehe','siehst','sieht','sehen','seht','sehen'],
+    ['sprechen','spreche','sprichst','spricht','sprechen','sprecht','sprechen'],
+    ['lesen','lese','liest','liest','lesen','lest','lesen'],
+    ['schreiben','schreibe','schreibst','schreibt','schreiben','schreibt','schreiben'],
+    ['fahren','fahre','fährst','fährt','fahren','fahrt','fahren'],
+    ['laufen','laufe','läufst','läuft','laufen','lauft','laufen'],
+    ['essen','esse','isst','isst','essen','esst','essen'],
+    ['trinken','trinke','trinkst','trinkt','trinken','trinkt','trinken'],
+    ['kommen','komme','kommst','kommt','kommen','kommt','kommen'],
+    ['nehmen','nehme','nimmst','nimmt','nehmen','nehmt','nehmen'],
+    ['geben','gebe','gibst','gibt','geben','gebt','geben'],
+    ['finden','finde','findest','findet','finden','findet','finden'],
+    ['bleiben','bleibe','bleibst','bleibt','bleiben','bleibt','bleiben'],
+    ['schlafen','schlafe','schläfst','schläft','schlafen','schlaft','schlafen']
+];
+const GERMAN_SYNONYMS = [
+    ['schnell','rasch'],['groß','riesig'],['klein','winzig'],['schön','hübsch'],
+    ['traurig','betrübt'],['froh','glücklich'],['müde','erschöpft'],['klug','schlau'],
+    ['mutig','tapfer'],['anfangen','beginnen'],['aufhören','beenden'],['sagen','sprechen'],
+    ['rennen','sprinten'],['Haus','Gebäude'],['Auto','Wagen'],['Geld','Münzen'],
+    ['Arbeit','Job'],['hübsch','schön'],['leise','still'],['nett','freundlich']
+];
+const GERMAN_ANTONYMS = [
+    ['groß','klein'],['hoch','tief'],['lang','kurz'],['schnell','langsam'],
+    ['heiß','kalt'],['warm','kühl'],['gut','schlecht'],['richtig','falsch'],
+    ['hell','dunkel'],['leicht','schwer'],['stark','schwach'],['jung','alt'],
+    ['neu','alt'],['voll','leer'],['fleißig','faul'],['traurig','fröhlich'],
+    ['Tag','Nacht'],['Sommer','Winter'],['Anfang','Ende'],['Freund','Feind'],
+    ['offen','geschlossen'],['früh','spät'],['oben','unten'],['arm','reich']
+];
+const GERMAN_WORDS_BY_TYPE = {
+    'Nomen':    ['Hund','Schule','Buch','Tisch','Stadt','Garten','Blume','Apfel'],
+    'Verb':     ['gehen','laufen','essen','schlafen','spielen','lernen','fahren','lesen'],
+    'Adjektiv': ['schön','klein','schnell','warm','blau','traurig','klug','mutig'],
+    'Pronomen': ['ich','du','er','sie','wir','ihr','mein','dein']
+};
+const GERMAN_SPELLINGS = [
+    // [correct, wrong1, wrong2, wrong3]
+    ['Fahrrad','Farrad','Faarrad','Farat'],
+    ['Schiff','Schif','Shiff','Schief'],
+    ['Stadt','Statt','Schtadt','Stat'],
+    ['Vater','Fater','Vatter','Vatehr'],
+    ['Pizza','Piza','Pitza','Pizah'],
+    ['Schule','Shule','Sschule','Schulle'],
+    ['Treppe','Trepe','Tretppe','Trrepe'],
+    ['Käse','Kese','Käsee','Kääse'],
+    ['Quark','Kwark','Qark','Qauark'],
+    ['Apfel','Apfell','Apfle','Aepfel'],
+    ['Wasser','Waser','Wasser','Wassser'].slice(0, 4),
+    ['Brücke','Brüke','Brücke','Brüccke'].slice(0, 4)
+].map(arr => arr.filter((v, i, a) => a.indexOf(v) === i)); // dedupe
+
+function genGermanProblem(idx) {
+    const group = Math.min(6, Math.floor(idx / 7));
+    switch (group) {
+        case 0: return genGermanArtikel();
+        case 1: return genGermanPlural();
+        case 2: return genGermanWortart();
+        case 3: return genGermanVerb();
+        case 4: return genGermanSynonym();
+        case 5: return genGermanAntonym();
+        default: return genGermanRecht();
+    }
+}
+function genGermanArtikel() {
+    const n = GERMAN_NOUNS[Math.floor(Math.random() * GERMAN_NOUNS.length)];
+    return { prompt: 'Welcher Artikel?', big: '___ ' + n[0], answer: n[1], wrongs: ['der','die','das'].filter(a => a !== n[1]) };
+}
+function genGermanPlural() {
+    const n = GERMAN_NOUNS[Math.floor(Math.random() * GERMAN_NOUNS.length)];
+    const others = pickK(GERMAN_NOUNS.filter(x => x[2] !== n[2]).map(x => x[2]), 3);
+    return { prompt: 'Plural von', big: n[1] + ' ' + n[0], answer: n[2], wrongs: others };
+}
+function genGermanWortart() {
+    const types = Object.keys(GERMAN_WORDS_BY_TYPE);
+    const type = types[Math.floor(Math.random() * types.length)];
+    const word = GERMAN_WORDS_BY_TYPE[type][Math.floor(Math.random() * GERMAN_WORDS_BY_TYPE[type].length)];
+    return { prompt: 'Welche Wortart?', big: word, answer: type, wrongs: types.filter(t => t !== type) };
+}
+function genGermanVerb() {
+    const v = GERMAN_VERBS[Math.floor(Math.random() * GERMAN_VERBS.length)];
+    const persons = [['ich',1],['du',2],['er',3],['wir',4],['ihr',5],['sie',6]];
+    const p = persons[Math.floor(Math.random() * persons.length)];
+    const answer = v[p[1]];
+    const wrongPool = persons.filter(x => v[x[1]] !== answer).map(x => v[x[1]]);
+    return { prompt: 'Konjugiere ' + v[0], big: p[0] + ' ___', answer, wrongs: pickK(wrongPool, 3) };
+}
+function genGermanSynonym() {
+    const pair = GERMAN_SYNONYMS[Math.floor(Math.random() * GERMAN_SYNONYMS.length)];
+    const dir = Math.random() < 0.5;
+    const big = dir ? pair[0] : pair[1];
+    const answer = dir ? pair[1] : pair[0];
+    const pool = GERMAN_SYNONYMS.flat().filter(w => w !== answer && w !== big);
+    return { prompt: 'Synonym für', big, answer, wrongs: pickK(pool, 3) };
+}
+function genGermanAntonym() {
+    const pair = GERMAN_ANTONYMS[Math.floor(Math.random() * GERMAN_ANTONYMS.length)];
+    const dir = Math.random() < 0.5;
+    const big = dir ? pair[0] : pair[1];
+    const answer = dir ? pair[1] : pair[0];
+    const pool = GERMAN_ANTONYMS.flat().filter(w => w !== answer && w !== big);
+    return { prompt: 'Gegenteil von', big, answer, wrongs: pickK(pool, 3) };
+}
+function genGermanRecht() {
+    const row = GERMAN_SPELLINGS[Math.floor(Math.random() * GERMAN_SPELLINGS.length)];
+    if (!row || row.length < 2) return genGermanArtikel();
+    return { prompt: 'Welches ist richtig geschrieben?', big: '', answer: row[0], wrongs: row.slice(1, 4) };
+}
+
+function makeGermanChoice(idx) {
+    const p = genGermanProblem(idx);
+    const opts = new Set([p.answer]);
+    (p.wrongs || []).forEach(w => { if (opts.size < 4 && w) opts.add(w); });
+    return { kind: 'choice', prompt: p.prompt, big: p.big || '', options: shuffle([...opts]), answer: p.answer };
+}
+function makeGermanWrite(idx) {
+    const p = genGermanProblem(idx);
+    return { kind: 'write', prompt: p.prompt, big: p.big || '', answer: p.answer };
+}
+function makeGermanPairs(idx) {
+    const useSyn = idx % 2 === 0;
+    const pool = useSyn ? GERMAN_SYNONYMS : GERMAN_ANTONYMS;
+    const chosen = shuffle(pool).slice(0, 4);
+    return {
+        kind: 'pairs',
+        prompt: useSyn ? 'Finde die Synonyme' : 'Finde die Gegenteile',
+        left: chosen.map(p => p[0]),
+        right: shuffle(chosen.map(p => p[1])),
+        map: Object.fromEntries(chosen.map(p => [p[0], p[1]]))
+    };
 }
 
 /* =====================================================================
    LESSONS TAB
    ===================================================================== */
-let currentCourse = 'french';
+let currentCourse = 'german';
+// Hide / show Französisch buttons based on schulart (and switch off if locked)
+function applyCourseGating() {
+    const p = curP();
+    const showFr = hasFrench(p);
+    ['cb-french', 'pcb-french'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', !showFr);
+    });
+    if (!showFr) {
+        if (currentCourse === 'french') setCourse('german');
+        if (typeof currentPairsCourse !== 'undefined' && currentPairsCourse === 'french') setPairsCourse('german');
+    }
+}
 
 function setCourse(course) {
+    if (course === 'french' && !hasFrench(curP())) { toast('Französisch nur am Gymnasium'); return; }
     currentCourse = course;
     document.getElementById('cb-french').classList.toggle('active', course === 'french');
+    document.getElementById('cb-german').classList.toggle('active', course === 'german');
     document.getElementById('cb-math').classList.toggle('active', course === 'math');
     renderLessonPath();
 }
@@ -1086,7 +2367,19 @@ function lessonState(course, idx) {
 }
 
 const UNIT_NAMES_FR = ['Unité 1 · être & articles','Unité 2 · -er & négation','Unité 3 · avoir & possessifs','Unité 4 · aller & futur proche','Unité 5 · prendre & adjectifs','Unité 6 · passé composé','Unité 1 · révision','Unité 2 · révision'];
-const UNIT_NAMES_MA = ['Addition','Plus & Minus','Einmaleins','Division','Gemischt','Größere Zahlen','Kopfrechnen','Meister'];
+const UNIT_NAMES_MA = ['Plus & Minus','Mal & Geteilt','Negative Zahlen','Brüche Grundlagen','Brüche rechnen','Dezimalzahlen','Prozente','Meister'];
+const UNIT_NAMES_DE = ['Artikel','Plural','Wortarten','Verben','Synonyme','Antonyme','Rechtschreibung','Meister'];
+function courseEmoji(c) { return c === 'french' ? '🇫🇷' : c === 'german' ? '🇩🇪' : '🔢'; }
+function courseUnitNames(c) {
+    if (c === 'french') return UNIT_NAMES_FR;
+    if (c === 'german') return UNIT_NAMES_DE;
+    // Math units shift by Schulart
+    const sa = curP() ? curP().schulart : 'gymnasium';
+    if (sa === 'mittel') return ['Plus & Minus','Mal & Geteilt','Brüche','Dezimalzahlen','Prozente','Übung','Mix','Meister'];
+    if (sa === 'real')   return ['Plus & Minus','Mal & Geteilt','Brüche Grundlagen','Brüche rechnen','Dezimalzahlen','Prozente','Übung','Meister'];
+    return UNIT_NAMES_MA;
+}
+function courseLabel(c) { return c === 'french' ? 'Französisch' : c === 'german' ? 'Deutsch' : 'Mathe'; }
 
 function renderLessonPath() {
     renderAchievements();
@@ -1095,7 +2388,7 @@ function renderLessonPath() {
     pathEl.className = currentCourse === 'math' ? 'course-math' : '';
     pathEl.innerHTML = '';
 
-    const names = currentCourse === 'french' ? UNIT_NAMES_FR : UNIT_NAMES_MA;
+    const names = courseUnitNames(currentCourse);
     for (let i = 0; i < LESSONS_PER_COURSE; i++) {
         // Unit banner every ~7 lessons
         if (i % 7 === 0) {
@@ -1104,7 +2397,7 @@ function renderLessonPath() {
             banner.className = 'unit-banner';
             const title = currentCourse === 'french' ? (names[unitIdx] || 'Plus de grammaire') : ('Einheit ' + (unitIdx + 1));
             const sub = currentCourse === 'french' ? 'Vocabulaire & grammaire' : (names[unitIdx] || 'Mehr');
-            banner.innerHTML = `<div><div class="ub-title">${title}</div><div class="ub-sub">${sub}</div></div><div style="font-size:26px;">${currentCourse === 'french' ? '🇫🇷' : '🔢'}</div>`;
+            banner.innerHTML = `<div><div class="ub-title">${title}</div><div class="ub-sub">${sub}</div></div><div style="font-size:26px;">${courseEmoji(currentCourse)}</div>`;
             pathEl.appendChild(banner);
         }
         const st = lessonState(currentCourse, i);
@@ -1112,7 +2405,7 @@ function renderLessonPath() {
         row.className = 'node-row o' + (i % 4);
         const node = document.createElement('button');
         node.className = 'lesson-node ' + (st.done ? 'done' : (st.unlocked ? 'current' : 'locked'));
-        let inner = st.done ? '👑' : (st.unlocked ? (currentCourse === 'french' ? '📖' : '✏️') : '🔒');
+        let inner = st.done ? '👑' : (st.unlocked ? (currentCourse === 'french' ? '📖' : currentCourse === 'german' ? '📝' : '✏️') : '🔒');
         node.innerHTML = `<span class="lbl">${i + 1}</span>${inner}` + (st.done ? `<span class="stars">${'★'.repeat(st.stars)}${'☆'.repeat(3 - st.stars)}</span>` : '');
         if (st.unlocked) node.onclick = () => startLesson(currentCourse, i);
         else node.onclick = () => toast('Beende zuerst die vorherige Lektion');
@@ -1124,11 +2417,13 @@ function renderLessonPath() {
 /* =====================================================================
    PAIRS PATH - a dedicated path of matching-only lessons
    ===================================================================== */
-let currentPairsCourse = 'french';
+let currentPairsCourse = 'german';
 const PAIRS_LESSONS = 30;
 function setPairsCourse(c) {
+    if (c === 'french' && !hasFrench(curP())) { toast('Französisch nur am Gymnasium'); return; }
     currentPairsCourse = c;
     document.getElementById('pcb-french').classList.toggle('active', c === 'french');
+    document.getElementById('pcb-german').classList.toggle('active', c === 'german');
     document.getElementById('pcb-math').classList.toggle('active', c === 'math');
     renderPairsPath();
 }
@@ -1413,6 +2708,9 @@ function completeLesson() {
     p.hub.stars += Math.max(0, stars - prevStars);
     p.hub.correct += s.correct;
     p.hub.xp += xp;
+    // Gems: base reward + bonus for stars, extra-rich on first clear
+    const gems = 5 + stars * 3 + (wasDone ? 0 : 5);
+    p.hub.gems += gems;
     saveProfiles();
     bumpBots(); // bots progress when you do
 
@@ -1425,8 +2723,9 @@ function completeLesson() {
     document.getElementById('ld-emoji').textContent = stars === 3 ? '🏆' : '🎉';
     document.getElementById('ld-stars').textContent = '★'.repeat(stars) + '☆'.repeat(3 - stars);
     document.getElementById('ld-accuracy').textContent = 'Genauigkeit: ' + accuracy + '%';
-    document.getElementById('ld-xp').textContent = '+' + xp + ' XP';
+    document.getElementById('ld-xp').innerHTML = `+${xp} XP &nbsp; <span style="color:#1cb0f6;">+${gems} 💎</span>`;
     document.getElementById('lesson-done').classList.add('active');
+    try { vosjeConfetti({ count: stars >= 3 ? 180 : 120 }); } catch (e) {}
 }
 
 function finishLessonDone() {
@@ -1451,7 +2750,7 @@ function renderGames() {
     const tag = document.getElementById('nrr-tag');
     const playBtn = document.getElementById('nrr-play');
     if (p) {
-        tag.innerHTML = `Spielt als <b>${escapeHtml(p.name)}</b> ${p.avatar}`;
+        tag.innerHTML = `Spielt als <b>${escapeHtml(p.name)}</b> ${avatarSvg(p.avatar, 28, { equipped: p.hub.equipped, body: true })}`;
         playBtn.textContent = '▶ SPIELEN';
         playBtn.classList.remove('gc-noprofile');
     } else {
@@ -1486,10 +2785,19 @@ function closeGameOverlay() {
 function renderProfile() {
     const p = curP();
     // current card
-    document.getElementById('cp-av').textContent = p ? p.avatar : '👤';
+    document.getElementById('cp-av').innerHTML = p ? avatarSvg(p.avatar, 80, { equipped: p.hub.equipped, body: true }) : '👤';
     document.getElementById('cp-name').textContent = p ? p.name : 'Kein Profil';
+    const metaEl = document.getElementById('cp-meta');
+    if (p && metaEl) {
+        const bl = bundeslandByCode(p.bundesland);
+        const sa = schulartByCode(p.schulart);
+        metaEl.innerHTML = `${bl.emoji} ${bl.name} &nbsp;·&nbsp; ${sa.icon} ${sa.name}`;
+    } else if (metaEl) {
+        metaEl.textContent = '';
+    }
     const xp = p ? p.hub.xp : 0;
-    document.getElementById('cp-xp').textContent = xp + ' XP · Level ' + (1 + Math.floor(xp / 100));
+    const gems = ENDLESS_GEMS ? '∞' : (p ? p.hub.gems : 0);
+    document.getElementById('cp-xp').innerHTML = `${xp} XP · <span style="color:#1cb0f6;">💎 ${gems}</span> · Level ${1 + Math.floor(xp / 100)}`;
 
     // stats
     const gd = p && p.data ? p.data : {};
@@ -1499,6 +2807,7 @@ function renderProfile() {
     document.getElementById('st-games').textContent = gstats.gamesPlayed || 0;
     document.getElementById('st-highscore').textContent = gstats.highScore || 0;
     document.getElementById('st-coins').textContent = gd.coins || 0;
+    document.getElementById('st-gems').textContent = ENDLESS_GEMS ? '∞' : (p ? p.hub.gems : 0);
     document.getElementById('st-streak').textContent = p ? p.hub.correct : 0;
 
     // profile grid
@@ -1509,7 +2818,7 @@ function renderProfile() {
         const card = document.createElement('div');
         card.className = 'profile-mini' + (id === currentProfileId ? ' sel' : '');
         card.innerHTML = `
-            <div class="pm-av">${prof.avatar}</div>
+            <div class="pm-av">${avatarSvg(prof.avatar, 42, { equipped: prof.hub.equipped, body: true })}</div>
             <div class="pm-name"></div>
             <div class="pm-xp">${prof.hub.xp} XP</div>
             ${Object.keys(profiles).length > 1 ? `<div class="pm-del" title="Delete">✕</div>` : ''}`;
@@ -1541,16 +2850,78 @@ function deleteProfile(id) {
     renderAll();
 }
 
-// ---- create profile flow ----
+// ---- create profile flow (multi-step) ----
 let createAvatar = AVATARS[0];
+let createBundesland = 'by';
+let createSchulart = 'gymnasium';
+let createStep = 1;
 function openCreate() {
     createAvatar = AVATARS[0];
+    createBundesland = 'by';
+    createSchulart = 'gymnasium';
+    createStep = 1;
+    renderCreateBundesland();
+    renderCreateSchulart();
+    renderCreateAvatarPick();
+    document.getElementById('create-name').value = '';
+    document.getElementById('create-overlay').classList.add('active');
+    showCreateStep(1);
+}
+function closeCreate() { document.getElementById('create-overlay').classList.remove('active'); }
+function showCreateStep(n) {
+    createStep = n;
+    for (let i = 1; i <= 3; i++) {
+        document.getElementById('step-' + i).classList.toggle('active', i === n);
+        const dot = document.getElementById('dot-' + i);
+        dot.classList.toggle('active', i === n);
+        dot.classList.toggle('done', i < n);
+    }
+    if (n === 3) setTimeout(() => document.getElementById('create-name').focus(), 60);
+}
+function createNextStep() {
+    if (createStep < 3) showCreateStep(createStep + 1);
+}
+function createPrevStep() {
+    if (createStep > 1) showCreateStep(createStep - 1);
+}
+function renderCreateBundesland() {
+    const grid = document.getElementById('bl-grid');
+    grid.innerHTML = '';
+    BUNDESLAENDER.forEach(b => {
+        const el = document.createElement('div');
+        el.className = 'bl-opt' + (b.code === createBundesland ? ' sel' : '');
+        el.innerHTML = `<div class="bl-em">${b.emoji}</div><div class="bl-nm">${b.name}</div>`;
+        el.onclick = () => {
+            createBundesland = b.code;
+            grid.querySelectorAll('.bl-opt').forEach(o => o.classList.remove('sel'));
+            el.classList.add('sel');
+        };
+        grid.appendChild(el);
+    });
+}
+function renderCreateSchulart() {
+    const grid = document.getElementById('sa-grid');
+    grid.innerHTML = '';
+    SCHULARTEN.forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'sa-opt' + (s.code === createSchulart ? ' sel' : '');
+        el.innerHTML = `<div class="sa-icon">${s.icon}</div><div><div class="sa-name">${s.name}</div><div class="sa-desc">${s.desc}</div></div>`;
+        el.onclick = () => {
+            createSchulart = s.code;
+            grid.querySelectorAll('.sa-opt').forEach(o => o.classList.remove('sel'));
+            el.classList.add('sel');
+        };
+        grid.appendChild(el);
+    });
+}
+function renderCreateAvatarPick() {
     const pick = document.getElementById('avatar-pick');
     pick.innerHTML = '';
     AVATARS.forEach((av, i) => {
         const b = document.createElement('div');
-        b.className = 'av-opt' + (i === 0 ? ' sel' : '');
-        b.textContent = av;
+        b.className = 'av-opt' + (av === createAvatar ? ' sel' : '');
+        b.title = AVATAR_NAMES[av] || av;
+        b.innerHTML = avatarSvg(av, 52);
         b.onclick = () => {
             createAvatar = av;
             pick.querySelectorAll('.av-opt').forEach(o => o.classList.remove('sel'));
@@ -1558,36 +2929,122 @@ function openCreate() {
         };
         pick.appendChild(b);
     });
-    document.getElementById('create-name').value = '';
-    document.getElementById('create-overlay').classList.add('active');
-    setTimeout(() => document.getElementById('create-name').focus(), 60);
 }
-function closeCreate() { document.getElementById('create-overlay').classList.remove('active'); }
 function confirmCreateProfile() {
     const name = document.getElementById('create-name').value.trim();
     if (!name) { toast('Gib einen Namen ein'); return; }
     const id = 'profile_' + Date.now();
-    profiles[id] = { name, avatar: createAvatar, data: null, sr: {}, lessons: { french: {}, math: {} }, hub: { xp: 0, lessonsDone: 0, stars: 0, correct: 0 } };
+    profiles[id] = {
+        name, avatar: createAvatar,
+        bundesland: createBundesland, schulart: createSchulart,
+        data: null, sr: {},
+        lessons: { french: {}, math: {}, german: {} },
+        hub: { xp: 0, lessonsDone: 0, stars: 0, correct: 0, gems: 0, owned: [], equipped: {} }
+    };
     saveProfiles();
     closeCreate();
     setCurrentProfile(id);
     toast('Willkommen, ' + name + '!');
 }
 
+// ===== Wardrobe & Shop =====
+let wdSlot = 'hat';
+function openWardrobe() {
+    const p = curP();
+    if (!p) { toast('Wähle zuerst ein Profil'); return; }
+    ensureHubFields(p);
+    document.getElementById('wardrobe-overlay').classList.add('active');
+    renderWardrobe();
+}
+function closeWardrobe() {
+    document.getElementById('wardrobe-overlay').classList.remove('active');
+    renderAll(); // make sure hub avatars reflect new equipment
+}
+function setWardrobeSlot(slot) { wdSlot = slot; renderWardrobe(); }
+function renderWardrobe() {
+    const p = curP();
+    if (!p) return;
+    ensureHubFields(p);
+    document.getElementById('wd-gems').textContent = '💎 ' + (ENDLESS_GEMS ? '∞' : p.hub.gems);
+    document.getElementById('wd-av').innerHTML = avatarSvg(p.avatar, 180, { equipped: p.hub.equipped, body: true });
+    // slot tabs
+    const tabs = document.getElementById('wd-tabs');
+    tabs.innerHTML = '';
+    ITEM_SLOTS.forEach(slot => {
+        const b = document.createElement('div');
+        b.className = 'wd-tab' + (slot === wdSlot ? ' sel' : '');
+        b.textContent = SLOT_LABEL[slot];
+        b.onclick = () => setWardrobeSlot(slot);
+        tabs.appendChild(b);
+    });
+    // items grid
+    const grid = document.getElementById('wd-grid');
+    grid.innerHTML = '';
+    const owned = new Set(p.hub.owned || []);
+    const equippedId = p.hub.equipped[wdSlot];
+    Object.entries(ITEMS).filter(([, it]) => it.slot === wdSlot).forEach(([id, it]) => {
+        const isOwned = owned.has(id);
+        const isEq = id === equippedId;
+        const card = document.createElement('div');
+        card.className = 'wd-item' + (isEq ? ' eq' : isOwned ? ' owned' : ' locked');
+        const status = isEq ? '✓ Angelegt' : isOwned ? 'Anlegen' : ('💎 ' + it.price);
+        const statusCls = isEq ? 'eq' : isOwned ? 'owned' : '';
+        // mini preview: animal + this item only
+        const animalKey = avatarKey(p.avatar);
+        const baseBody = ANIMAL_SVG[animalKey] || ANIMAL_SVG.fox;
+        const animalBody = ANIMAL_BODY_SVG[animalKey] || '';
+        const piece = it.bodySvg || it.svg;
+        const isBodyItem = it.behind || it.slot === 'armor';
+        const headDrop = 10;
+        const preview = `<svg class="av-svg" viewBox="0 0 100 180" width="76" height="137">${it.behind ? piece : ''}${animalBody}<g transform="translate(0 ${headDrop})">${baseBody}${isBodyItem ? '' : piece}</g>${(!it.behind && it.slot === 'armor') ? piece : ''}</svg>`;
+        card.innerHTML = `${preview}
+            <div class="wd-item-name">${it.name}</div>
+            <div class="wd-item-price ${statusCls}">${status}</div>`;
+        card.onclick = () => onWardrobeItemClick(id);
+        grid.appendChild(card);
+    });
+}
+function onWardrobeItemClick(id) {
+    const p = curP();
+    if (!p) return;
+    ensureHubFields(p);
+    const it = ITEMS[id];
+    if (!it) return;
+    const owned = (p.hub.owned || []).includes(id);
+    if (!owned) {
+        if (!ENDLESS_GEMS) {
+            if (p.hub.gems < it.price) { toast('Nicht genug Edelsteine'); return; }
+            p.hub.gems -= it.price;
+        }
+        p.hub.owned.push(id);
+        p.hub.equipped[it.slot] = id; // auto-equip after buying
+        saveProfiles();
+        toast('Gekauft: ' + it.name);
+        try { vosjeConfetti({ count: 60 }); } catch (e) {}
+    } else if (p.hub.equipped[it.slot] === id) {
+        delete p.hub.equipped[it.slot];
+        saveProfiles();
+    } else {
+        p.hub.equipped[it.slot] = id;
+        saveProfiles();
+    }
+    renderWardrobe();
+}
+
 /* =====================================================================
    LEADERBOARD (with competing bots)
    ===================================================================== */
 const BOT_ROSTER = [
-    { name: 'Léa', av: '🦄', rate: 11 },
-    { name: 'Max', av: '🐯', rate: 9 },
-    { name: 'Zoé', av: '🦊', rate: 13 },
-    { name: 'Tom', av: '🐶', rate: 7 },
-    { name: 'Emma', av: '🐱', rate: 10 },
-    { name: 'Noah', av: '🦁', rate: 8 },
-    { name: 'Mia', av: '🐼', rate: 12 },
-    { name: 'Luca', av: '🐵', rate: 6 },
-    { name: 'Anna', av: '🐸', rate: 9 },
-    { name: 'Finn', av: '🐙', rate: 14 }
+    { name: 'Léa', av: 'unicorn', rate: 11 },
+    { name: 'Max', av: 'tiger', rate: 9 },
+    { name: 'Zoé', av: 'fox', rate: 13 },
+    { name: 'Tom', av: 'dog', rate: 7 },
+    { name: 'Emma', av: 'cat', rate: 10 },
+    { name: 'Noah', av: 'lion', rate: 8 },
+    { name: 'Mia', av: 'panda', rate: 12 },
+    { name: 'Luca', av: 'monkey', rate: 6 },
+    { name: 'Anna', av: 'frog', rate: 9 },
+    { name: 'Finn', av: 'octopus', rate: 14 }
 ];
 
 function loadBots() {
@@ -1624,7 +3081,7 @@ function bumpBots() {
 function renderLeaderboard() {
     const bots = driftBots();
     const p = curP();
-    const me = { name: p ? p.name : 'You', av: p ? p.avatar : '👤', xp: p ? p.hub.xp : 0, me: true };
+    const me = { name: p ? p.name : 'You', av: p ? p.avatar : '👤', eq: p ? p.hub.equipped : null, xp: p ? p.hub.xp : 0, me: true };
     const rows = bots.list.map(b => ({ name: b.name, av: b.av, xp: b.xp, me: false }));
     rows.push(me);
     rows.sort((a, b) => b.xp - a.xp);
@@ -1637,7 +3094,7 @@ function renderLeaderboard() {
         const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
         row.innerHTML = `
             <div class="lb-rank">${medal}</div>
-            <div class="lb-av">${r.av}</div>
+            <div class="lb-av">${avatarSvg(r.av, 36, { equipped: r.eq, body: true })}</div>
             <div class="lb-name">${escapeHtml(r.name)}${r.me ? '<span class="tag">DU</span>' : ''}</div>
             <div class="lb-xp">${r.xp} XP</div>`;
         list.appendChild(row);
@@ -1837,7 +3294,8 @@ function beeComplete() {
     // XP scales with how many words you spelled right
     const xp = 10 + s.correct * 3 + stars * 4;
     const p = curP();
-    if (p) { ensureHubFields(p); p.hub.xp += xp; p.hub.correct += s.correct; saveProfiles(); bumpBots(); }
+    const gems = 3 + Math.floor(s.correct / 2) + stars * 2;
+    if (p) { ensureHubFields(p); p.hub.xp += xp; p.hub.gems += gems; p.hub.correct += s.correct; saveProfiles(); bumpBots(); }
     try { speechSynthesis.cancel(); } catch (e) {}
     document.getElementById('bee-overlay').classList.remove('active');
     beeSession = null;
@@ -1845,9 +3303,10 @@ function beeComplete() {
     // Reuse the shared completion screen so the earned XP is clearly shown
     document.getElementById('ld-emoji').textContent = '🐝';
     document.getElementById('ld-title').textContent = 'Quiz geschafft!';
+    try { vosjeConfetti({ count: stars >= 3 ? 180 : 120 }); } catch (e) {}
     document.getElementById('ld-stars').textContent = '★'.repeat(stars) + '☆'.repeat(3 - stars);
     document.getElementById('ld-accuracy').textContent = s.correct + '/' + s.total + ' richtig · ' + acc + '%';
-    document.getElementById('ld-xp').textContent = '+' + xp + ' XP';
+    document.getElementById('ld-xp').innerHTML = `+${xp} XP &nbsp; <span style="color:#1cb0f6;">+${gems} 💎</span>`;
     document.getElementById('lesson-done').classList.add('active');
 }
 function quitBee() {
@@ -1959,6 +3418,59 @@ function toggleMusic() {
    UTIL
    ===================================================================== */
 function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+// Confetti burst — fires on lesson / spelling-bee completion for that hit-of-dopamine vibe
+function vosjeConfetti(opts = {}) {
+    const colors = ['#58cc02', '#1cb0f6', '#a560ff', '#ffc800', '#ff4b4b', '#ff9d2e', '#34c46a', '#ff5da7'];
+    const N = opts.count || 140;
+    const canvas = document.createElement('canvas');
+    canvas.id = 'vosje-confetti';
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const cx = (opts.x != null) ? opts.x : window.innerWidth / 2;
+    const cy = (opts.y != null) ? opts.y : window.innerHeight * 0.35;
+    const parts = [];
+    for (let i = 0; i < N; i++) {
+        const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.1;
+        const speed = 8 + Math.random() * 10;
+        parts.push({
+            x: cx + (Math.random() - 0.5) * 30,
+            y: cy + (Math.random() - 0.5) * 20,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: 5 + Math.random() * 6,
+            rot: Math.random() * Math.PI * 2,
+            vr: (Math.random() - 0.5) * 0.4,
+            color: colors[(Math.random() * colors.length) | 0],
+            alive: true
+        });
+    }
+    const start = performance.now();
+    function frame(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let any = false;
+        for (const p of parts) {
+            if (!p.alive) continue;
+            p.vy += 0.45;
+            p.vx *= 0.995;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vr;
+            if (p.y > canvas.height + 40) { p.alive = false; continue; }
+            any = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.55);
+            ctx.restore();
+        }
+        if (any && t - start < 4500) requestAnimationFrame(frame);
+        else canvas.remove();
+    }
+    requestAnimationFrame(frame);
+}
 let toastTimer = null;
 function toast(msg) {
     const old = document.querySelector('.toast');
@@ -2047,25 +3559,34 @@ function playIntro(done) {
     const clouds = [{ x: 80, y: 50, s: 1 }, { x: 300, y: 80, s: 0.8 }, { x: 520, y: 40, s: 1.2 }, { x: 760, y: 70, s: 0.9 }];
     // Fox state
     const fox = { x: 40, y: groundY, vy: 0, grounded: true, run: 0 };
+    // Per-60fps-frame values (kept the same as before); scaled by dt below so
+    // motion is consistent on any refresh rate / dropped frames.
     const VX = 4.4, GRAV = 0.9, JUMP_V = -13;
-    let frame = 0, finished = false, startT = null;
+    let frame = 0, finished = false, startT = null, lastT = null;
+    // Track which crates we've already jumped over so a slow frame can't skip the trigger window.
+    crates.forEach(c => { c.armed = true; });
 
     function loop(ts) {
         if (startT === null) startT = ts;
+        const dt = (lastT === null) ? 16.667 : Math.min(50, ts - lastT);
+        lastT = ts;
+        const f = dt / 16.667; // 1 == one 60fps frame; scales movement & gravity uniformly
         frame++;
-        // advance fox
-        fox.x += VX;
-        fox.run += VX;
-        // jump just before each crate
+        // advance fox (time-based so the fox always reaches the goal regardless of fps)
+        fox.x += VX * f;
+        fox.run += VX * f;
+        // jump just before each crate (use a wide approach window + arm flag so we can't miss it)
         if (fox.grounded) {
             for (const c of crates) {
-                if (fox.x > c.x - 46 && fox.x < c.x - 40) { fox.vy = JUMP_V; fox.grounded = false; break; }
+                if (c.armed && fox.x > c.x - 50 && fox.x < c.x - 30) {
+                    fox.vy = JUMP_V; fox.grounded = false; c.armed = false; break;
+                }
             }
         }
         // physics
         if (!fox.grounded) {
-            fox.vy += GRAV;
-            fox.y += fox.vy;
+            fox.vy += GRAV * f;
+            fox.y += fox.vy * f;
             if (fox.y >= groundY) { fox.y = groundY; fox.vy = 0; fox.grounded = true; }
         }
         const cam = Math.max(0, Math.min(worldLen - W, fox.x - 150));
@@ -2131,9 +3652,9 @@ function playIntro(done) {
         drawFox(ctx, fox.x, fox.y, fox.run, !fox.grounded);
         ctx.restore();
 
-        // finish when fox reaches goal or after ~3.6s
+        // finish when fox reaches goal (or after a generous safety cap)
         const elapsed = ts - startT;
-        if (!finished && (fox.x >= goalX || elapsed > 3600)) {
+        if (!finished && (fox.x >= goalX || elapsed > 6000)) {
             finished = true;
             overlay.classList.add('fade');
             setTimeout(() => { overlay.classList.add('hidden'); overlay.remove(); if (done) done(); }, 720);
