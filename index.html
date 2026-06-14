@@ -272,39 +272,65 @@
             margin: 8px 10px 0;
             border-radius: 14px 14px 0 0;
         }
-        .pa-highway::before {
-            content: ''; position: absolute; inset: 0; pointer-events: none;
-            background-image: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(255,255,255,0.05) calc(10% - 1px) 10%);
-        }
         .pa-highway-inner {
             position: absolute; left: 0; right: 0; top: 0; bottom: 0;
             transition: transform 0.22s cubic-bezier(.22,.9,.32,1);
             will-change: transform;
         }
+        .pa-highway-grid {
+            position: absolute; inset: 0;
+            display: flex; gap: 4px; padding: 0 10px;
+            justify-content: center;
+        }
+        .pa-col {
+            flex: 1 1 0; min-width: 36px; max-width: 60px;
+            position: relative;
+            background: rgba(255,255,255,0.025);
+        }
         .pa-bar {
             position: absolute;
-            background: linear-gradient(180deg, #58cc02, #2a9300);
-            border: 2px solid #1e7000;
-            border-radius: 10px;
+            left: 0; right: 0;
+            border-radius: 10px 10px 4px 4px;
             color: white;
             font-family: 'Orbitron'; font-weight: 900; font-size: 18px;
             display: flex; align-items: flex-end; justify-content: center;
             padding-bottom: 4px;
-            box-shadow: 0 0 14px rgba(88,204,2,0.45);
             user-select: none;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 -4px 0 rgba(0,0,0,0.18);
         }
+        /* Per-key colors — every column gets its own hue, just like Simply Piano */
+        .pa-col.k1 .pa-bar { background: linear-gradient(180deg, #ff7a92, #d62542); border: 2px solid #8a0f24; }
+        .pa-col.k2 .pa-bar { background: linear-gradient(180deg, #ffaa5e, #d96810); border: 2px solid #7a3500; }
+        .pa-col.k3 .pa-bar { background: linear-gradient(180deg, #ffe27a, #d6a500); border: 2px solid #7a5e00; color: #4a3500; text-shadow: none; }
+        .pa-col.k4 .pa-bar { background: linear-gradient(180deg, #95e85a, #3aa024); border: 2px solid #1c5a0a; }
+        .pa-col.k5 .pa-bar { background: linear-gradient(180deg, #4ec8ff, #0e7fb8); border: 2px solid #0a4a6e; }
+        .pa-col.k6 .pa-bar { background: linear-gradient(180deg, #7a96ff, #2a45d9); border: 2px solid #1a2a8a; }
+        .pa-col.k7 .pa-bar { background: linear-gradient(180deg, #c08aff, #6e2ad9); border: 2px solid #3a1466; }
+        .pa-col.k8 .pa-bar { background: linear-gradient(180deg, #ffb8d2, #d65a8a); border: 2px solid #7a1a40; }
+        .pa-col.k9 .pa-bar { background: linear-gradient(180deg, #6eecd0, #1aa886); border: 2px solid #0a5a4a; }
+        .pa-col.k0 .pa-bar { background: linear-gradient(180deg, #ff8aee, #c829a0); border: 2px solid #6a0a4e; }
         .pa-bar.active {
-            background: linear-gradient(180deg, #ffd75e, #ff9ec0);
-            border-color: #c79500; color: #5a4500;
-            box-shadow: 0 0 26px rgba(255,215,94,0.8);
+            filter: brightness(1.25) saturate(1.3);
+            box-shadow: 0 0 26px rgba(255,255,255,0.6), inset 0 -4px 0 rgba(0,0,0,0.2);
             animation: pianoBarPulse 1.1s ease-in-out infinite;
         }
-        .pa-bar.past { opacity: 0.2; filter: grayscale(0.6); }
+        .pa-bar.past { opacity: 0.15; filter: grayscale(0.7); }
         @keyframes pianoBarPulse {
-            0%,100% { box-shadow: 0 0 18px rgba(255,215,94,0.55); transform: scale(1); }
-            50%     { box-shadow: 0 0 34px rgba(255,215,94,0.95); transform: scale(1.02); }
+            0%,100% { transform: scale(1); box-shadow: 0 0 22px rgba(255,255,255,0.5), inset 0 -4px 0 rgba(0,0,0,0.2); }
+            50%     { transform: scale(1.04); box-shadow: 0 0 36px rgba(255,255,255,0.9), inset 0 -4px 0 rgba(0,0,0,0.2); }
         }
+        /* Tint the actual piano keys with the same hue so the bars look like they land on them */
+        .pa-key[data-num="1"] { border-color: #d62542; box-shadow: inset 0 -8px 0 rgba(214,37,66,0.18); }
+        .pa-key[data-num="2"] { border-color: #d96810; box-shadow: inset 0 -8px 0 rgba(217,104,16,0.18); }
+        .pa-key[data-num="3"] { border-color: #d6a500; box-shadow: inset 0 -8px 0 rgba(214,165,0,0.18); }
+        .pa-key[data-num="4"] { border-color: #3aa024; box-shadow: inset 0 -8px 0 rgba(58,160,36,0.18); }
+        .pa-key[data-num="5"] { border-color: #0e7fb8; box-shadow: inset 0 -8px 0 rgba(14,127,184,0.18); }
+        .pa-key[data-num="6"] { border-color: #2a45d9; box-shadow: inset 0 -8px 0 rgba(42,69,217,0.18); }
+        .pa-key[data-num="7"] { border-color: #6e2ad9; box-shadow: inset 0 -8px 0 rgba(110,42,217,0.18); }
+        .pa-key[data-num="8"] { border-color: #d65a8a; box-shadow: inset 0 -8px 0 rgba(214,90,138,0.18); }
+        .pa-key[data-num="9"] { border-color: #1aa886; box-shadow: inset 0 -8px 0 rgba(26,168,134,0.18); }
+        .pa-key[data-num="0"] { border-color: #c829a0; box-shadow: inset 0 -8px 0 rgba(200,41,160,0.18); }
         .pa-playline {
             position: absolute; left: 0; right: 0; bottom: 0;
             height: 4px;
@@ -1167,7 +1193,9 @@
         </div>
         <div class="pa-stage">
             <div class="pa-highway" id="pa-highway">
-                <div class="pa-highway-inner" id="pa-highway-inner"></div>
+                <div class="pa-highway-inner" id="pa-highway-inner">
+                    <div class="pa-highway-grid" id="pa-highway-grid"></div>
+                </div>
                 <div class="pa-playline"></div>
                 <div class="pa-hint-sub" id="pa-hint-sub">Wähle ein Lied oder spiele frei los</div>
                 <div class="pa-hint-big" id="pa-hint-big" style="display:none;"></div>
@@ -3440,25 +3468,32 @@ function pianoLoadSong(name) {
     updatePianoProgress();
 }
 function buildPianoHighway() {
+    const grid = document.getElementById('pa-highway-grid');
     const inner = document.getElementById('pa-highway-inner');
-    if (!inner) return;
-    inner.innerHTML = '';
-    if (!pianoSongNotes.length) { inner.style.transform = 'translateY(0)'; return; }
+    if (!grid || !inner) return;
+    // Always re-build the column scaffolding (one column per key, same flex layout as the keyboard)
+    grid.innerHTML = '';
+    const colByNum = {};
+    PIANO_KEYS.forEach(k => {
+        const col = document.createElement('div');
+        col.className = 'pa-col k' + k.num;
+        col.dataset.num = k.num;
+        grid.appendChild(col);
+        colByNum[k.num] = col;
+    });
+    inner.style.transform = 'translateY(0)';
+    if (!pianoSongNotes.length) return;
     pianoSongNotes.forEach((entry, i) => {
         const num = entry[0], beats = entry[1];
-        const colIdx = PIANO_KEYS.findIndex(k => k.num === num);
-        if (colIdx < 0) return;
-        const leftPct = (colIdx / PIANO_KEYS.length) * 100;
-        const widthPct = (1 / PIANO_KEYS.length) * 100;
+        const col = colByNum[num];
+        if (!col) return;
         const bar = document.createElement('div');
         bar.className = 'pa-bar';
         bar.dataset.idx = i;
-        bar.style.left = `calc(${leftPct}% + 3px)`;
-        bar.style.width = `calc(${widthPct}% - 6px)`;
         bar.style.bottom = (pianoNoteStarts[i] * PIANO_PX_PER_BEAT) + 'px';
         bar.style.height = Math.max(beats * PIANO_PX_PER_BEAT - 6, 18) + 'px';
         bar.textContent = num;
-        inner.appendChild(bar);
+        col.appendChild(bar);
     });
 }
 function refreshPianoHighway() {
