@@ -10278,8 +10278,8 @@
         <div class="settings-section">
             <div class="settings-section-title" data-i18n="language">Language</div>
             <div class="lang-selector">
-                <button class="lang-btn" data-lang="de" onclick="setLanguage('de')">🇩🇪 Deutsch</button>
-                <button class="lang-btn selected" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</button>
+                <button class="lang-btn selected" data-lang="de" onclick="setLanguage('de')">🇩🇪 Deutsch</button>
+                <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇬🇧 English</button>
                 <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">🇪🇸 Español</button>
             </div>
         </div>
@@ -11520,7 +11520,7 @@
         let selectedMode = 'de-fr';
         let selectedBiome = 'day';
         let selectedTimeLimit = 0; // 0 = endless
-        let currentLang = 'en';
+        let currentLang = 'de';
         let sfxVolume = 0.7;
 
         // ========== i18n TRANSLATION SYSTEM ==========
@@ -12309,15 +12309,22 @@
             playIntroAnimation();
         }
 
-        // Load saved language first
+        // Default to German. Only respect a saved non-German choice if the user
+        // explicitly switched it themselves after this update.
         try {
             const savedLang = localStorage.getItem('nrr_lang');
-            if (savedLang && i18n[savedLang]) {
+            const forcedDeOnce = localStorage.getItem('nrr_lang_forced_de');
+            if (!forcedDeOnce) {
+                // First run after the "auto German" change — overwrite any old 'en' selection
+                currentLang = 'de';
+                localStorage.setItem('nrr_lang', 'de');
+                localStorage.setItem('nrr_lang_forced_de', '1');
+            } else if (savedLang && i18n[savedLang]) {
                 currentLang = savedLang;
-                document.querySelectorAll('.lang-btn').forEach(b => {
-                    b.classList.toggle('selected', b.dataset.lang === currentLang);
-                });
             }
+            document.querySelectorAll('.lang-btn').forEach(b => {
+                b.classList.toggle('selected', b.dataset.lang === currentLang);
+            });
         } catch(e) {}
         applyLanguage();
 
