@@ -244,6 +244,79 @@
             box-shadow: 0 4px 0 #136e9b; letter-spacing: 0.5px;
         }
         .cp-action-btn:active { transform: translateY(2px); box-shadow: none; }
+        .cp-action-btn.premium {
+            background: linear-gradient(135deg, #ffd75e, #c79500);
+            box-shadow: 0 4px 0 #8a6500; color: #4a3500;
+            position: relative;
+        }
+        .cp-action-btn.premium::after {
+            content: 'NEU'; position: absolute; top: -8px; right: -8px;
+            background: #ff4b6e; color: white; font-size: 10px; padding: 2px 6px;
+            border-radius: 8px; font-weight: 900;
+        }
+        .cp-action-btn.premium.active::after { content: '✓ AKTIV'; background: #58cc02; }
+        /* Premium overlay */
+        #premium-overlay { align-items: center; justify-content: center; padding: 24px; overflow-y: auto; }
+        .prem-box {
+            background: linear-gradient(160deg, #2a1f4a, #1a1730);
+            border: 3px solid #ffd75e;
+            border-radius: 26px; padding: 28px 24px;
+            max-width: 460px; width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255,215,94,0.4), inset 0 0 30px rgba(255,215,94,0.06);
+            position: relative; overflow: hidden;
+        }
+        .prem-box::before {
+            content:''; position: absolute; inset: -50%;
+            background: radial-gradient(circle, rgba(255,215,94,0.1) 0%, transparent 60%);
+            animation: vosjeRotate 16s linear infinite;
+            z-index: 0;
+        }
+        .prem-box > * { position: relative; z-index: 1; }
+        .prem-crown { font-size: 64px; line-height: 1; filter: drop-shadow(0 0 14px rgba(255,215,94,0.7)); }
+        .prem-title { font-family: 'Orbitron'; font-weight: 900; font-size: 26px; margin: 8px 0 4px;
+            background: linear-gradient(135deg, #ffd75e, #ff9ec0, #a560ff); -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .prem-price { color: #ffd75e; font-weight: 900; font-size: 22px; margin-bottom: 10px; }
+        .prem-price .pp-per { font-size: 14px; color: rgba(255,255,255,0.7); margin-left: 4px; }
+        .prem-benefits { list-style: none; padding: 0; margin: 14px 0; text-align: left; }
+        .prem-benefits li {
+            padding: 10px 12px; margin: 6px 0;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,215,94,0.25);
+            border-radius: 12px; font-weight: 800; font-size: 14px;
+        }
+        .prem-pay {
+            display: block; background: linear-gradient(135deg, #0070ba, #003087);
+            color: white; padding: 14px 20px; border-radius: 14px;
+            font-weight: 900; font-size: 16px; text-decoration: none;
+            margin: 10px 0 8px; box-shadow: 0 4px 0 #001f5a;
+        }
+        .prem-pay:active { transform: translateY(2px); box-shadow: none; }
+        .prem-confirm {
+            display: block; width: 100%; background: linear-gradient(135deg, #58cc02, #46a302);
+            color: white; border: none; padding: 12px 18px; border-radius: 12px;
+            font-family: 'Nunito'; font-weight: 900; font-size: 15px; cursor: pointer;
+            box-shadow: 0 4px 0 #2a6500; margin-bottom: 8px;
+        }
+        .prem-confirm:active { transform: translateY(2px); box-shadow: none; }
+        .prem-step2 { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,215,94,0.3); border-radius: 14px; padding: 12px; margin: 8px 0; }
+        .prem-step-label { color: rgba(255,255,255,0.85); font-weight: 800; font-size: 13px; margin-bottom: 6px; text-align: left; }
+        #prem-code-input {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            background: #1a1730; color: #ffd75e; border: 2px solid rgba(255,215,94,0.4);
+            font-family: 'Orbitron'; font-weight: 700; font-size: 14px;
+            letter-spacing: 1px; text-transform: uppercase; text-align: center;
+            margin-bottom: 8px; box-sizing: border-box;
+        }
+        #prem-code-input:focus { outline: none; border-color: #ffd75e; }
+        .prem-close {
+            display: block; width: 100%; background: transparent; color: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.15); padding: 10px; border-radius: 12px;
+            font-family: 'Nunito'; font-weight: 700; cursor: pointer;
+        }
+        .prem-status { background: rgba(88,204,2,0.12); border: 2px solid #58cc02; border-radius: 12px;
+            padding: 10px; margin: 8px 0; font-weight: 800; color: #58cc02; }
+        .prem-hint { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 6px; }
 
         /* Piano (Klavier-Modus) overlay */
         #piano-overlay { align-items: stretch; padding: 0; background: linear-gradient(180deg, #1a1730, #0f1729); }
@@ -1131,6 +1204,7 @@
                 <div class="cp-meta" id="cp-meta" style="margin-top:4px;font-weight:800;font-size:13px;color:var(--txt-dim);"></div>
                 <div class="cp-xp" id="cp-xp">0 XP · Level 1</div>
                 <button class="cp-action-btn" onclick="openWardrobe()">👕 Garderobe & Shop</button>
+                <button class="cp-action-btn premium" id="cp-premium-btn" onclick="openPremium()">👑 Premium-Abo · 10 €/Monat</button>
             </div>
             <div class="panel">
                 <div class="section-head">Deine Statistik</div>
@@ -1174,6 +1248,25 @@
         <button class="nav-btn" data-tab="profile" onclick="goTab('profile')"><span class="nv-ic">👤</span>Profil</button>
         <button class="nav-btn" data-tab="leaderboard" onclick="goTab('leaderboard')"><span class="nv-ic">🏆</span>Rangliste</button>
     </nav>
+
+    <!-- ===== Premium subscription overlay ===== -->
+    <div class="overlay" id="premium-overlay">
+        <div class="prem-box">
+            <div class="prem-crown">👑</div>
+            <div class="prem-title">VOSJE Premium</div>
+            <div class="prem-price">10 €<span class="pp-per">/ Monat</span></div>
+            <div id="prem-status-row"></div>
+            <ul class="prem-benefits" id="prem-benefits-list"></ul>
+            <a class="prem-pay" id="prem-pay-link" href="https://www.paypal.com/paypalme/JSchmiedbauer" target="_blank" rel="noopener">💳 Schritt 1: PayPal bezahlen (10 €)</a>
+            <div class="prem-step2">
+                <div class="prem-step-label">Schritt 2: Aktivierungs-Code eingeben</div>
+                <input type="text" id="prem-code-input" placeholder="z. B. VOSJE-XXXX-XXXX" autocomplete="off" spellcheck="false">
+                <button class="prem-confirm" onclick="redeemPremiumCode()">👑 Code einlösen & aktivieren</button>
+            </div>
+            <button class="prem-close" onclick="closePremium()">Vielleicht später</button>
+            <div class="prem-hint">Nach der PayPal-Zahlung schick JS Schmiedbauer eine Nachricht (über PayPal) – du bekommst deinen Aktivierungs-Code. Codes laufen nach 28 Tagen ab.</div>
+        </div>
+    </div>
 
     <!-- ===== Piano (Klavier-Modus) overlay ===== -->
     <div class="overlay" id="piano-overlay">
@@ -1239,6 +1332,7 @@
                 <div class="dot" id="dot-1"></div>
                 <div class="dot" id="dot-2"></div>
                 <div class="dot" id="dot-3"></div>
+                <div class="dot" id="dot-4"></div>
             </div>
 
             <div class="create-step" id="step-1">
@@ -1268,7 +1362,28 @@
                 <input type="text" id="create-name" placeholder="Dein Name..." maxlength="14" autocomplete="off" spellcheck="false">
                 <div class="btn-row">
                     <button class="big-btn ghost" onclick="createPrevStep()">Zurück</button>
-                    <button class="big-btn" onclick="confirmCreateProfile()">Erstellen</button>
+                    <button class="big-btn" onclick="createNextStep()">Weiter</button>
+                </div>
+            </div>
+
+            <div class="create-step" id="step-4">
+                <div class="step-head">💛 Ein Geschenk für Nikki</div>
+                <div class="step-sub">Von Finn &amp; Richel</div>
+                <div style="text-align:center;font-weight:900;margin:14px 0 10px;">
+                    <div style="text-decoration:line-through;color:rgba(255,255,255,0.5);font-size:16px;">Kostet normalerweise 10 €/Monat</div>
+                    <div style="color:#58cc02;font-size:26px;margin-top:4px;">KOSTENLOS für immer</div>
+                </div>
+                <ul class="prem-benefits" style="margin: 10px 0;">
+                    <li>👑 Lifetime-Premium – läuft nie ab</li>
+                    <li>💎 Sofort +2000 Edelsteine</li>
+                    <li>🏆 Royal-Auto in Number Rails Racing</li>
+                    <li>🏎️ 5 exklusive Premium-Autos</li>
+                    <li>👕 Gratis Kosmetik-Item pro Einheit</li>
+                    <li>💛 Persönliche Krone neben deinem Namen</li>
+                </ul>
+                <div class="btn-row" style="margin-top:10px;">
+                    <button class="big-btn ghost" onclick="createPrevStep()">Zurück</button>
+                    <button class="big-btn" onclick="confirmCreateProfile()">💛 Geschenk annehmen</button>
                 </div>
             </div>
         </div>
@@ -1355,9 +1470,144 @@ function bundeslandByCode(code) { return BUNDESLAENDER.find(b => b.code === code
 function schulartByCode(code)   { return SCHULARTEN.find(s => s.code === code)   || SCHULARTEN[2];   }
 function hasFrench(p) { return p && p.schulart === 'gymnasium'; }
 
-// Endless-money cheat: gems never run out and purchases are free.
-const ENDLESS_GEMS = true;
+// Gems are real currency now. Premium subscribers get 800 fresh ones every month.
+const ENDLESS_GEMS = false;
 const GEM_DISPLAY = () => ENDLESS_GEMS ? '∞' : String((curP() && curP().hub && curP().hub.gems) || 0);
+
+// ===== Premium subscription =====
+const PREMIUM_CONFIG = {
+    priceEur: 10,
+    paypalUrl: 'https://www.paypal.com/paypalme/JSchmiedbauer',
+    monthlyGems: 800,
+    monthMs: 28 * 24 * 60 * 60 * 1000,
+    premiumCars: ['rocket', 'phantom', 'aurora', 'meteor', 'titan'],
+    benefits: [
+        '🏎️ 5 exklusive Premium-Autos in Number Rails Racing',
+        '👕 Pro abgeschlossener Einheit ein gratis Kosmetik-Item',
+        '💎 800 Edelsteine jeden Monat',
+        '👑 Premium-Krone neben deinem Namen'
+    ]
+};
+// Nikki gets lifetime premium + royal car + gift from Finn & Richel automatically
+function isNikki(p) {
+    return !!(p && p.name && p.name.trim().toLowerCase() === 'nikki');
+}
+function isPremium(p) {
+    if (isNikki(p)) return true; // Nikki = lifetime, no expiry check
+    if (!p || !p.premium || !p.premium.active) return false;
+    // Code-validated, expires 28 days after activation
+    if (!p.premium.lifetime && p.premium.since && (Date.now() - p.premium.since) > PREMIUM_CONFIG.monthMs * 1.1) {
+        p.premium.active = false;
+        saveProfiles();
+        return false;
+    }
+    return true;
+}
+function isLifetimePremium(p) {
+    return isNikki(p) || (p && p.premium && p.premium.lifetime);
+}
+// Auto-activate Nikki's lifetime perks (called from ensureHubFields + profile creation)
+function autoActivateNikkiPerks(p) {
+    if (!isNikki(p)) return false;
+    let changed = false;
+    if (!p.premium) p.premium = { freeCosmeticsClaimed: [] };
+    if (!p.premium.active || !p.premium.lifetime) {
+        p.premium.active = true;
+        p.premium.lifetime = true;
+        p.premium.since = p.premium.since || Date.now();
+        p.premium.lastMonthlyGrant = Date.now();
+        p.premium.giftFrom = 'Finn & Richel';
+        changed = true;
+    }
+    // One-time royal car grant
+    if (!p.premium.royalCarGranted) {
+        p.premium.royalCarGranted = true;
+        changed = true;
+    }
+    // One-time welcome gift
+    if (!p.premium.nikkiWelcomed) {
+        p.hub.gems = (p.hub.gems || 0) + 2000;
+        p.premium.nikkiWelcomed = true;
+        changed = true;
+    }
+    return changed;
+}
+// ===== Premium code verification =====
+// Owner gives out codes via PayPal message after receiving 10€. Codes redeem once.
+const PREMIUM_CODES_MASTER = [
+    // Static codes the owner can hand out
+    'VOSJE-START-2026',
+    'JS-PAYPAL-PREM',
+    'FINN-PAID-001'
+];
+function isValidPremiumCode(rawCode) {
+    const code = (rawCode || '').trim().toUpperCase();
+    if (!code) return false;
+    if (PREMIUM_CODES_MASTER.includes(code)) return true;
+    // Algorithmic codes the owner can generate without editing the file:
+    // format: VOSJE-XXXX-XXXX where the sum of char codes modulo 17 equals 11
+    if (/^VOSJE-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) {
+        const payload = code.slice(6).replace('-', '');
+        const sum = [...payload].reduce((a, c) => a + c.charCodeAt(0), 0);
+        if (sum % 17 === 11) return true;
+    }
+    return false;
+}
+function redeemPremiumCode() {
+    const input = document.getElementById('prem-code-input');
+    const code = (input.value || '').trim().toUpperCase();
+    if (!code) { toast('Bitte Code eingeben'); return; }
+    const used = (() => { try { return JSON.parse(localStorage.getItem('vosje_used_codes') || '[]'); } catch (e) { return []; } })();
+    if (used.includes(code)) {
+        toast('Dieser Code wurde bereits eingelöst');
+        return;
+    }
+    if (!isValidPremiumCode(code)) {
+        toast('Ungültiger Code. Bezahlt? Schreibe an JS Schmiedbauer auf PayPal');
+        return;
+    }
+    used.push(code);
+    try { localStorage.setItem('vosje_used_codes', JSON.stringify(used)); } catch (e) {}
+    const p = curP();
+    if (!p) return;
+    ensureHubFields(p);
+    p.premium.active = true;
+    p.premium.since = Date.now();
+    p.premium.lastMonthlyGrant = Date.now();
+    p.premium.code = code;
+    p.hub.gems += PREMIUM_CONFIG.monthlyGems;
+    saveProfiles();
+    syncPremiumFlag(p);
+    closePremium();
+    toast('👑 Premium aktiviert! +' + PREMIUM_CONFIG.monthlyGems + ' 💎');
+    try { vosjeConfetti({ count: 200 }); } catch (e) {}
+    renderAll();
+}
+function grantMonthlyGemsIfDue(p) {
+    if (!isPremium(p)) return 0;
+    const now = Date.now();
+    const last = p.premium.lastMonthlyGrant || 0;
+    if (now - last >= PREMIUM_CONFIG.monthMs) {
+        p.hub.gems += PREMIUM_CONFIG.monthlyGems;
+        p.premium.lastMonthlyGrant = now;
+        saveProfiles();
+        return PREMIUM_CONFIG.monthlyGems;
+    }
+    return 0;
+}
+function syncPremiumFlag(p) {
+    // Mirror premium state to localStorage so game.html can unlock the premium cars
+    try {
+        if (isPremium(p)) localStorage.setItem('vosje_premium', '1');
+        else localStorage.removeItem('vosje_premium');
+        // Nikki gets the Royal car on top of the 5 premium cars
+        const cars = PREMIUM_CONFIG.premiumCars.slice();
+        if (isNikki(p) && !cars.includes('royal')) cars.push('royal');
+        localStorage.setItem('vosje_premium_cars', JSON.stringify(cars));
+        if (isNikki(p)) localStorage.setItem('vosje_royal_car', '1');
+        else localStorage.removeItem('vosje_royal_car');
+    } catch (e) {}
+}
 
 // ===== Avatar system: 10 hand-drawn SVG animals, same quality as the Bee characters =====
 const AVATARS = ['fox','panda','frog','lion','tiger','monkey','dog','cat','unicorn','octopus'];
@@ -1863,13 +2113,18 @@ function loadProfiles() {
     try { profiles = JSON.parse(localStorage.getItem('nrr_profiles')) || {}; }
     catch (e) { profiles = {}; }
     try { currentProfileId = localStorage.getItem('nrr_currentProfile') || null; } catch (e) {}
-    // Make sure each profile has hub fields
-    Object.values(profiles).forEach(ensureHubFields);
+    // Make sure each profile has hub fields, then drop monthly gems if due
+    Object.values(profiles).forEach(p => {
+        ensureHubFields(p);
+        const granted = grantMonthlyGemsIfDue(p);
+        if (granted) toast('👑 Premium-Bonus: +' + granted + ' 💎');
+    });
     // Pick a valid current profile
     if (!currentProfileId || !profiles[currentProfileId]) {
         const ids = Object.keys(profiles);
         currentProfileId = ids.length ? ids[0] : null;
     }
+    syncPremiumFlag(curP());
 }
 function ensureHubFields(p) {
     if (!p) return;
@@ -1888,6 +2143,9 @@ function ensureHubFields(p) {
     if (p.hub.gems == null) p.hub.gems = 0;
     if (!p.hub.owned) p.hub.owned = [];
     if (!p.hub.equipped) p.hub.equipped = {}; // slot -> itemId
+    if (!p.premium) p.premium = { active: false, since: null, lastMonthlyGrant: null, freeCosmeticsClaimed: [] };
+    if (!p.premium.freeCosmeticsClaimed) p.premium.freeCosmeticsClaimed = [];
+    autoActivateNikkiPerks(p);
 }
 function saveProfiles() {
     try { localStorage.setItem('nrr_profiles', JSON.stringify(profiles)); } catch (e) {}
@@ -1895,6 +2153,8 @@ function saveProfiles() {
 function setCurrentProfile(id) {
     currentProfileId = id;
     try { localStorage.setItem('nrr_currentProfile', id); } catch (e) {}
+    grantMonthlyGemsIfDue(profiles[id]);
+    syncPremiumFlag(profiles[id]);
     renderAll();
 }
 function curP() { return currentProfileId ? profiles[currentProfileId] : null; }
@@ -2909,6 +3169,11 @@ function completeLesson() {
     // Gems: base reward + bonus for stars, extra-rich on first clear
     const gems = 5 + stars * 3 + (wasDone ? 0 : 5);
     p.hub.gems += gems;
+    // Premium: free cosmetic item on each completed unit (every 7 lessons)
+    let bonusItem = null;
+    if (isPremium(p) && !wasDone && (s.idx % 7) === 6) {
+        bonusItem = grantPremiumCosmetic(p, s.course + '-u' + Math.floor(s.idx / 7));
+    }
     saveProfiles();
     bumpBots(); // bots progress when you do
 
@@ -2921,9 +3186,24 @@ function completeLesson() {
     document.getElementById('ld-emoji').textContent = stars === 3 ? '🏆' : '🎉';
     document.getElementById('ld-stars').textContent = '★'.repeat(stars) + '☆'.repeat(3 - stars);
     document.getElementById('ld-accuracy').textContent = 'Genauigkeit: ' + accuracy + '%';
-    document.getElementById('ld-xp').innerHTML = `+${xp} XP &nbsp; <span style="color:#1cb0f6;">+${gems} 💎</span>`;
+    let rewardLine = `+${xp} XP &nbsp; <span style="color:#1cb0f6;">+${gems} 💎</span>`;
+    if (bonusItem) rewardLine += `<br><span style="color:#ffd75e;font-size:0.85em;">👑 Premium-Bonus: ${bonusItem.name}!</span>`;
+    document.getElementById('ld-xp').innerHTML = rewardLine;
     document.getElementById('lesson-done').classList.add('active');
     try { vosjeConfetti({ count: stars >= 3 ? 180 : 120 }); } catch (e) {}
+}
+function grantPremiumCosmetic(p, claimKey) {
+    if (!p.premium.freeCosmeticsClaimed.includes(claimKey)) {
+        const owned = new Set(p.hub.owned || []);
+        const candidates = Object.keys(ITEMS).filter(id => !owned.has(id));
+        if (candidates.length) {
+            const id = candidates[Math.floor(Math.random() * candidates.length)];
+            p.hub.owned.push(id);
+            p.premium.freeCosmeticsClaimed.push(claimKey);
+            return ITEMS[id];
+        }
+    }
+    return null;
 }
 
 function finishLessonDone() {
@@ -2993,9 +3273,11 @@ function renderProfile() {
     } else if (metaEl) {
         metaEl.textContent = '';
     }
+    updatePremiumButton();
     const xp = p ? p.hub.xp : 0;
-    const gems = ENDLESS_GEMS ? '∞' : (p ? p.hub.gems : 0);
-    document.getElementById('cp-xp').innerHTML = `${xp} XP · <span style="color:#1cb0f6;">💎 ${gems}</span> · Level ${1 + Math.floor(xp / 100)}`;
+    const gems = p ? p.hub.gems : 0;
+    const prem = isPremium(p) ? ' <span style="color:#ffd75e;">👑</span>' : '';
+    document.getElementById('cp-xp').innerHTML = `${xp} XP · <span style="color:#1cb0f6;">💎 ${gems}</span> · Level ${1 + Math.floor(xp / 100)}${prem}`;
 
     // stats
     const gd = p && p.data ? p.data : {};
@@ -3005,7 +3287,7 @@ function renderProfile() {
     document.getElementById('st-games').textContent = gstats.gamesPlayed || 0;
     document.getElementById('st-highscore').textContent = gstats.highScore || 0;
     document.getElementById('st-coins').textContent = gd.coins || 0;
-    document.getElementById('st-gems').textContent = ENDLESS_GEMS ? '∞' : (p ? p.hub.gems : 0);
+    document.getElementById('st-gems').textContent = p ? p.hub.gems : 0;
     document.getElementById('st-streak').textContent = p ? p.hub.correct : 0;
 
     // profile grid
@@ -3068,16 +3350,31 @@ function openCreate() {
 function closeCreate() { document.getElementById('create-overlay').classList.remove('active'); }
 function showCreateStep(n) {
     createStep = n;
-    for (let i = 1; i <= 3; i++) {
-        document.getElementById('step-' + i).classList.toggle('active', i === n);
+    for (let i = 1; i <= 4; i++) {
+        const stepEl = document.getElementById('step-' + i);
+        if (stepEl) stepEl.classList.toggle('active', i === n);
         const dot = document.getElementById('dot-' + i);
-        dot.classList.toggle('active', i === n);
-        dot.classList.toggle('done', i < n);
+        if (dot) {
+            dot.classList.toggle('active', i === n);
+            dot.classList.toggle('done', i < n);
+            // Hide the 4th dot when the current name isn't Nikki
+            if (i === 4) {
+                const nm = document.getElementById('create-name');
+                const isNikkiName = nm && nm.value && nm.value.trim().toLowerCase() === 'nikki';
+                dot.style.display = isNikkiName ? '' : 'none';
+            }
+        }
     }
     if (n === 3) setTimeout(() => document.getElementById('create-name').focus(), 60);
 }
 function createNextStep() {
-    if (createStep < 3) showCreateStep(createStep + 1);
+    if (createStep === 3) {
+        const nm = document.getElementById('create-name').value.trim();
+        if (!nm) { toast('Gib einen Namen ein'); return; }
+        // Premium is a private gift for Nikki only — everyone else creates directly here.
+        if (nm.toLowerCase() !== 'nikki') { confirmCreateProfile(); return; }
+    }
+    if (createStep < 4) showCreateStep(createStep + 1);
 }
 function createPrevStep() {
     if (createStep > 1) showCreateStep(createStep - 1);
@@ -3137,12 +3434,83 @@ function confirmCreateProfile() {
         bundesland: createBundesland, schulart: createSchulart,
         data: null, sr: {},
         lessons: { french: {}, math: {}, german: {} },
-        hub: { xp: 0, lessonsDone: 0, stars: 0, correct: 0, gems: 0, owned: [], equipped: {} }
+        hub: { xp: 0, lessonsDone: 0, stars: 0, correct: 0, gems: 50, owned: [], equipped: {} },
+        premium: { active: false, since: null, lastMonthlyGrant: null, freeCosmeticsClaimed: [] }
     };
+    ensureHubFields(profiles[id]); // triggers Nikki auto-activation if applicable
     saveProfiles();
+    syncPremiumFlag(profiles[id]);
     closeCreate();
     setCurrentProfile(id);
-    toast('Willkommen, ' + name + '!');
+    if (isNikki(profiles[id])) {
+        toast('💛 Willkommen Nikki! Ein Geschenk von Finn & Richel: 👑 Lifetime-Premium + 2000 💎 + Royal-Auto!');
+        try { vosjeConfetti({ count: 300 }); } catch (e) {}
+    } else {
+        toast('Willkommen, ' + name + '!');
+    }
+}
+
+// ===== Premium subscription =====
+function openPremium() {
+    const p = curP();
+    if (!p) { toast('Wähle zuerst ein Profil'); return; }
+    ensureHubFields(p);
+    renderPremiumOverlay();
+    document.getElementById('premium-overlay').classList.add('active');
+}
+function closePremium() { document.getElementById('premium-overlay').classList.remove('active'); }
+function renderPremiumOverlay() {
+    const p = curP();
+    const isNi = isNikki(p);
+    const list = document.getElementById('prem-benefits-list');
+    if (list) {
+        const bonusLines = isNi ? ['🏆 Royal-Auto (nur für dich)', '💝 Sofort +2000 💎 Geschenk'] : [];
+        list.innerHTML = PREMIUM_CONFIG.benefits.concat(bonusLines).map(b => `<li>${b}</li>`).join('');
+    }
+    // Price display: crossed-out for Nikki
+    const priceEl = document.querySelector('.prem-box .prem-price');
+    if (priceEl) {
+        if (isNi) {
+            priceEl.innerHTML = `<span style="text-decoration:line-through;color:rgba(255,255,255,0.5);">10 €</span> <span style="color:#58cc02;">KOSTENLOS</span><span class="pp-per">für immer</span>`;
+        } else {
+            priceEl.innerHTML = `10 €<span class="pp-per">/ Monat</span>`;
+        }
+    }
+    // Hide the payment/code section for Nikki — she doesn't need it
+    ['prem-pay-link'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = isNi ? 'none' : '';
+    });
+    document.querySelectorAll('#premium-overlay .prem-step2').forEach(el => {
+        el.style.display = isNi ? 'none' : '';
+    });
+    const statusRow = document.getElementById('prem-status-row');
+    if (statusRow) {
+        if (isNi) {
+            statusRow.innerHTML = `<div class="prem-status" style="background:linear-gradient(135deg,rgba(255,157,192,0.15),rgba(165,96,255,0.15));border-color:#ff9ec0;color:#ff9ec0;">
+                💛 Geschenk von <b>Finn &amp; Richel</b><br>
+                <span style="color:#ffd75e;font-size:12px;">👑 Lifetime-Premium – läuft nie ab</span>
+            </div>`;
+        } else if (isPremium(p)) {
+            const sinceMs = p.premium.since || Date.now();
+            const validUntil = new Date(sinceMs + PREMIUM_CONFIG.monthMs);
+            const dateStr = validUntil.toLocaleDateString('de-DE');
+            const lifetime = isLifetimePremium(p) ? '<div class="prem-status">👑 Lifetime-Premium – läuft nie ab</div>' : `<div class="prem-status">✓ Premium aktiv bis ${dateStr}</div>`;
+            statusRow.innerHTML = lifetime;
+        } else {
+            statusRow.innerHTML = '';
+        }
+    }
+}
+function updatePremiumButton() {
+    const btn = document.getElementById('cp-premium-btn');
+    if (!btn) return;
+    const p = curP();
+    // Premium is a private gift for Nikki — everyone else doesn't see it at all
+    if (!isNikki(p)) { btn.style.display = 'none'; return; }
+    btn.style.display = '';
+    btn.classList.add('active');
+    btn.textContent = '💛 Lifetime-Premium – Geschenk von Finn & Richel';
 }
 
 // ===== Wardrobe & Shop =====
@@ -3163,7 +3531,7 @@ function renderWardrobe() {
     const p = curP();
     if (!p) return;
     ensureHubFields(p);
-    document.getElementById('wd-gems').textContent = '💎 ' + (ENDLESS_GEMS ? '∞' : p.hub.gems);
+    document.getElementById('wd-gems').textContent = '💎 ' + p.hub.gems;
     document.getElementById('wd-av').innerHTML = avatarSvg(p.avatar, 180, { equipped: p.hub.equipped, body: true });
     // slot tabs
     const tabs = document.getElementById('wd-tabs');
@@ -3210,10 +3578,8 @@ function onWardrobeItemClick(id) {
     if (!it) return;
     const owned = (p.hub.owned || []).includes(id);
     if (!owned) {
-        if (!ENDLESS_GEMS) {
-            if (p.hub.gems < it.price) { toast('Nicht genug Edelsteine'); return; }
-            p.hub.gems -= it.price;
-        }
+        if (p.hub.gems < it.price) { toast('Nicht genug Edelsteine'); return; }
+        p.hub.gems -= it.price;
         p.hub.owned.push(id);
         p.hub.equipped[it.slot] = id; // auto-equip after buying
         saveProfiles();
