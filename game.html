@@ -4108,6 +4108,21 @@
             gap: 40px;
             z-index: 100;
         }
+        /* Tablets + touch devices: push answers up so browser chrome / URL bar doesn't hide them */
+        @media (pointer: coarse), (max-width: 1200px) {
+            #lanes-container {
+                bottom: max(15%, calc(env(safe-area-inset-bottom, 20px) + 90px));
+                gap: 18px;
+            }
+            #number-display { top: 22%; font-size: 32px; padding: 12px 28px; }
+            #timer { top: 34%; }
+        }
+        @media (max-width: 700px) {
+            #lanes-container {
+                bottom: max(18%, calc(env(safe-area-inset-bottom, 20px) + 100px));
+                gap: 10px;
+            }
+        }
 
         .lane-choice {
             background: linear-gradient(135deg, rgba(10, 10, 30, 0.85), rgba(20, 20, 50, 0.75));
