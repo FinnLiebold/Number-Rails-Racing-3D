@@ -4127,6 +4127,26 @@
         body.is-touch #number-display { top: 22% !important; font-size: 32px !important; padding: 12px 28px !important; }
         body.is-touch #timer { top: 34% !important; }
 
+        /* Multiplayer (2 Spieler): same lift so the answers don't sit under the URL bar */
+        @media (any-pointer: coarse), (hover: none), (max-width: 1400px), (max-height: 1100px) {
+            .mp-side {
+                padding-bottom: max(18%, calc(env(safe-area-inset-bottom, 20px) + 100px)) !important;
+                justify-content: flex-end !important;
+            }
+            .mp-question { font-size: 20px !important; padding: 8px 14px !important; margin-bottom: 8px !important; }
+            .mp-answers { gap: 6px !important; }
+            .mp-answer-btn { padding: 8px 10px !important; min-width: 60px !important; font-size: 14px !important; }
+        }
+        @media (max-width: 700px) {
+            .mp-side { padding-bottom: max(22%, calc(env(safe-area-inset-bottom, 20px) + 110px)) !important; }
+            .mp-answer-btn { padding: 6px 8px !important; min-width: 50px !important; font-size: 12px !important; }
+        }
+        body.is-touch .mp-side {
+            padding-bottom: max(18%, calc(env(safe-area-inset-bottom, 0px) + 100px)) !important;
+        }
+        body.is-touch .mp-question { font-size: 20px !important; padding: 8px 14px !important; }
+        body.is-touch .mp-answer-btn { padding: 8px 10px !important; min-width: 60px !important; font-size: 14px !important; }
+
         .lane-choice {
             background: linear-gradient(135deg, rgba(10, 10, 30, 0.85), rgba(20, 20, 50, 0.75));
             padding: 16px 28px;
