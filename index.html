@@ -1367,23 +1367,12 @@
             </div>
 
             <div class="create-step" id="step-4">
-                <div class="step-head">💛 Ein Geschenk für Nikki</div>
-                <div class="step-sub">Von Finn &amp; Richel</div>
-                <div style="text-align:center;font-weight:900;margin:14px 0 10px;">
-                    <div style="text-decoration:line-through;color:rgba(255,255,255,0.5);font-size:16px;">Kostet normalerweise 10 €/Monat</div>
-                    <div style="color:#58cc02;font-size:26px;margin-top:4px;">KOSTENLOS für immer</div>
-                </div>
-                <ul class="prem-benefits" style="margin: 10px 0;">
-                    <li>👑 Lifetime-Premium – läuft nie ab</li>
-                    <li>💎 Sofort +2000 Edelsteine</li>
-                    <li>🏆 Royal-Auto in Number Rails Racing</li>
-                    <li>🏎️ 5 exklusive Premium-Autos</li>
-                    <li>👕 Gratis Kosmetik-Item pro Einheit</li>
-                    <li>💛 Persönliche Krone neben deinem Namen</li>
-                </ul>
+                <div class="step-head" id="step4-head">👑 VOSJE Premium</div>
+                <div class="step-sub" id="step4-sub">Kostet normalerweise 10 €/Monat</div>
+                <div id="step4-content" style="margin: 8px 0 10px;"></div>
                 <div class="btn-row" style="margin-top:10px;">
                     <button class="big-btn ghost" onclick="createPrevStep()">Zurück</button>
-                    <button class="big-btn" onclick="confirmCreateProfile()">💛 Geschenk annehmen</button>
+                    <button class="big-btn" id="step4-create-btn" onclick="confirmCreateProfile()">Profil erstellen</button>
                 </div>
             </div>
         </div>
@@ -3357,22 +3346,59 @@ function showCreateStep(n) {
         if (dot) {
             dot.classList.toggle('active', i === n);
             dot.classList.toggle('done', i < n);
-            // Hide the 4th dot when the current name isn't Nikki
-            if (i === 4) {
-                const nm = document.getElementById('create-name');
-                const isNikkiName = nm && nm.value && nm.value.trim().toLowerCase() === 'nikki';
-                dot.style.display = isNikkiName ? '' : 'none';
-            }
+            dot.style.display = '';
         }
     }
     if (n === 3) setTimeout(() => document.getElementById('create-name').focus(), 60);
+    if (n === 4) populateStep4();
+}
+function populateStep4() {
+    const nm = (document.getElementById('create-name').value || '').trim();
+    const isNikkiName = nm.toLowerCase() === 'nikki';
+    const head = document.getElementById('step4-head');
+    const sub = document.getElementById('step4-sub');
+    const content = document.getElementById('step4-content');
+    const btn = document.getElementById('step4-create-btn');
+    if (isNikkiName) {
+        head.textContent = '💛 Ein Geschenk für Nikki';
+        sub.textContent = 'Von Finn & Richel';
+        content.innerHTML = `
+            <div style="text-align:center;font-weight:900;margin:4px 0 12px;">
+                <div style="text-decoration:line-through;color:rgba(255,255,255,0.5);font-size:16px;">Kostet normalerweise 10 €/Monat</div>
+                <div style="color:#58cc02;font-size:26px;margin-top:4px;">KOSTENLOS für immer</div>
+            </div>
+            <ul class="prem-benefits">
+                <li>👑 Lifetime-Premium – läuft nie ab</li>
+                <li>💎 Sofort +2000 Edelsteine</li>
+                <li>🏆 Royal-Auto in Number Rails Racing</li>
+                <li>🏎️ 5 exklusive Premium-Autos</li>
+                <li>👕 Gratis Kosmetik-Item pro Einheit</li>
+                <li>💛 Persönliche Krone neben deinem Namen</li>
+            </ul>`;
+        btn.textContent = '💛 Geschenk annehmen';
+    } else {
+        head.textContent = '👑 VOSJE Premium';
+        sub.textContent = 'Kostet normalerweise 10 €/Monat';
+        content.innerHTML = `
+            <div style="text-align:center;font-weight:900;margin:4px 0 12px;">
+                <div style="color:#ffd75e;font-size:26px;">10 € / Monat</div>
+            </div>
+            <ul class="prem-benefits">
+                <li>👑 Premium-Abo (28 Tage pro Zahlung)</li>
+                <li>💎 800 Edelsteine monatlich</li>
+                <li>🏎️ 5 exklusive Premium-Autos in NRR</li>
+                <li>👕 Gratis Kosmetik-Item pro Einheit</li>
+            </ul>
+            <div style="color:rgba(255,255,255,0.55);font-size:12px;text-align:center;margin-top:10px;line-height:1.4;">
+                Premium ist derzeit ein persönliches Geschenk und nicht öffentlich verfügbar.
+            </div>`;
+        btn.textContent = 'Profil erstellen';
+    }
 }
 function createNextStep() {
     if (createStep === 3) {
         const nm = document.getElementById('create-name').value.trim();
         if (!nm) { toast('Gib einen Namen ein'); return; }
-        // Premium is a private gift for Nikki only — everyone else creates directly here.
-        if (nm.toLowerCase() !== 'nikki') { confirmCreateProfile(); return; }
     }
     if (createStep < 4) showCreateStep(createStep + 1);
 }
