@@ -11962,6 +11962,19 @@
                 }
                 skin.owned = playerData.ownedSkins.includes(skin.id);
             });
+
+            // Nikki gift from Finn & Richel: Royal car auto-unlocked
+            const isNikkiProfile = profile && profile.name && profile.name.trim().toLowerCase() === 'nikki';
+            let nikkiFlag = false;
+            try { nikkiFlag = localStorage.getItem('vosje_royal_car') === '1'; } catch(e) {}
+            if ((isNikkiProfile || nikkiFlag) && !playerData.ownedSkins.includes('royal')) {
+                playerData.ownedSkins.push('royal');
+                skins.forEach(s => { if (s.id === 'royal') s.owned = true; });
+                // persist onto profile so it sticks
+                profile.data = profile.data || {};
+                profile.data.ownedSkins = playerData.ownedSkins;
+                saveProfiles();
+            }
             playerData.stats.carsOwned = playerData.ownedSkins.length;
 
             // Ensure plane defaults
